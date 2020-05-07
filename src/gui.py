@@ -103,7 +103,7 @@ class Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("500x500")
+		master.geometry("300x300")
 		master.title("Commander Pi")
 
 		title_label = tk.Label( master, text = "Welcome in Commander Pi\n", fg="red" )	
