@@ -99,7 +99,7 @@ class Overclock_Window:
 					rs.overclock_gpu_freq(gpu_freq_entry.get())
 					rs.overclock_over_voltage(over_voltage_entry.get())
 					print("It works!")
-					#rs.reboot()
+					rs.reboot()
 				else:
 					msb.showinfo(title="Warning", message="You don't set all values!")
 			else:
