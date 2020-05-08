@@ -45,10 +45,10 @@ class Info_Window:
 		
 		
 class Overclock_Window:
-
 		
 	def __init__(master):
-	
+		
+		
 		master = tk.Tk()
 		master.geometry("300x400")
 		master.title("Commander Pi")
@@ -65,36 +65,48 @@ class Overclock_Window:
 		gpu_freq_entry = tk.Entry(master)
 		gpu_freq_entry.pack(fill=X)
 		
-		gpu_freq_b = tk.Button ( master, text="Set gpu_freq", command = lambda:overclock_push2(gpu_freq_entry))
+		gpu_freq_b = tk.Button ( master, text="Set gpu_freq", command = lambda:overclock_push(gpu_freq_entry))
 		gpu_freq_b.pack(fill=X)
 		
 		over_voltage_entry = tk.Entry(master)
 		over_voltage_entry.pack(fill=X)
 		
-		over_voltage_b = tk.Button ( master, text="Set over_voltage", command = lambda:overclock_push3(over_voltage_entry))
+		over_voltage_b = tk.Button ( master, text="Set over_voltage", command = lambda:overclock_push(over_voltage_entry))
 		over_voltage_b.pack(fill=X)
 		
-		reboot_b = tk.Button (master, text="Reboot RaspberryPi to apply changes", command = lambda:confirum_push())
+		reboot_b = tk.Button (master, text="Apply and Reboot", command = lambda:confirum_push())
 		reboot_b.pack(fill=X)
 		
 		proposition = tk.Label( master, text="Stable proposed values:\narm_freq=2000\ngpu_freq=400\nover_voltage=6\nMax level:\narm_freq=2147\ngpu_freq=750\nover_voltage=6", fg="red" )
 		proposition.pack(fill=X)
-		
+
 		def overclock_push(entry_stuff):
-			rs.overclock_arm_freq(entry_stuff.get())
 			entry_stuff.config(state='disabled')
-		def overclock_push2(entry_stuff):
-			rs.overclock_gpu_freq(entry_stuff.get())
-			entry_stuff.config(state='disabled')
-		def overclock_push3(entry_stuff):
-			rs.overclock_over_voltage(entry_stuff.get())
-			entry_stuff.config(state='disabled')
+		#def overclock_push2(entry_stuff):
+		#	global overclock_push_state2
+		#	overclock_push_state2 = True
+		#	entry_stuff.config(state='disabled')
+		#def overclock_push3(entry_stuff):		
+		#	global overclock_push_state3
+		#	overclock_push_state3 = True		
+		#	entry_stuff.config(state='disabled')
+			
 		def confirum_push():
 			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
 			if confirm_msgb == True:
-				rs.reboot()
+				if arm_freq_entry.get() != "" and gpu_freq_entry.get() != "" and over_voltage_entry.get() != "":
+					rs.overclock_arm_freq(arm_freq_entry.get())
+					rs.overclock_gpu_freq(gpu_freq_entry.get())
+					rs.overclock_over_voltage(over_voltage_entry.get())
+					print("It works!")
+					#rs.reboot()
+				else:
+					msb.showinfo(title="Warning", message="You don't set all values!")
 			else:
 				master.destroy()
+				
+				
+				
 		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")
 		master.mainloop()
 
