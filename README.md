@@ -6,7 +6,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Check your system information like CPU temperature, CPU usage, kernel version etc by user friendly menu </br>
 -Easy overclocking! </br>
 ## Download
-https://drive.google.com/open?id=1y0u9Qhl9xtE9HYJ_3qS776D378mmHXLt
+https://drive.google.com/open?id=1DEOAh6XZG7aTYKp1skGDRkmKaJu2WwlC
 ### USAGE: </br>
  Start with `./start.sh` or mouse left button double click on start.sh</br>
 * **OVERCLOCKING**
