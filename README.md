@@ -16,6 +16,12 @@ https://drive.google.com/open?id=1DEOAh6XZG7aTYKp1skGDRkmKaJu2WwlC
 1. Set over_voltage
 1. **CLICK BOTTOM BUTTON TO RESTART RPI!**
 1. Enjoy that!
+</br>
+
+## Version history
+Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md">click here</a>
+</br>
+
 ### TODO
 - [x] system basic informations
 - [x] overclock
