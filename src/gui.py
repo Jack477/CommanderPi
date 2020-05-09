@@ -80,16 +80,14 @@ class Overclock_Window:
 		proposition.pack(fill=X)
 
 		def overclock_push(entry_stuff, state):
-			rs.set_push_state(state)
-			entry_stuff.config(state='disabled')
-		#def overclock_push2(entry_stuff):
-		#	global overclock_push_state2
-		#	overclock_push_state2 = True
-		#	entry_stuff.config(state='disabled')
-		#def overclock_push3(entry_stuff):		
-		#	global overclock_push_state3
-		#	overclock_push_state3 = True		
-		#	entry_stuff.config(state='disabled')
+			entry_instance = entry_stuff.get()
+			if entry_instance.isdigit():
+				rs.set_push_state(state)
+				entry_stuff.config(state='disabled')
+				print("Its a number so it works!")
+			else:
+				print("Its not a number!")
+
 			
 		def confirum_push():
 			print(rs.push_state1)
