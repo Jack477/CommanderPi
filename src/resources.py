@@ -2,13 +2,29 @@ import os
 import subprocess as sp
 import fileinput
 
-
-
-
+#Check entry in gui is preesed
+push_state1 = False
+push_state2 = False
+push_state3 = False
+def set_push_state(state):
+	global push_state1
+	global push_state2
+	global push_state3
+	if ( state == 1 ):
+		push_state1 = True
+	elif ( state == 2):
+		push_state2 = True
+	elif (state == 3):
+		push_state3 = True
+	
+	
+	
 def reboot():
 	os.system("sudo reboot now")
 cpu_usage_path = "build/cpu_usage.txt"
 temperature = "build/actual_temp.txt"
+
+
 
 #cpu_usagex = sp.getoutput('vcgencmd measure_clock arm')
 def refusage():
@@ -58,6 +74,8 @@ for line in f:
 		oexist = True
 		
 f.close()
+
+
 
 
 def overclock_over_voltage(new_over_voltage):
