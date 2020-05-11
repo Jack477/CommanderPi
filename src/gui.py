@@ -25,17 +25,25 @@ class Info_Window:
 		kernel_version_label = tk.Label( master, text = "Kernel version: " + rs.kernel_version )
 		kernel_version_label.pack(fill=X)
 		
+		processor_architecture_label = tk.Label( master, text="Processor architecture: " + rs.processor_architecture )
+		processor_architecture_label.pack(fill=X)
+		
+		memory_use_label = tk.Label( master, text = "" )
+		memory_use_label.pack(fill=X)
+		
 		actual_cpu_temp_label = tk.Label(master, text = "" )
 		actual_cpu_temp_label.pack(fill=X)
 		
 		actual_cpu_usage_label = tk.Label(master, text = "")
 		actual_cpu_usage_label.pack(fill=X)
 		
-		#REFRESH CPU USAGE AND TEMPERATURE
+		#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
 		def refresh():
 			ttext = rs.reftemp()
 			ptext = rs.refusage()
+			mtext = rs.refmem()
 			#dtext = "CPU usage " + rs.cpu_usagex +" MHz"
+			memory_use_label.configure(text = "Memory usage " + mtext + "/100%")
 			actual_cpu_temp_label.configure(text = "Actual CPU " + ttext)
 			actual_cpu_usage_label.configure(text = ptext)
 			master.after(1000, refresh)
@@ -87,7 +95,14 @@ class Overclock_Window:
 				print("Its a number so it works!")
 			else:
 				print("Its not a number!")
-
+		#def overclock_push2(entry_stuff):
+		#	global overclock_push_state2
+		#	overclock_push_state2 = True
+		#	entry_stuff.config(state='disabled')
+		#def overclock_push3(entry_stuff):		
+		#	global overclock_push_state3
+		#	overclock_push_state3 = True		
+		#	entry_stuff.config(state='disabled')
 			
 		def confirum_push():
 			print(rs.push_state1)
