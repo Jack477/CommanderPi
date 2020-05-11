@@ -1,6 +1,7 @@
 import os
 import subprocess as sp
 import fileinput
+import psutil
 
 #Check entry in gui is preesed
 push_state1 = False
@@ -40,14 +41,18 @@ def refusage():
 		buff = str(buff)
 		cpu_usage = "Processor usage is: " + buff + "MHz"
 	return cpu_usage
-
-
+	
+	
+def refmem():
+	memory_usex = psutil.virtual_memory().percent
+	memory_use = str(memory_usex)
+	return memory_use
 
 temperature = sp.getoutput('vcgencmd measure_temp')
 def reftemp():
 	return sp.getoutput('vcgencmd measure_temp')
-	
 
+processor_architecture = sp.getoutput('uname -m')
 host_name = sp.getoutput('uname -n')
 system_name = sp.getoutput('uname')
 kernel_version = sp.getoutput('uname -r')
