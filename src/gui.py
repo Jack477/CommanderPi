@@ -172,7 +172,7 @@ class Window:
 		btn2 = Button( master, text="Overclocking", command = lambda:bopen(Overclock_Window))
 		btn2.pack(fill=X)
 		
-		img = ImageTk.PhotoImage(file = 'logo.png')
+		img = ImageTk.PhotoImage(file = 'build/logo.png')
 		img_label = tk.Label ( master, image=img )
 		img_label.pack(side=TOP)
 		
