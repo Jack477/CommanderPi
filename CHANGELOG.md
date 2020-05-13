@@ -7,3 +7,6 @@
 * Fixed some Overclocking menu issues
 * Added live memory usage in percent
 * Added processor architecture information
+## v0.1.3
+* Visual interface changes
+* Press 'Escape' to close some info and about window
