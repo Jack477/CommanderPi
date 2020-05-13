@@ -4,7 +4,10 @@ import tkinter as tk
 import importlib
 from tkinter import messagebox as msb
 from tkinter import *
+from PIL import Image, ImageTk
 
+def killwindow(event, master):
+	master.destroy()
 
 def bopen(window):
 	x = window()
@@ -37,6 +40,12 @@ class Info_Window:
 		actual_cpu_usage_label = tk.Label(master, text = "")
 		actual_cpu_usage_label.pack(fill=X)
 		
+		
+		bind_label = tk.Label( master, text="Press Escape to close" )
+		bind_label.pack(side=BOTTOM)
+		master.bind('<Escape>', lambda e:killwindow(e, master))
+		
+		
 		#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
 		def refresh():
 			ttext = rs.reftemp()
@@ -57,35 +66,36 @@ class Overclock_Window:
 
 	def __init__(master):
 		master = tk.Tk()
-		master.geometry("300x400")
+		master.geometry("400x600")
 		master.title("Commander Pi")
 
 		title_label = tk.Label( master, text = "Overclocking\n")	
 		title_label.pack(fill=X)
 
-		arm_freq_entry = tk.Entry(master)
-		arm_freq_entry.pack(fill=X)
-		
-		arm_freq_b = tk.Button ( master, text="Set arm_freq", command = lambda:overclock_push(arm_freq_entry, 1))
+		arm_freq_b = tk.Button ( master, text="Set arm_freq", command = lambda:overclock_push(arm_freq_entry, 1), font=("Courier", 24))
 		arm_freq_b.pack(fill=X)
 		
-		gpu_freq_entry = tk.Entry(master)
-		gpu_freq_entry.pack(fill=X)
+		arm_freq_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
+		arm_freq_entry.pack(fill=X)
 		
-		gpu_freq_b = tk.Button ( master, text="Set gpu_freq", command = lambda:overclock_push(gpu_freq_entry, 2))
+		gpu_freq_b = tk.Button ( master, text="Set gpu_freq", command = lambda:overclock_push(gpu_freq_entry, 2), font=("Courier", 24))
 		gpu_freq_b.pack(fill=X)
 		
-		over_voltage_entry = tk.Entry(master)
-		over_voltage_entry.pack(fill=X)
+		gpu_freq_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
+		gpu_freq_entry.pack(fill=X)
 		
-		over_voltage_b = tk.Button ( master, text="Set over_voltage", command = lambda:overclock_push(over_voltage_entry, 3))
+		over_voltage_b = tk.Button ( master, text="Set over_voltage", command = lambda:overclock_push(over_voltage_entry, 3), font=("Courier", 24))
 		over_voltage_b.pack(fill=X)
 		
-		reboot_b = tk.Button (master, text="Apply and Reboot", command = lambda:confirum_push())
-		reboot_b.pack(fill=X)
+		over_voltage_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
+		over_voltage_entry.pack(fill=X)
 		
-		proposition = tk.Label( master, text="Stable proposed values:\narm_freq=2000\ngpu_freq=400\nover_voltage=6\nMax level:\narm_freq=2147\ngpu_freq=750\nover_voltage=6", fg="red" )
+		
+		proposition = tk.Label( master, text="Stable proposed values:\narm_freq=2000\ngpu_freq=600\nover_voltage=6\nMax level:\narm_freq=2147\ngpu_freq=750\nover_voltage=6", fg="red", font=("Courier", 18) )
 		proposition.pack(fill=X)
+		
+		reboot_b = tk.Button (master, text="Apply and Reboot", command = lambda:confirum_push(), font=("Courier", 24))
+		reboot_b.pack(fill=X)
 
 		def overclock_push(entry_stuff, state):
 			entry_instance = entry_stuff.get()
@@ -127,12 +137,30 @@ class Overclock_Window:
 		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")
 		master.mainloop()
 
-		
-class Window:
+class About_Window:
+
 	def __init__(master):
 	
 		master = tk.Tk()
 		master.geometry("300x300")
+		master.title("Commander Pi")
+
+		title_label = tk.Label( master, text = "About application\n")	
+		title_label.pack(fill=X)		
+
+		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX\n\nInspired by Salva", justify=CENTER)
+		about_label.pack(fill=X)
+		
+		bind_label = tk.Label( master, text="Press Escape to close" )
+		bind_label.pack(side=BOTTOM)
+		master.bind('<Escape>', lambda e:killwindow(e, master))
+		
+		master.mainloop()		
+class Window:
+	def __init__(master):
+	
+		master = tk.Tk()
+		master.geometry("350x450")
 		master.title("Commander Pi")
 
 		title_label = tk.Label( master, text = "Welcome in Commander Pi\n", fg="red" )	
@@ -144,7 +172,12 @@ class Window:
 		btn2 = Button( master, text="Overclocking", command = lambda:bopen(Overclock_Window))
 		btn2.pack(fill=X)
 		
+		img = ImageTk.PhotoImage(file = 'logo.png')
+		img_label = tk.Label ( master, image=img )
+		img_label.pack(side=TOP)
 		
+		btn3 = Button( master, text="About", command = lambda:bopen(About_Window))
+		btn3.pack(side=BOTTOM)
 		
 		#d = Info_Window()
 		master.mainloop()
