@@ -3,6 +3,7 @@ import subprocess as sp
 import fileinput
 import psutil
 
+img_path = os.path.dirname('logo.png')
 #Check entry in gui is preesed
 push_state1 = False
 push_state2 = False
@@ -18,7 +19,10 @@ def set_push_state(state):
 	elif (state == 3):
 		push_state3 = True
 	
-	
+def getproc():
+	cpu = sp.getoutput('lscpu | head -n 14')
+	cpux = str(cpu)
+	return cpux
 	
 def reboot():
 	os.system("sudo reboot now")
