@@ -11,55 +11,27 @@ def killwindow(event, master):
 
 def bopen(window):
 	x = window()
-class Info_Window:
+	
+class Proc_Info_Window:
 
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("300x300")
+		master.geometry("350x400")
 		master.title("Commander Pi")
 
-		title_label = tk.Label( master, text = "System information\n")	
-		title_label.pack(fill=X)
-		
-		sys_name_label = tk.Label( master, text = "System name: " + rs.system_name )
-		sys_name_label.pack(fill=X)
-		
-		kernel_version_label = tk.Label( master, text = "Kernel version: " + rs.kernel_version )
-		kernel_version_label.pack(fill=X)
-		
-		processor_architecture_label = tk.Label( master, text="Processor architecture: " + rs.processor_architecture )
-		processor_architecture_label.pack(fill=X)
-		
-		memory_use_label = tk.Label( master, text = "" )
-		memory_use_label.pack(fill=X)
-		
-		actual_cpu_temp_label = tk.Label(master, text = "" )
-		actual_cpu_temp_label.pack(fill=X)
-		
-		actual_cpu_usage_label = tk.Label(master, text = "")
-		actual_cpu_usage_label.pack(fill=X)
-		
+		title_label = tk.Label( master, text = "Processor details\n")	
+		title_label.pack(fill=X)		
+
+		about_label = tk.Label( master, text = rs.getproc(), justify=CENTER)
+		about_label.pack(fill=X)
 		
 		bind_label = tk.Label( master, text="Press Escape to close" )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
-		
-		#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
-		def refresh():
-			ttext = rs.reftemp()
-			ptext = rs.refusage()
-			mtext = rs.refmem()
-			#dtext = "CPU usage " + rs.cpu_usagex +" MHz"
-			memory_use_label.configure(text = "Memory usage " + mtext + "/100%")
-			actual_cpu_temp_label.configure(text = "Actual CPU " + ttext)
-			actual_cpu_usage_label.configure(text = ptext)
-			master.after(1000, refresh)
-		refresh()
-
-		
 		master.mainloop()
+	
 		
 	
 class Overclock_Window:
@@ -69,7 +41,7 @@ class Overclock_Window:
 		master.geometry("400x600")
 		master.title("Commander Pi")
 
-		title_label = tk.Label( master, text = "Overclocking\n")	
+		title_label = tk.Label( master, text = "Overclocking", font=("Courier", 20))	
 		title_label.pack(fill=X)
 
 		arm_freq_b = tk.Button ( master, text="Set arm_freq", command = lambda:overclock_push(arm_freq_entry, 1), font=("Courier", 24))
@@ -105,14 +77,6 @@ class Overclock_Window:
 				print("Its a number so it works!")
 			else:
 				print("Its not a number!")
-		#def overclock_push2(entry_stuff):
-		#	global overclock_push_state2
-		#	overclock_push_state2 = True
-		#	entry_stuff.config(state='disabled')
-		#def overclock_push3(entry_stuff):		
-		#	global overclock_push_state3
-		#	overclock_push_state3 = True		
-		#	entry_stuff.config(state='disabled')
 			
 		def confirum_push():
 			print(rs.push_state1)
@@ -160,21 +124,61 @@ class Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("350x450")
+		master.geometry("400x450")
 		master.title("Commander Pi")
 
 		title_label = tk.Label( master, text = "Welcome in Commander Pi\n", fg="red" )	
 		title_label.pack(fill=X)
 		
-		btn1 = Button( master, text="System information", command = lambda:bopen(Info_Window))
-		btn1.pack(fill=X)
+		
+
+		loadimg = Image.open("/home/pi/Commander_Pi/src/logo.png")
+		img = ImageTk.PhotoImage(image=loadimg)
+                
+		img_label = tk.Label ( master, image=img )
+		img_label.image = img
+		img_label.pack(side=TOP)
+		
+		sys_name_label = tk.Label( master, text = "System name: " + rs.system_name )
+		sys_name_label.pack(fill=X)
+		
+		kernel_version_label = tk.Label( master, text = "Kernel version: " + rs.kernel_version )
+		kernel_version_label.pack(fill=X)
+		
+		processor_architecture_label = tk.Label( master, text="Processor architecture: " + rs.processor_architecture )
+		processor_architecture_label.pack(fill=X)
+		
+
+		
+		memory_use_label = tk.Label( master, text = "" )
+		memory_use_label.pack(fill=X)
+		
+		actual_cpu_temp_label = tk.Label(master, text = "" )
+		actual_cpu_temp_label.pack(fill=X)
+		
+		actual_cpu_usage_label = tk.Label(master, text = "")
+		actual_cpu_usage_label.pack(fill=X)
+		
+		proc_info_button = Button ( master, text="Processor details", command = lambda:bopen(Proc_Info_Window))
+		proc_info_button.pack(fill=X)
+		
+		#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
+		def refresh():
+			ttext = rs.reftemp()
+			ptext = rs.refusage()
+			mtext = rs.refmem()
+			#dtext = "CPU usage " + rs.cpu_usagex +" MHz"
+			memory_use_label.configure(text = "Memory usage " + mtext + "/100%")
+			actual_cpu_temp_label.configure(text = "Actual CPU " + ttext)
+			actual_cpu_usage_label.configure(text = ptext)
+			master.after(1000, refresh)
+		refresh()
+
+		
+
 		
 		btn2 = Button( master, text="Overclocking", command = lambda:bopen(Overclock_Window))
 		btn2.pack(fill=X)
-		
-		img = ImageTk.PhotoImage(file = 'build/logo.png')
-		img_label = tk.Label ( master, image=img )
-		img_label.pack(side=TOP)
 		
 		btn3 = Button( master, text="About", command = lambda:bopen(About_Window))
 		btn3.pack(side=BOTTOM)
