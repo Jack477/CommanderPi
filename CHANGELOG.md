@@ -11,3 +11,7 @@
 * Added about window
 * Visual interface changes
 * Press 'Escape' to close some info and about window
+## v0.2
+* Rebuild main window
+* Added processor details window
+* Added install script
