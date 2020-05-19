@@ -8,8 +8,8 @@ Nothing, every Linux distrubiton has a python interpreter!
 ## Download
 https://drive.google.com/open?id=10Piux2DgutT7lD2OtfXw4jizhlrUqDYE
 ### USAGE: </br>
-(first make it executable! `sudo chmod +x start.sh` )</br>
- Start with `./start.sh` or mouse left button double click on start.sh</br>
+(first make install executable! `sudo chmod +x install.sh` )</br>
+ Start with `./install.sh`</br>
 * **OVERCLOCKING**
 1. Go to Overclocking menu
 1. Set arm_freq
@@ -26,7 +26,3 @@ Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG
 ### TODO
 - [x] system basic informations
 - [x] overclock
-- [ ] network setup
-- [ ] ssh setup
-- [ ] user managment?
-- [ ] system advanced informations
