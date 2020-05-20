@@ -9,7 +9,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 https://drive.google.com/open?id=1VnbBXrpqp8sG2UBD-LKhb7RjMaWoV0d4
 ### USAGE: </br>
 (first make install executable! `sudo chmod +x install.sh` )</br>
- Start with `./install.sh`</br>
+ Then install it with `./install.sh`</br>
 * **OVERCLOCKING**
 1. Go to Overclocking menu
 1. Set arm_freq
