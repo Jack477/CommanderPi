@@ -3,6 +3,23 @@ import subprocess as sp
 import fileinput
 import psutil
 
+ethernet_driver = sp.getoutput('sudo ethtool -i eth0')
+wlan_driver = sp.getoutput('sudo ethtool -i wlan0')
+
+hdd = psutil.disk_usage('/')
+def get_total_space():
+	return hdd.total / (2**30)
+def get_used_space():
+	return hdd.used / (2**30)
+def get_free_space():
+	return hdd.free / (2**30)
+def get_disk_percent():
+	return hdd.percent
+total = str(round(get_total_space(), 2))
+used = str(round(get_used_space(), 2))
+free = str(round(get_free_space(),2))
+disk = str(get_disk_percent())
+
 img_path = os.path.dirname('logo.png')
 #Check entry in gui is preesed
 push_state1 = False
