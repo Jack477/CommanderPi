@@ -32,7 +32,25 @@ class Network_Driver_Window:
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
 		master.mainloop()			
+class Disk_Info_Window:
 
+	def __init__(master):
+	
+
+		master = tk.Tk()
+		master.geometry("300x400")
+		master.title("Commander Pi")
+
+
+		
+		
+		
+		bind_label = tk.Label( master, text="Press Escape to close" )
+		bind_label.pack(side=BOTTOM)
+		master.bind('<Escape>', lambda e:killwindow(e, master))
+		
+		master.mainloop()
+	
 
 class Proc_Info_Window:
 
@@ -134,7 +152,7 @@ class About_Window:
 		title_label = tk.Label( master, text = "About application\n")	
 		title_label.pack(fill=X)		
 
-		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\n\nVersion 0.2.5\n\nInspired by Salva", justify=CENTER)
+		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\nIcon by Vectors Market\nInspired by Salva\n\nVersion 0.2.5", justify=CENTER)
 		about_label.pack(fill=X)
 		
 		bind_label = tk.Label( master, text="Press Escape to close" )
@@ -154,7 +172,7 @@ class Window:
 		
 		
 
-		loadimg = Image.open("/home/pi/Commander_Pi/src/logo.png")
+		loadimg = Image.open("/home/pi/Commander_Pi/src/img.png")
 		img = ImageTk.PhotoImage(image=loadimg)
                 
 		img_label = tk.Label ( master, image=img )
