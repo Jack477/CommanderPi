@@ -12,6 +12,28 @@ def killwindow(event, master):
 def bopen(window):
 	x = window()
 	
+class Network_Driver_Window:
+	def __init__(master):
+		master = tk.Tk()
+		master.geometry("400x300")
+		master.title("Commander Pi")
+
+		title_label = tk.Label( master, text = "Network driver\n")	
+		title_label.grid(row=0, column=0, columnspan=2)	
+
+		ether_label = tk.Label( master, text = "Ethernet driver: \n"+rs.ethernet_driver, borderwidth=2, relief="groove" )
+		ether_label.grid(row=1, column=0, sticky = W)
+		
+		wlan_label = tk.Label( master, text = "WiFi driver: \n"+rs.wlan_driver, borderwidth=2, relief="groove" )
+		wlan_label.grid(row=1, column=1, sticky = E)
+		
+		bind_label = tk.Label( master, text="Press Escape to close" )
+		bind_label.grid(row=3, column=0, columnspan=2)
+		master.bind('<Escape>', lambda e:killwindow(e, master))
+		
+		master.mainloop()			
+
+
 class Proc_Info_Window:
 
 	def __init__(master):
@@ -106,13 +128,13 @@ class About_Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("300x300")
+		master.geometry("300x220")
 		master.title("Commander Pi")
 
 		title_label = tk.Label( master, text = "About application\n")	
 		title_label.pack(fill=X)		
 
-		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX\n\nInspired by Salva", justify=CENTER)
+		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\n\nVersion 0.2.5\n\nInspired by Salva", justify=CENTER)
 		about_label.pack(fill=X)
 		
 		bind_label = tk.Label( master, text="Press Escape to close" )
@@ -124,10 +146,10 @@ class Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("400x450")
+		master.geometry("430x550")
 		master.title("Commander Pi")
 
-		title_label = tk.Label( master, text = "Welcome in Commander Pi\n", fg="red" )	
+		title_label = tk.Label( master, text = "Welcome to Commander Pi", fg="red", font=("Courier", 16) )	
 		title_label.pack(fill=X)
 		
 		
@@ -148,7 +170,8 @@ class Window:
 		processor_architecture_label = tk.Label( master, text="Processor architecture: " + rs.processor_architecture )
 		processor_architecture_label.pack(fill=X)
 		
-
+		#disk_use_label = tk.Label( master, text= "" )
+		#disk_use_label.pack(fill=X)
 		
 		memory_use_label = tk.Label( master, text = "" )
 		memory_use_label.pack(fill=X)
@@ -159,6 +182,22 @@ class Window:
 		actual_cpu_usage_label = tk.Label(master, text = "")
 		actual_cpu_usage_label.pack(fill=X)
 		
+		
+		total_label = tk.Label ( master, text="Total disk space: "+rs.total+" GiB")
+		total_label.pack(fill=X)
+		
+		used_label = tk.Label ( master, text="Used disk space: "+rs.used+" GiB")
+		used_label.pack(fill=X)
+		
+		free_label = tk.Label ( master, text="Free disk space: "+rs.free+" GiB")
+		free_label.pack(fill=X)
+		
+		disk_label = tk.Label ( master, text="Total disk usage in percent: "+rs.disk+"/100%")
+		disk_label.pack(fill=X)
+		
+		advanced_label = tk.Label( master, text = "Advanced tools", fg="red", font=("Courier", 16) )	
+		advanced_label.pack(fill=X)
+		
 		proc_info_button = Button ( master, text="Processor details", command = lambda:bopen(Proc_Info_Window))
 		proc_info_button.pack(fill=X)
 		
@@ -167,22 +206,31 @@ class Window:
 			ttext = rs.reftemp()
 			ptext = rs.refusage()
 			mtext = rs.refmem()
+			#dtext = str(rs.get_disk_percent())
 			#dtext = "CPU usage " + rs.cpu_usagex +" MHz"
 			memory_use_label.configure(text = "Memory usage " + mtext + "/100%")
 			actual_cpu_temp_label.configure(text = "Actual CPU " + ttext)
 			actual_cpu_usage_label.configure(text = ptext)
+			#disk_use_label.configure(text = "Disk space usage" +dtext+"/100%")
 			master.after(1000, refresh)
 		refresh()
 
 		
-
+		#btn4 = Button (master, text="Disk space info", command = lambda:bopen(Disk_Info_Window))
+		#btn4.pack(fill=X)
+		
+		btn5 = Button (master, text="Network drivers info", command = lambda:bopen(Network_Driver_Window))
+		btn5.pack(fill=X)
 		
 		btn2 = Button( master, text="Overclocking", command = lambda:bopen(Overclock_Window))
 		btn2.pack(fill=X)
 		
+
+		
 		btn3 = Button( master, text="About", command = lambda:bopen(About_Window))
 		btn3.pack(side=BOTTOM)
 		
+
 		#d = Info_Window()
 		master.mainloop()
 		
