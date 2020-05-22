@@ -15,3 +15,7 @@
 * Rebuild main window
 * Added processor details window
 * Added install script
+## v0.2.5
+* Added network drivers info window
+* Added disk usage details
+* A little gui rebuild
