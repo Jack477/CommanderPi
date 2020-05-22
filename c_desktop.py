@@ -2,7 +2,7 @@
 import os 
 import subprocess as sp
 dir_path = os.path.dirname(os.path.realpath(__file__))
-f_content = '[Desktop Entry]\nName=CommanderPi\nComment=System info and overclocking\nExec=/home/pi/Commander_Pi/src/start.sh\nIcon=/home/pi/Commander_Pi/src/build/logo.png\nCategories=Utility;\nVersion=1.0\nType=Application\nTerminal=false\nStartupNotify=true'
+f_content = '[Desktop Entry]\nName=CommanderPi\nComment=System info and overclocking\nExec=/home/pi/Commander_Pi/src/start.sh\nIcon=/home/pi/Commander_Pi/src/logo.png\nCategories=Utility;\nVersion=1.0\nType=Application\nTerminal=false\nStartupNotify=true'
 d_dir = "/home/pi/Desktop/test.desktop"
 x_dir = "/usr/share/applications/test.desktop"
 print(d_dir)
