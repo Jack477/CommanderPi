@@ -6,7 +6,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Check your system information like CPU temperature, CPU usage, kernel version etc by user friendly menu </br>
 -Easy overclocking! </br>
 ## Download
-https://drive.google.com/open?id=1VnbBXrpqp8sG2UBD-LKhb7RjMaWoV0d4
+https://drive.google.com/open?id=1mhsLLRs9wXdzVtNjEVQPrt6-B9Rp_5Ux
 ### USAGE: </br>
 (first make install executable! `sudo chmod +x install.sh` )</br>
  Then install it with `./install.sh`</br>
