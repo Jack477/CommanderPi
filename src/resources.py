@@ -3,9 +3,42 @@ import subprocess as sp
 import fileinput
 import psutil
 
+
+
+##NETWORK
+eth0 = sp.getoutput('sudo ifconfig eth0')
+ipv4eth = "Not set up"
+ipv6eth = "Not set up"
+mac = ""
+for line in eth0.splitlines():
+		if "netmask" in line:
+			ipv4eth = line[13:26]
+		if "inet6" in line:
+			ipv6eth = line[14:38]
+		if "ether" in line:
+			mac = line[14:32]
+eth0_data = "IPv4 "+ipv4eth+"\nIPv6 "+ipv6eth+"\nMAC "+mac
+
+wlan0 = sp.getoutput('sudo ifconfig wlan0')
+ipv4wlan0 = "Not set up"
+ipv6wlan0 = "Not set up"
+macwlan0 = ""
+for line in wlan0.splitlines():
+		if "netmask" in line:
+			ipv4wlan0 = line[13:26]
+		if "inet6" in line:
+			ipv6wlan0 = line[14:38]
+		if "ether" in line:
+			macwlan0 = line[14:32]
+wlan0_data = "IPv4 "+ipv4wlan0+"\nIPv6 "+ipv6wlan0+"\nMAC "+macwlan0
+
+
+##DEPRACTED
 ethernet_driver = sp.getoutput('sudo ethtool -i eth0')
 wlan_driver = sp.getoutput('sudo ethtool -i wlan0')
 
+
+##DISK SPACE 
 hdd = psutil.disk_usage('/')
 def get_total_space():
 	return hdd.total / (2**30)
@@ -15,12 +48,21 @@ def get_free_space():
 	return hdd.free / (2**30)
 def get_disk_percent():
 	return hdd.percent
+
 total = str(round(get_total_space(), 2))
 used = str(round(get_used_space(), 2))
 free = str(round(get_free_space(),2))
 disk = str(get_disk_percent())
+print (hdd.percent)
+print ("Total: " + total)
+print ("Used: " + used)
+print ("Free: " + free)
+
 
 img_path = os.path.dirname('logo.png')
+
+
+
 #Check entry in gui is preesed
 push_state1 = False
 push_state2 = False
@@ -35,7 +77,7 @@ def set_push_state(state):
 		push_state2 = True
 	elif (state == 3):
 		push_state3 = True
-	
+
 def getproc():
 	cpu = sp.getoutput('lscpu | head -n 14')
 	cpux = str(cpu)
@@ -57,10 +99,10 @@ def refusage():
 	buffg=cpu_usagex[14:15]
 	buffm=cpu_usagex[15:16]
 	if ( buff < 500 ):
-		cpu_usage = "Processor usage is: " + buffg+ "." + buffm + "GHz"
+		cpu_usage = "Processor frequency usage is: " + buffg+ "." + buffm + "GHz"
 	else:
 		buff = str(buff)
-		cpu_usage = "Processor usage is: " + buff + "MHz"
+		cpu_usage = "Processor frequency usage is: " + buff + "MHz"
 	return cpu_usage
 	
 	
