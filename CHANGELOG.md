@@ -19,3 +19,8 @@
 * Added network drivers info window
 * Added disk usage details
 * A little gui rebuild
+## v0.3
+* Removed network drivers info
+* Added network interfaces adress info
+* Add bootloader window with eeprom actual configuration
+* Deleted some useless stuff from main window
