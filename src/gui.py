@@ -1,7 +1,9 @@
 #!/usr/bin/python
 import resources as rs
+import bootloader as btl
 import tkinter as tk
 import importlib
+import webbrowser
 from tkinter import messagebox as msb
 from tkinter import *
 from PIL import Image, ImageTk
@@ -11,20 +13,21 @@ def killwindow(event, master):
 
 def bopen(window):
 	x = window()
-	
-class Network_Driver_Window:
+def callback(url):
+	webbrowser.open_new(url)
+class Network_Window:
 	def __init__(master):
 		master = tk.Tk()
-		master.geometry("400x300")
+		master.geometry("460x180")
 		master.title("Commander Pi")
 
-		title_label = tk.Label( master, text = "Network driver\n")	
+		title_label = tk.Label( master, text = "Network configuration")	
 		title_label.grid(row=0, column=0, columnspan=2)	
 
-		ether_label = tk.Label( master, text = "Ethernet driver: \n"+rs.ethernet_driver, borderwidth=2, relief="groove" )
+		ether_label = tk.Label( master, text = "Ethernet: \n"+rs.eth0_data, borderwidth=2, relief="groove", wraplength="205", height=7, width=25 )
 		ether_label.grid(row=1, column=0, sticky = W)
 		
-		wlan_label = tk.Label( master, text = "WiFi driver: \n"+rs.wlan_driver, borderwidth=2, relief="groove" )
+		wlan_label = tk.Label( master, text = "WiFi: \n"+rs.wlan0_data, borderwidth=2, relief="groove", wraplength="205", height=7, width=25 )
 		wlan_label.grid(row=1, column=1, sticky = E)
 		
 		bind_label = tk.Label( master, text="Press Escape to close" )
@@ -32,19 +35,27 @@ class Network_Driver_Window:
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
 		master.mainloop()			
-class Disk_Info_Window:
+class Bootloader_Info_Window:
 
 	def __init__(master):
 	
 
 		master = tk.Tk()
-		master.geometry("300x400")
+		master.geometry("340x410")
 		master.title("Commander Pi")
 
 
+		bootloader_label = tk.Label( master, text=btl.bootloader_version,  borderwidth=2, relief="groove", justify="center", wraplength="310")
+		bootloader_label.pack(fill=X)
 		
+		link = tk.Label( master, text="Official bootloader documentation", cursor="hand2", fg="blue")
+		link.pack(fill=X)
+		link.bind("<Button-1>", lambda e: callback("https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md"))
 		
-		
+		test = tk.Label(master, text=btl.read_bootloader(),  borderwidth=2, relief="groove", justify="left")
+		test.pack(fill=X)
+		#button = Button(master, text="test")
+		#button.pack(side=RIGHT)
 		bind_label = tk.Label( master, text="Press Escape to close" )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
@@ -63,7 +74,7 @@ class Proc_Info_Window:
 		title_label = tk.Label( master, text = "Processor details\n")	
 		title_label.pack(fill=X)		
 
-		about_label = tk.Label( master, text = rs.getproc(), justify=CENTER)
+		about_label = tk.Label( master, text = rs.getproc(), justify=CENTER, borderwidth=2, relief="groove")
 		about_label.pack(fill=X)
 		
 		bind_label = tk.Label( master, text="Press Escape to close" )
@@ -84,19 +95,19 @@ class Overclock_Window:
 		title_label = tk.Label( master, text = "Overclocking", font=("Courier", 20))	
 		title_label.pack(fill=X)
 
-		arm_freq_b = tk.Button ( master, text="Set arm_freq", command = lambda:overclock_push(arm_freq_entry, 1), font=("Courier", 24))
+		arm_freq_b = tk.Button ( master, text="Set arm_freq", command = lambda:overclock_push(arm_freq_entry, 1), font=("Courier", 24), cursor="hand2")
 		arm_freq_b.pack(fill=X)
 		
 		arm_freq_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
 		arm_freq_entry.pack(fill=X)
 		
-		gpu_freq_b = tk.Button ( master, text="Set gpu_freq", command = lambda:overclock_push(gpu_freq_entry, 2), font=("Courier", 24))
+		gpu_freq_b = tk.Button ( master, text="Set gpu_freq", command = lambda:overclock_push(gpu_freq_entry, 2), font=("Courier", 24), cursor="hand2")
 		gpu_freq_b.pack(fill=X)
 		
 		gpu_freq_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
 		gpu_freq_entry.pack(fill=X)
 		
-		over_voltage_b = tk.Button ( master, text="Set over_voltage", command = lambda:overclock_push(over_voltage_entry, 3), font=("Courier", 24))
+		over_voltage_b = tk.Button ( master, text="Set over_voltage", command = lambda:overclock_push(over_voltage_entry, 3), font=("Courier", 24), cursor="hand2")
 		over_voltage_b.pack(fill=X)
 		
 		over_voltage_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
@@ -106,7 +117,7 @@ class Overclock_Window:
 		proposition = tk.Label( master, text="Stable proposed values:\narm_freq=2000\ngpu_freq=600\nover_voltage=6\nMax level:\narm_freq=2147\ngpu_freq=750\nover_voltage=6", fg="red", font=("Courier", 18) )
 		proposition.pack(fill=X)
 		
-		reboot_b = tk.Button (master, text="Apply and Reboot", command = lambda:confirum_push(), font=("Courier", 24))
+		reboot_b = tk.Button (master, text="Apply and Reboot", command = lambda:confirum_push(), font=("Courier", 24), cursor="hand2")
 		reboot_b.pack(fill=X)
 
 		def overclock_push(entry_stuff, state):
@@ -152,8 +163,12 @@ class About_Window:
 		title_label = tk.Label( master, text = "About application\n")	
 		title_label.pack(fill=X)		
 
-		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\nIcon by Vectors Market\nInspired by Salva\n\nVersion 0.2.5", justify=CENTER)
+		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\nIcon by Vectors Market\nInspired by Salva\n\nVersion 0.3", justify=CENTER, borderwidth=2, relief="groove" )
 		about_label.pack(fill=X)
+		
+		link = tk.Label( master, text="changelog here", cursor="hand2", fg="blue", borderwidth=2, relief="groove", pady=5)
+		link.pack(fill=X)
+		link.bind("<Button-1>", lambda e: callback("https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md"))
 		
 		bind_label = tk.Label( master, text="Press Escape to close" )
 		bind_label.pack(side=BOTTOM)
@@ -164,23 +179,23 @@ class Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("430x550")
+		master.geometry("380x450")
 		master.title("Commander Pi")
-
-		title_label = tk.Label( master, text = "Welcome to Commander Pi", fg="red", font=("Courier", 16) )	
-		title_label.pack(fill=X)
+		master.resizable(False, False)
+		#title_label = tk.Label( master, text = "Welcome to Commander Pi", fg="red", font=("Courier", 16) )	
+		#title_label.pack(fill=X)
 		
 		
 
 		loadimg = Image.open("/home/pi/Commander_Pi/src/img.png")
 		img = ImageTk.PhotoImage(image=loadimg)
                 
-		img_label = tk.Label ( master, image=img )
+		img_label = tk.Label ( master, image=img)
 		img_label.image = img
 		img_label.pack(side=TOP)
 		
-		sys_name_label = tk.Label( master, text = "System name: " + rs.system_name )
-		sys_name_label.pack(fill=X)
+		#sys_name_label = tk.Label( master, text = "System name: " + rs.system_name )
+		#sys_name_label.pack(fill=X)
 		
 		kernel_version_label = tk.Label( master, text = "Kernel version: " + rs.kernel_version )
 		kernel_version_label.pack(fill=X)
@@ -201,25 +216,18 @@ class Window:
 		actual_cpu_usage_label.pack(fill=X)
 		
 		
-		total_label = tk.Label ( master, text="Total disk space: "+rs.total+" GiB")
-		total_label.pack(fill=X)
+		#total_label = tk.Label ( master, text="Total disk space: "+rs.total+" GiB")
+		#total_label.pack(fill=X)
 		
-		used_label = tk.Label ( master, text="Used disk space: "+rs.used+" GiB")
+		used_label = tk.Label ( master, text="Used disk space: "+rs.used+"/"+rs.total+" GiB")
 		used_label.pack(fill=X)
 		
-		free_label = tk.Label ( master, text="Free disk space: "+rs.free+" GiB")
-		free_label.pack(fill=X)
+		#free_label = tk.Label ( master, text="Free disk space: "+rs.free+" GiB")
+		#free_label.pack(fill=X)
 		
-		disk_label = tk.Label ( master, text="Total disk usage in percent: "+rs.disk+"/100%")
-		disk_label.pack(fill=X)
-		
-		advanced_label = tk.Label( master, text = "Advanced tools", fg="red", font=("Courier", 16) )	
-		advanced_label.pack(fill=X)
-		
-		proc_info_button = Button ( master, text="Processor details", command = lambda:bopen(Proc_Info_Window))
-		proc_info_button.pack(fill=X)
-		
-		#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
+		#disk_label = tk.Label ( master, text="Total disk usage in percent: "+rs.disk+"/100%")
+		#disk_label.pack(fill=X)
+				#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
 		def refresh():
 			ttext = rs.reftemp()
 			ptext = rs.refusage()
@@ -231,21 +239,31 @@ class Window:
 			actual_cpu_usage_label.configure(text = ptext)
 			#disk_use_label.configure(text = "Disk space usage" +dtext+"/100%")
 			master.after(1000, refresh)
+			
 		refresh()
-
 		
-		#btn4 = Button (master, text="Disk space info", command = lambda:bopen(Disk_Info_Window))
-		#btn4.pack(fill=X)
+		advanced_label = tk.Label( master, text = "Advanced tools", fg="red", font=("Courier", 16) )	
+		advanced_label.pack(fill=X)
 		
-		btn5 = Button (master, text="Network drivers info", command = lambda:bopen(Network_Driver_Window))
+		btn_frame = Frame(master)
+		btn_frame.pack(fill=X)
+		
+		proc_info_button = Button ( btn_frame, text="Processor details", command = lambda:bopen(Proc_Info_Window), width=20, cursor="hand2")
+		proc_info_button.pack(fill=X)
+		
+		
+		btn4 = Button (btn_frame, text="Bootloader", command = lambda:bopen(Bootloader_Info_Window), width=20, cursor="hand2")
+		btn4.pack(fill=X)
+		
+		btn5 = Button (btn_frame, text="Network", command = lambda:bopen(Network_Window), width=20, cursor="hand2")
 		btn5.pack(fill=X)
 		
-		btn2 = Button( master, text="Overclocking", command = lambda:bopen(Overclock_Window))
+		btn2 = Button(btn_frame, text="Overclocking", command = lambda:bopen(Overclock_Window), width=20, cursor="hand2")
 		btn2.pack(fill=X)
 		
 
 		
-		btn3 = Button( master, text="About", command = lambda:bopen(About_Window))
+		btn3 = Button( master, text="About", command = lambda:bopen(About_Window), cursor="hand2")
 		btn3.pack(side=BOTTOM)
 		
 
