@@ -3,6 +3,8 @@ import subprocess as sp
 import fileinput
 import psutil
 
+def cpi_open_url(link):
+	os.system('sudo -upi chromium-browser '+link)
 
 
 ##NETWORK
