@@ -9,7 +9,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Easy overclocking! </br>
 -Check actually EEPROM configuration! !WRITING YOUR OWN SOON!
 ## Download
-https://drive.google.com/open?id=1tVPlZzDnWoxVjaRu3Rc4t21R_vAJwsus
+https://drive.google.com/open?id=1r1uNMpCvf_3olw3ARTa9XRysn4b4Tqjc
 ### USAGE: </br>
 (first make install executable! `sudo chmod +x install.sh` )</br>
  Then install it with `./install.sh`</br>
