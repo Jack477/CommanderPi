@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import os
 import resources as rs
 import bootloader as btl
 import tkinter as tk
@@ -50,7 +51,7 @@ class Bootloader_Info_Window:
 		
 		link = tk.Label( master, text="Official bootloader documentation", cursor="hand2", fg="blue")
 		link.pack(fill=X)
-		link.bind("<Button-1>", lambda e: callback("https://www.raspberrypi.org/documentation/hardware/raspberrypi/booteeprom.md"))
+		link.bind("<Button-1>", lambda e: os.system('sudo -upi chromium-browser https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711_bootloader_config.md'))
 		
 		test = tk.Label(master, text=btl.read_bootloader(),  borderwidth=2, relief="groove", justify="left")
 		test.pack(fill=X)
@@ -168,7 +169,7 @@ class About_Window:
 		
 		link = tk.Label( master, text="changelog here", cursor="hand2", fg="blue", borderwidth=2, relief="groove", pady=5)
 		link.pack(fill=X)
-		link.bind("<Button-1>", lambda e: callback("https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md"))
+		link.bind("<Button-1>", lambda e: os.system('sudo -upi chromium-browser https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md'))
 		
 		bind_label = tk.Label( master, text="Press Escape to close" )
 		bind_label.pack(side=BOTTOM)
