@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 import os
 import resources as rs
 import bootloader as btl
@@ -173,8 +174,14 @@ class About_Window:
 		link.pack(fill=X)
 		mlink = 'https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md'
 		link.bind("<Button-1>", lambda e: rs.cpi_open_url(mlink))
-		update_button = Button(master, text="Update application", command=lambda:up.update_cpi(), cursor="hand2")
+		
+		
+		update_button = Button(master, text="Update application", command=lambda:update_x(), cursor="hand2")
 		update_button.pack(fill=X)
+		def update_x():
+			up.update_cpi()
+			sys.exit(0)
+		
 		bind_label = tk.Label( master, text="Press Escape to close" )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
