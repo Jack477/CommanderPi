@@ -10,6 +10,9 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Check actually EEPROM configuration! !WRITING YOUR OWN SOON!
 ## Download
 https://drive.google.com/open?id=1J4KMq-esakPzpyvY67Hfm8Pia-3he5JQ
+## Update
+-You must have version min 0.3.1 (if you don't use download and reinstall app)</br>
+-Use `Update application` button in About window
 ### USAGE: </br>
 (first make install executable! `sudo chmod +x install.sh` )</br>
  Then install it with `./install.sh`</br>
