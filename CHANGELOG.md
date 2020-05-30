@@ -24,3 +24,7 @@
 * Added network interfaces adress info
 * Add bootloader window with eeprom actual configuration
 * Deleted some useless stuff from main window
+## v0.3.1
+* Automaticly update of application by about Window
+## v0.3.2
+* Fixed some stuff :)
