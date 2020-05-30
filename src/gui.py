@@ -167,7 +167,7 @@ class About_Window:
 		title_label = tk.Label( master, text = "About application\n")	
 		title_label.pack(fill=X)		
 
-		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\nIcon by Vectors Market\nInspired by Salva\n\nVersion 0.4", justify=CENTER, borderwidth=2, relief="groove" )
+		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\nIcon by Vectors Market\nInspired by Salva\n\nVersion 0.3.1", justify=CENTER, borderwidth=2, relief="groove" )
 		about_label.pack(fill=X)
 		
 		link = tk.Label( master, text="changelog here", cursor="hand2", fg="blue", borderwidth=2, relief="groove", pady=5)
