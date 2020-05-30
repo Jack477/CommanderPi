@@ -6,7 +6,7 @@ Files = ["https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/gui.p
 Names = ["gui.py", "resources.py", "bootloader.py", "main.py"]
 def delete_old():
 	for name in Names:
-	os.system('rm '+path+'/'+name)
+		os.system('rm '+path+'/'+name)
 def download_git(url, name):
 	filename, headers = urllib.request.urlretrieve(url, filename="/home/pi/Commander_Pi/src/"+name)
 	print ("download start!")
