@@ -199,7 +199,7 @@ class Window:
 		
 		
 
-		loadimg = Image.open("/home/pi/Commander_Pi/src/img.png")
+		loadimg = Image.open("/home/pi/CommanderPi/src/img.png")
 		img = ImageTk.PhotoImage(image=loadimg)
                 
 		img_label = tk.Label ( master, image=img)
