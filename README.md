@@ -9,7 +9,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Easy overclocking! </br>
 -Check actually EEPROM configuration! !WRITING YOUR OWN SOON!
 ## Download
-https://drive.google.com/open?id=1aLrl564oOMy93sjqYYxGJ_M0tn4BE2-n
+https://drive.google.com/file/d/1wgQvCFCNM-xhG02E6ESqqqJHES4pD2SS/view?usp=sharing
 ## Update
 -You must have version min 0.3.1 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
