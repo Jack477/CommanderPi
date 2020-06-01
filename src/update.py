@@ -9,7 +9,7 @@ def delete_old():
 		os.system('rm '+path+'/'+name)
 		print("Deleted "+name)
 def download_git(url, name):
-	filename, headers = urllib.request.urlretrieve(url, filename="/home/pi/Commander_Pi/src/"+name)
+	filename, headers = urllib.request.urlretrieve(url, filename="/home/pi/CommanderPi/src/"+name)
 	print ("download start!")
 	print ("download complete!")
 	print ("download file location: ", filename)
