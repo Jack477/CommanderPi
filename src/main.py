@@ -13,7 +13,7 @@ from tkinter import *
 
 
 
-
+version = 4.0
 def main():
 	start = g.Window()
 	
