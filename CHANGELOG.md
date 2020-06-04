@@ -28,3 +28,7 @@
 * Automaticly update of application by about Window
 ## v0.3.2
 * Fixed some stuff :)
+## v0.4
+* General GUI rebuild
+* Added option to set default overclock values
+* Removed unnecessary files
