@@ -36,3 +36,4 @@ Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG
 - [x] overclock
 - [x] eeprom
 - [x] network
+- [ ] automaticly updates, still in build
