@@ -9,4 +9,4 @@ fi
 sudo apt-get install python3-pil python3-pil.imagetk
 sudo python3 c_desktop.py
 sudo chmod +x $path/src/start.sh
-sudo chmod +x /home/pi/Desktop/test.desktop
+sudo chmod +x /home/pi/Desktop/commanderpi.desktop
