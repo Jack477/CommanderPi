@@ -2,10 +2,15 @@ import os
 import subprocess as sp
 import fileinput
 import psutil
+from tkinter import *
+from tkinter import ttk
+from PIL import Image, ImageTk
 
+app_version = "Version 0.4 new GUI!\n"
+def getAppVersion():
+	return app_version
 def cpi_open_url(link):
 	os.system('sudo -upi chromium-browser '+link)
-
 
 ##NETWORK
 eth0 = sp.getoutput('sudo ifconfig eth0')
@@ -101,10 +106,10 @@ def refusage():
 	buffg=cpu_usagex[14:15]
 	buffm=cpu_usagex[15:16]
 	if ( buff < 500 ):
-		cpu_usage = "Processor frequency usage is: " + buffg+ "." + buffm + "GHz"
+		cpu_usage = buffg+ "." + buffm + "GHz"
 	else:
 		buff = str(buff)
-		cpu_usage = "Processor frequency usage is: " + buff + "MHz"
+		cpu_usage = buff + "MHz"
 	return cpu_usage
 	
 	
@@ -115,8 +120,27 @@ def refmem():
 
 temperature = sp.getoutput('vcgencmd measure_temp')
 def reftemp():
-	return sp.getoutput('vcgencmd measure_temp')
+	tempx = sp.getoutput('vcgencmd measure_temp')
+	temp=tempx[5:]
+	return temp
+	
+	
+	
+	
+	### BOARD VERSION ###
+board_versionx = sp.getoutput('cat /proc/device-tree/model')
+board_version = board_versionx[:-1]
 
+def get_board_version():
+	if "Pi 3 Model B Plus" in board_version:
+		return 3
+	if "Pi 4 Model" in board_version:
+		return 4
+		
+	
+
+
+	
 processor_architecture = sp.getoutput('uname -m')
 host_name = sp.getoutput('uname -n')
 system_name = sp.getoutput('uname')
