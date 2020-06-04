@@ -9,6 +9,7 @@ import importlib
 import webbrowser
 from tkinter import messagebox as msb
 from tkinter import *
+from tkinter import ttk
 from PIL import Image, ImageTk
 
 def killwindow(event, master):
@@ -21,20 +22,40 @@ def callback(url):
 class Network_Window:
 	def __init__(master):
 		master = tk.Tk()
-		master.geometry("460x180")
+		master.geometry("480x250")
 		master.title("Commander Pi")
+	
 
-		title_label = tk.Label( master, text = "Network configuration")	
-		title_label.grid(row=0, column=0, columnspan=2)	
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)	
+		
+		titleframe = Frame(mainframe)
+		titleframe.pack(fill=X)
+				
+		image = Image.open("/home/pi/CommanderPi/src/icons/Networkings.png")
+		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
-		ether_label = tk.Label( master, text = "Ethernet: \n"+rs.eth0_data, borderwidth=2, relief="groove", wraplength="205", height=7, width=25 )
+		title_label = tk.Label( titleframe, text = "  Networking", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		title_label.image = photo
+		title_label.pack(side=LEFT)
+			
+		network_frame = Frame(mainframe)
+		network_frame.pack()
+		
+		ether_title = tk.Label(network_frame, text="Ethernet:", font=("TkDefaultFont", 11, "bold"))
+		ether_title.grid(row=0, column=0)
+		
+		wlan_title = tk.Label(network_frame, text="WiFi:", font=("TkDefaultFont", 11, "bold"))
+		wlan_title.grid(row=0, column=1)
+		
+		ether_label = tk.Label( network_frame, text = rs.eth0_data, borderwidth=2, relief="groove", height=7, width=25, anchor='w', justify=LEFT )
 		ether_label.grid(row=1, column=0, sticky = W)
 		
-		wlan_label = tk.Label( master, text = "WiFi: \n"+rs.wlan0_data, borderwidth=2, relief="groove", wraplength="205", height=7, width=25 )
-		wlan_label.grid(row=1, column=1, sticky = E)
+		wlan_label = tk.Label( network_frame, text = rs.wlan0_data, borderwidth=2, relief="groove",  height=7, width=25, anchor='w', justify=LEFT )
+		wlan_label.grid(row=1, column=1, sticky = W)
 		
-		bind_label = tk.Label( master, text="Press Escape to close" )
-		bind_label.grid(row=3, column=0, columnspan=2)
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
 		master.mainloop()			
@@ -44,23 +65,46 @@ class Bootloader_Info_Window:
 	
 
 		master = tk.Tk()
-		master.geometry("340x410")
+		master.geometry("430x500")
 		master.title("Commander Pi")
+		
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)	
+		
+		titleframe = Frame(mainframe)
+		titleframe.pack(fill=X)
+				
+		image = Image.open("/home/pi/CommanderPi/src/icons/Bootloaders.png")
+		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
-
-		bootloader_label = tk.Label( master, text=btl.bootloader_version,  borderwidth=2, relief="groove", justify="center", wraplength="310")
+		title_label = tk.Label( titleframe, text = "  Bootloader", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		title_label.image = photo
+		title_label.pack(side=LEFT)
+		
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=5)
+		
+		versionx_label = tk.Label(mainframe, text="Version information:", font=("TkDefaultFont", 11, "bold"), anchor='w' )
+		versionx_label.pack(fill=X)
+		#310
+		bootloader_version_label = tk.Label(mainframe, text=btl.bootloader_version, justify="left", wraplength="360", anchor='w')
+		bootloader_version_label.pack(fill=X)
+		
+		bootloader_label = tk.Label(mainframe, text=btl.read_bootloader(), justify="left", anchor='w')
 		bootloader_label.pack(fill=X)
 		
-		link = tk.Label( master, text="Official bootloader documentation", cursor="hand2", fg="blue")
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=5)
+		
+		link = tk.Label( mainframe, text="Official bootloader documentation", cursor="hand2", fg="#1D81DA")
 		link.pack(fill=X)
 		mlink = 'https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711_bootloader_config.md'
 		link.bind("<Button-1>", lambda e: rs.cpi_open_url(mlink))
 		
-		test = tk.Label(master, text=btl.read_bootloader(),  borderwidth=2, relief="groove", justify="left")
-		test.pack(fill=X)
+
 		#button = Button(master, text="test")
 		#button.pack(side=RIGHT)
-		bind_label = tk.Label( master, text="Press Escape to close" )
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
@@ -74,56 +118,203 @@ class Proc_Info_Window:
 		master = tk.Tk()
 		master.geometry("350x400")
 		master.title("Commander Pi")
-
-		title_label = tk.Label( master, text = "Processor details\n")	
-		title_label.pack(fill=X)		
-
-		about_label = tk.Label( master, text = rs.getproc(), justify=CENTER, borderwidth=2, relief="groove")
-		about_label.pack(fill=X)
 		
-		bind_label = tk.Label( master, text="Press Escape to close" )
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)	
+		
+		titleframe = Frame(mainframe)
+		titleframe.pack(fill=X)
+				
+		image = Image.open("/home/pi/CommanderPi/src/icons/CPUs.png")
+		photo = ImageTk.PhotoImage(image, master=titleframe) 
+
+		title_label = tk.Label( titleframe, text = "  CPU Details", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		title_label.image = photo
+		title_label.pack(side=LEFT)
+	
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=15)
+		
+		cpu_content_frame = Frame(mainframe)
+		cpu_content_frame.pack()
+		
+		cpu_label = tk.Label( mainframe, text = rs.getproc(), justify=LEFT)
+		cpu_label.pack(fill=X)
+		
+		separator2 = ttk.Separator(mainframe, orient='horizontal')
+		separator2.pack(fill=X, expand=True, pady=15)	
+		
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
 		master.mainloop()
 	
 		
+class Fast_Overclock_Window:
+
+	def __init__(master):
 	
+		master = tk.Tk()
+		master.geometry("350x400")
+		master.title("Commander Pi")
+
+		title_label = tk.Label( master, text = "Fast overclocking for non-advanced users!\n")	
+		title_label.grid(row=0, column=0, columnspan=2)			
+		
+		factory_label = tk.Label( master, text="factory settings", justify=CENTER, fg="green", wraplength="150", borderwidth=2, relief="groove", width="30")
+		factory_label.grid(row=1, column=0)
+		
+		factory_b = tk.Button(master, text="Factory", justify=CENTER, width="7", command = lambda:confirum_push(1))
+		factory_b.grid(row=1, column=1)
+		
+		stable_label = tk.Label( master, text="stable settings, you should have a cooling", justify=CENTER, fg="yellow", wraplength="150", borderwidth=2, relief="groove", width="30")
+		stable_label.grid(row=2, column=0)
+		
+		stable_b = tk.Button(master, text="Stable", justify=CENTER, width="7", command = lambda:confirum_push(2))
+		stable_b.grid(row=2, column=1)	
+		
+		extreme_label = tk.Label( master, text="extreme settings, you must have a cooling!", justify=CENTER, fg="red", wraplength="150", borderwidth=2, relief="groove", width="30")
+		extreme_label.grid(row=3, column=0)
+		
+		factory_b = tk.Button(master, text="Extreme", justify=CENTER, width="7", command = lambda:confirum_push(3))
+		factory_b.grid(row=3, column=1)
+
+		def confirum_push(num):
+			arm_freq="0"
+			gpu_freq="0"
+			over_voltage="0"
+			if num == 1:
+				arm_freq="1500"
+				gpu_freq="400"
+				over_voltage="4"	
+			if num == 2:
+				arm_freq="2000"
+				gpu_freq="600"
+				over_voltage="6"	
+			if num == 3:
+				arm_freq="2147"
+				gpu_freq="750"
+				over_voltage="6"
+			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
+			if confirm_msgb == True:
+				#rs.overclock_arm_freq(arm_freq)
+				#rs.overclock_gpu_freq(gpu_freq)
+				#rs.overclock_over_voltage(over_voltage)
+				print("It works!")
+				print(arm_freq)
+				print(gpu_freq)
+				print(over_voltage)
+				master.destroy()
+				#rs.reboot()
+
+			else:
+				importlib.reload(rs)
+				master.destroy()
+		master.mainloop()
+	
+		
+			
 class Overclock_Window:
 
 	def __init__(master):
 		master = tk.Tk()
-		master.geometry("400x600")
+		master.geometry("440x465")
 		master.title("Commander Pi")
 
-		title_label = tk.Label( master, text = "Overclocking", font=("Courier", 20))	
-		title_label.pack(fill=X)
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)
+		
+		titleframe = Frame(mainframe)
+		titleframe.pack(fill=X)
+				
+		
+		image = Image.open("/home/pi/CommanderPi/src/icons/Overclockings.png")
+		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
-		arm_freq_b = tk.Button ( master, text="Set arm_freq", command = lambda:overclock_push(arm_freq_entry, 1), font=("Courier", 24), cursor="hand2")
-		arm_freq_b.pack(fill=X)
-		
-		arm_freq_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
-		arm_freq_entry.pack(fill=X)
-		
-		gpu_freq_b = tk.Button ( master, text="Set gpu_freq", command = lambda:overclock_push(gpu_freq_entry, 2), font=("Courier", 24), cursor="hand2")
-		gpu_freq_b.pack(fill=X)
-		
-		gpu_freq_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
-		gpu_freq_entry.pack(fill=X)
-		
-		over_voltage_b = tk.Button ( master, text="Set over_voltage", command = lambda:overclock_push(over_voltage_entry, 3), font=("Courier", 24), cursor="hand2")
-		over_voltage_b.pack(fill=X)
-		
-		over_voltage_entry = tk.Entry(master, font=("Courier", 24), justify=CENTER)
-		over_voltage_entry.pack(fill=X)
+		title_label = tk.Label( titleframe, text = "  Overclocking", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		#title_label = tk.Label( master=titleframe, image = photo, compound=TOP)
+		title_label.image = photo
+		title_label.pack(side=LEFT)
 		
 		
-		proposition = tk.Label( master, text="Stable proposed values:\narm_freq=2000\ngpu_freq=600\nover_voltage=6\nMax level:\narm_freq=2147\ngpu_freq=750\nover_voltage=6", fg="red", font=("Courier", 18) )
-		proposition.pack(fill=X)
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=15)
 		
-		reboot_b = tk.Button (master, text="Apply and Reboot", command = lambda:confirum_push(), font=("Courier", 24), cursor="hand2")
-		reboot_b.pack(fill=X)
+		entry_frame = Frame(mainframe)
+		entry_frame.pack()
+		
+		arm_freq_label = tk.Label( entry_frame, text="CPU speed (arm_freq): ")
+		arm_freq_label.grid(row=0, column=0)
+		
+		arm_freq_entry = tk.Entry( entry_frame, justify=CENTER, width=10)
+		arm_freq_entry.grid(row=0, column=1, ipady=3)
+		
+		image1 = Image.open("/home/pi/CommanderPi/src/icons/Checks.png")
+		photo1 = ImageTk.PhotoImage(image1, master=entry_frame) 
+		
+		arm_freq_b = tk.Button ( entry_frame, text="Set", command = lambda:overclock_push(arm_freq_entry, 1), font=("TkDefaultFont", 10, "bold"), cursor="hand2", image = photo1, compound=LEFT)
+		arm_freq_b.grid(row=0, column=2)
+		
 
+		
+		gpu_freq_label = tk.Label( entry_frame, text="GPU speed (gpu_freq): ")
+		gpu_freq_label.grid(row=1, column=0)
+		
+		gpu_freq_entry = tk.Entry( entry_frame, justify=CENTER, width=10)
+		gpu_freq_entry.grid(row=1, column=1, ipady=3)
+		
+		
+		gpu_freq_b = tk.Button ( entry_frame, text="Set", command = lambda:overclock_push(gpu_freq_entry, 2), font=("TkDefaultFont", 10, "bold"), cursor="hand2", image = photo1, compound=LEFT)
+		gpu_freq_b.grid(row=1, column=2)
+		
+		
+		over_voltage_label = tk.Label( entry_frame, text="Volt. adj. (over_voltage):")
+		over_voltage_label.grid(row=2, column=0)
+		
+		over_voltage_entry = tk.Entry( entry_frame, justify=CENTER, width=10)
+		over_voltage_entry.grid(row=2, column=1, ipady=3)
+
+		over_voltage_b = tk.Button ( entry_frame, text="Set", command = lambda:overclock_push(over_voltage_entry, 3), font=("TkDefaultFont", 10, "bold"), cursor="hand2", image = photo1, compound=LEFT)
+		over_voltage_b.grid(row=2, column=2)
+		
+		separator2 = ttk.Separator(mainframe, orient='horizontal')
+		separator2.pack(fill=X, expand=True, pady=15)
+		
+		recommended_frame = Frame(mainframe)
+		recommended_frame.pack()
+		
+		r1 = tk.Label( recommended_frame, text="Recommended values:", font=("TkDefaultFont", 10, "bold"), anchor='w', width=25)
+		r1.grid(row=0, column=0, sticky=W)
+		r2 = tk.Label(recommended_frame, text="CPU speed: 2000", anchor='w', width=25)
+		r2.grid(row=1, column=0, sticky=W)
+		r3 = tk.Label(recommended_frame, text="GPU speed: 600", anchor='w', width=25)
+		r3.grid(row=2, column=0, sticky=W)
+		r4 = tk.Label(recommended_frame, text="Voltage adjustment: 6", anchor='w', width=25)
+		r4.grid(row=3, column=0, sticky=W)
+		
+		r5 = tk.Label(recommended_frame, text="Maximum values:", font=("TkDefaultFont", 10, "bold"), anchor='w')
+		r5.grid(row=0, column=1, sticky=W)
+		r6 = tk.Label(recommended_frame, text="CPU speed: 2147", anchor='w')
+		r6.grid(row=1, column=1, sticky=W)
+		r7 = tk.Label(recommended_frame, text="GPU speed: 700", anchor='w')
+		r7.grid(row=2, column=1, sticky=W)
+		r8 = tk.Label(recommended_frame, text="Voltage adjustment: 6", anchor='w')
+		r8.grid(row=3, column=1, sticky=W)
+		separator3 = ttk.Separator(mainframe, orient='horizontal')
+		separator3.pack(fill=X, expand=True, pady=10)
+		
+		#proposition = tk.Label( master, text="Stable proposed values:\narm_freq=2000\ngpu_freq=600\nover_voltage=6\nMax level:\narm_freq=2147\ngpu_freq=750\nover_voltage=6", fg="red", font=("Courier", 18) )
+		#proposition.pack(fill=X)
+		
+
+		
+		reboot_b = tk.Button (mainframe, text="Apply and Reboot", command = lambda:confirum_push(), font=("TkDefaultFont", 12, "bold"), cursor="hand2")
+		reboot_b.pack(side=BOTTOM, pady=35)
+
+		set_default_b = tk.Button( mainframe, text="Set to default and reboot", command = lambda:set_default(),  font=("TkDefaultFont", 12, "bold"), cursor="hand2")
+		set_default_b.pack(side=BOTTOM)
+		
 		def overclock_push(entry_stuff, state):
 			entry_instance = entry_stuff.get()
 			if entry_instance.isdigit():
@@ -150,7 +341,17 @@ class Overclock_Window:
 			else:
 				importlib.reload(rs)
 				master.destroy()
-				
+		def set_default():
+			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
+			if confirm_msgb == True:
+				rs.overclock_arm_freq("1500")
+				rs.overclock_gpu_freq("500")
+				rs.overclock_over_voltage("4")
+				print("It works!")	
+				#rs.reboot()
+			else:
+				importlib.reload(rs)
+				master.destroy()			
 				
 				
 		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")
@@ -161,28 +362,52 @@ class About_Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("300x220")
+		master.geometry("400x450")
 		master.title("Commander Pi")
 
-		title_label = tk.Label( master, text = "About application\n")	
-		title_label.pack(fill=X)		
-
-		about_label = tk.Label( master, text = "Commander Pi 2020 by Jack477\n for RaspbianX & iRaspbian\nIcon by Vectors Market\nInspired by Salva\n\nVersion 0.3.2", justify=CENTER, borderwidth=2, relief="groove" )
-		about_label.pack(fill=X)
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)	
 		
-		link = tk.Label( master, text="changelog here", cursor="hand2", fg="blue", borderwidth=2, relief="groove", pady=5)
+		titleframe = Frame(mainframe)
+		titleframe.pack(fill=X)
+				
+		image = Image.open("/home/pi/CommanderPi/src/icons/logo.png")
+		photo = ImageTk.PhotoImage(image, master=titleframe) 
+
+		title_label = tk.Label( titleframe, text = "  About Application", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		title_label.image = photo
+		title_label.pack(side=LEFT)
+	
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=15)		
+
+		content_frame = Frame(mainframe)
+		content_frame.pack()
+		
+		about_label = tk.Label( content_frame, text = "Commander Pi 2020\n", justify=CENTER, font=("TkDefaultFont", 11, "bold"))
+		about_label.pack()
+		
+		text_label = tk.Label( content_frame, text="By Jack477\nFor Twister OS\n\nGraphic elements by grayduck\nIcon derived from a work by Vectors Market\nApp idea by Salva\n", justify=CENTER)
+		text_label.pack(fill=X)
+		
+		version_label = tk.Label( content_frame, text=rs.getAppVersion(), font=("TkDefaultFont", 11, "bold"), justify=CENTER)
+		version_label.pack()
+		
+		link = tk.Label( content_frame, text="Changelog", cursor="hand2", fg="#1D81DA", pady=5)
 		link.pack(fill=X)
 		mlink = 'https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md'
 		link.bind("<Button-1>", lambda e: rs.cpi_open_url(mlink))
 		
+		separator2 = ttk.Separator(mainframe, orient='horizontal')
+		separator2.pack(fill=X, expand=True, pady=15)
 		
-		update_button = Button(master, text="Update application", command=lambda:update_x(), cursor="hand2")
-		update_button.pack(fill=X)
+		update_button = Button(mainframe, text="Check for updates", command=lambda:update_x(), cursor="hand2", font=("TkDefaultFont", 11, "bold"))
+		update_button.pack()
 		def update_x():
 			up.update_cpi()
 			sys.exit(0)
 		
-		bind_label = tk.Label( master, text="Press Escape to close" )
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
@@ -191,54 +416,82 @@ class Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("380x450")
+		master.geometry("420x500")
 		master.title("Commander Pi")
 		master.resizable(False, False)
-		#title_label = tk.Label( master, text = "Welcome to Commander Pi", fg="red", font=("Courier", 16) )	
-		#title_label.pack(fill=X)
+		
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)
 		
 		
-
-		loadimg = Image.open("/home/pi/CommanderPi/src/img.png")
+		titleframe = Frame(mainframe)
+		titleframe.pack()
+		
+		loadimg = Image.open("/home/pi/CommanderPi/src/icons/title_logo.png")
 		img = ImageTk.PhotoImage(image=loadimg)
                 
-		img_label = tk.Label ( master, image=img)
+		img_label = tk.Label ( titleframe, image=img)
 		img_label.image = img
-		img_label.pack(side=TOP)
+		img_label.grid(row=0, column=0, columnspan=2)
 		
-		#sys_name_label = tk.Label( master, text = "System name: " + rs.system_name )
-		#sys_name_label.pack(fill=X)
+		#title_label = tk.Label( titleframe, text = "Commander Pi", font=("TkDefaultFont", 22, "bold") )
+		#title_label.grid(row=0, column=1)
 		
-		kernel_version_label = tk.Label( master, text = "Kernel version: " + rs.kernel_version )
-		kernel_version_label.pack(fill=X)
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=10)
 		
-		processor_architecture_label = tk.Label( master, text="Processor architecture: " + rs.processor_architecture )
-		processor_architecture_label.pack(fill=X)
+		infoframe = Frame(mainframe)
+		infoframe.pack(fill=X)
 		
-		#disk_use_label = tk.Label( master, text= "" )
-		#disk_use_label.pack(fill=X)
+		title2_label = tk.Label( infoframe, text = "Real-time system information:\n", font=("TkDefaultFont", 11, "bold"), anchor='w')
+		title2_label.grid(row=0, column=0, columnspan=2, sticky=W)
 		
-		memory_use_label = tk.Label( master, text = "" )
-		memory_use_label.pack(fill=X)
+		board_version_label = tk.Label( infoframe, text= rs.board_version, fg="red", anchor='w')
+		board_version_label.grid(row=1, column=0, columnspan=2, sticky=W)
 		
-		actual_cpu_temp_label = tk.Label(master, text = "" )
-		actual_cpu_temp_label.pack(fill=X)
+		kernel_version_label = tk.Label( infoframe, text = "Kernel version: ", width=30, anchor='w' )
+		kernel_version_label.grid(row=2, column=0, sticky=W)
 		
-		actual_cpu_usage_label = tk.Label(master, text = "")
-		actual_cpu_usage_label.pack(fill=X)
+		kernel_version_label2 = tk.Label( infoframe, text = rs.kernel_version , width=15, anchor='w')
+		kernel_version_label2.grid(row=2, column=1)
+		
+		processor_architecture_label = tk.Label( infoframe, text="Processor architecture: ", width=30, anchor='w' )
+		processor_architecture_label.grid(row=3, column=0, sticky=W)
+		
+		processor_architecture_label2 = tk.Label( infoframe, text=rs.processor_architecture, width=15, anchor='w')
+		processor_architecture_label2.grid(row=3, column=1)
 		
 		
-		#total_label = tk.Label ( master, text="Total disk space: "+rs.total+" GiB")
-		#total_label.pack(fill=X)
+		memory_use_label = tk.Label( infoframe, text = "Memory usage: ", width=30, anchor='w' )
+		memory_use_label.grid(row=4, column=0, sticky=W)
 		
-		used_label = tk.Label ( master, text="Used disk space: "+rs.used+"/"+rs.total+" GiB")
-		used_label.pack(fill=X)
+		memory_use_label2 = tk.Label( infoframe, text = "", width=15, anchor='w' )
+		memory_use_label2.grid(row=4, column=1)
 		
-		#free_label = tk.Label ( master, text="Free disk space: "+rs.free+" GiB")
-		#free_label.pack(fill=X)
+		actual_cpu_temp_label = tk.Label( infoframe, text = "Actual CPU temperature: ", width=30, anchor='w' )
+		actual_cpu_temp_label.grid(row=5, column=0, sticky=W)
 		
-		#disk_label = tk.Label ( master, text="Total disk usage in percent: "+rs.disk+"/100%")
-		#disk_label.pack(fill=X)
+		actual_cpu_temp_label2 = tk.Label( infoframe, text = "", width=15, anchor='w' )
+		actual_cpu_temp_label2.grid(row=5, column=1)
+		
+		actual_cpu_usage_label = tk.Label( infoframe, text = "Processor frequency usage is: ", width=30, anchor='w')
+		actual_cpu_usage_label.grid(row=6, column=0, sticky=W)
+		
+		actual_cpu_usage_label2 = tk.Label(infoframe, text = "",  width=15, anchor='w')
+		actual_cpu_usage_label2.grid(row=6, column=1)
+		
+		
+		used_label = tk.Label ( infoframe, text="Used disk space: ", width=30, anchor='w')
+		used_label.grid(row=7, column=0, sticky=W)
+		
+		##BORDER TO TABLE borderwidth=2, relief="groove",
+		used_label2 = tk.Label ( infoframe, text=rs.used+"/"+rs.total+" GiB", width=15, anchor='w')
+		used_label2.grid(row=7, column=1)
+		
+		
+		separator2 = ttk.Separator(mainframe, orient='horizontal')
+		separator2.pack(fill=X, expand=True, pady=10)
+
 				#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
 		def refresh():
 			ttext = rs.reftemp()
@@ -246,37 +499,48 @@ class Window:
 			mtext = rs.refmem()
 			#dtext = str(rs.get_disk_percent())
 			#dtext = "CPU usage " + rs.cpu_usagex +" MHz"
-			memory_use_label.configure(text = "Memory usage " + mtext + "/100%")
-			actual_cpu_temp_label.configure(text = "Actual CPU " + ttext)
-			actual_cpu_usage_label.configure(text = ptext)
+			memory_use_label2.configure(text = mtext + "/100%")
+			actual_cpu_temp_label2.configure(text = ttext)
+			actual_cpu_usage_label2.configure(text = ptext)
 			#disk_use_label.configure(text = "Disk space usage" +dtext+"/100%")
 			master.after(1000, refresh)
 			
 		refresh()
 		
-		advanced_label = tk.Label( master, text = "Advanced tools", fg="red", font=("Courier", 16) )	
+		#fast_overclock_b = Button(master, text="Overclocking for non-advanced", command = lambda:bopen(Fast_Overclock_Window), width=20, cursor="hand2", fg="green")
+		#fast_overclock_b.pack(fill=X)
+		
+		advanced_label = tk.Label( mainframe, text = "Advanced tools", font=("TkDefaultFont", 11, "bold"), anchor='w' )	
 		advanced_label.pack(fill=X)
 		
-		btn_frame = Frame(master)
+		btn_frame = Frame(mainframe)
 		btn_frame.pack(fill=X)
 		
-		proc_info_button = Button ( btn_frame, text="Processor details", command = lambda:bopen(Proc_Info_Window), width=20, cursor="hand2")
-		proc_info_button.pack(fill=X)
+		photo1 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/CPUs.png") 
+		#photoimage1 = photo1.subsample(15, 15) 
 		
+		proc_info_button = Button ( btn_frame, text="CPU details", command = lambda:bopen(Proc_Info_Window), width=60, height=80, cursor="hand2", image = photo1, compound=TOP)
+		proc_info_button.grid(row=0, column=0, padx=4)
 		
-		btn4 = Button (btn_frame, text="Bootloader", command = lambda:bopen(Bootloader_Info_Window), width=20, cursor="hand2")
-		btn4.pack(fill=X)
+		photo2 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/Bootloaders.png")  
 		
-		btn5 = Button (btn_frame, text="Network", command = lambda:bopen(Network_Window), width=20, cursor="hand2")
-		btn5.pack(fill=X)
+		btn4 = Button (btn_frame, text="Bootloader", command = lambda:bopen(Bootloader_Info_Window), width=60, height=80, cursor="hand2", image = photo2, compound=TOP)
+		btn4.grid(row=0, column=1, padx=4)
 		
-		btn2 = Button(btn_frame, text="Overclocking", command = lambda:bopen(Overclock_Window), width=20, cursor="hand2")
-		btn2.pack(fill=X)
+		photo3 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/Networkings.png")  		
+		
+		btn5 = Button (btn_frame, text="Network", command = lambda:bopen(Network_Window),  width=60, height=80, cursor="hand2", image = photo3, compound=TOP)
+		btn5.grid(row=0, column=2, padx=4)
+		
+		photo4 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/Overclockings.png") 
+		
+		btn2 = Button(btn_frame, text="Overclock", command = lambda:bopen(Overclock_Window),  width=60, height=80, cursor="hand2", image = photo4, compound=TOP)
+		btn2.grid(row=0, column=3, padx=4)
 		
 
 		
-		btn3 = Button( master, text="About", command = lambda:bopen(About_Window), cursor="hand2")
-		btn3.pack(side=BOTTOM)
+		btn3 = Button( mainframe, text="About/Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
+		btn3.pack(side=BOTTOM, pady=5)
 		
 
 		#d = Info_Window()
