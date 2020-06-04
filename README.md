@@ -1,4 +1,5 @@
 # CommanderPi
+<img src="https://i.imgur.com/qKibLTt.png"></img></br>
 Easy RaspberryPi4 GUI system managment</br>
 #### Included in iRaspbian/RaspbianX!</br>
 ### <a href="https://raspbian-x.com/">>PiLAB project<</a>
@@ -7,9 +8,10 @@ Nothing, every Linux distrubiton has a python interpreter!
 ## Features
 -Check your system information like CPU temperature, CPU usage, kernel version etc by user friendly menu </br>
 -Easy overclocking! </br>
--Check actually EEPROM configuration! !WRITING YOUR OWN SOON!
+-Check actually EEPROM configuration! !WRITING YOUR OWN SOON!</br>
+<img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 ## Download
-https://drive.google.com/file/d/1wgQvCFCNM-xhG02E6ESqqqJHES4pD2SS/view?usp=sharing
+https://drive.google.com/file/d/1QGJ37CdHhj94nWGKrb0Nbmm7fz_P9ITA/view?usp=sharing
 ## Update
 -You must have version min 0.3.1 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
@@ -33,4 +35,4 @@ Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG
 - [x] system basic informations
 - [x] overclock
 - [x] eeprom
-- [ ] network
+- [x] network
