@@ -11,7 +11,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Check actually EEPROM configuration! !WRITING YOUR OWN SOON!</br>
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 ## Download
-https://drive.google.com/file/d/1QGJ37CdHhj94nWGKrb0Nbmm7fz_P9ITA/view?usp=sharing
+https://drive.google.com/file/d/19tFNIwTVDfV9nUZ3RZzq9Y5SYR57pnrF/view?usp=sharing
 ## Update
 -You must have version min 0.3.1 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
