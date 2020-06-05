@@ -346,7 +346,7 @@ class Overclock_Window:
 			if confirm_msgb == True:
 				rs.overclock_arm_freq("1500")
 				rs.overclock_gpu_freq("500")
-				rs.overclock_over_voltage("4")
+				rs.overclock_over_voltage("")
 				print("It works!")	
 				#rs.reboot()
 			else:
