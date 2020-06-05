@@ -348,7 +348,7 @@ class Overclock_Window:
 				rs.overclock_gpu_freq("500")
 				rs.overclock_over_voltage("")
 				print("It works!")	
-				#rs.reboot()
+				rs.reboot()
 			else:
 				importlib.reload(rs)
 				master.destroy()			
