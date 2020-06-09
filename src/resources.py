@@ -6,7 +6,7 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-app_version = "Version 0.4 new GUI!\n"
+app_version = "Version 0.4.1 new GUI!\n"
 def getAppVersion():
 	return app_version
 def cpi_open_url(link):
