@@ -8,7 +8,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 ## Features
 -Check your system information like CPU temperature, CPU usage, kernel version etc by user friendly menu </br>
 -Easy overclocking! </br>
--Check actually EEPROM configuration and setup your own!
+-Check actually EEPROM configuration and setup your own!</br>
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 ## Download
 https://drive.google.com/file/d/1JteJ7iDbR81LhN5NqDM1pFxXQEM8NA2D/view?usp=sharing
