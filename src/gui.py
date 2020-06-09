@@ -190,6 +190,10 @@ class Bootloader_Info_Window:
 			btl_btn2 = tk.Button(boot_frame, text="Cancel", font=("TkDefaultFont", 10, "bold"), cursor="hand2", command=lambda:cancel())
 			btl_btn2.grid(row=11, column=0, sticky=W)
 
+			BOOT_UART_entry.insert(END, btl.BOOT_UART[-2:-1])
+			WAKE_ON_GPIO_entry.insert(END, btl.WAKE_ON_GPIO[-2:-1])
+			POWER_OFF_ON_HALT_entry.insert(END, btl.POWER_OFF_ON_HALT[-2:-1])
+			DHCP_TIMEOUT_entry.insert(END, btl.DHCP_TIMEOUT[-6:-1])
 
 			def push_config():
 				confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
@@ -454,7 +458,7 @@ class Overclock_Window:
 				rs.overclock_gpu_freq("500")
 				rs.overclock_over_voltage("")
 				print("It works!")	
-				#rs.reboot()
+				rs.reboot()
 			else:
 				importlib.reload(rs)
 				master.destroy()			
