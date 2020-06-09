@@ -11,7 +11,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Check actually bootloader configuration and setup your own!</br>
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 ## Download
-https://drive.google.com/file/d/1JteJ7iDbR81LhN5NqDM1pFxXQEM8NA2D/view?usp=sharing
+https://drive.google.com/file/d/1kRwBIso4uNfDKUUcCCw_HLrbRJvmSXHX/view?usp=sharing
 ## Update
 -You must have version min 0.3.1 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
