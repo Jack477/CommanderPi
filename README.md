@@ -1,7 +1,7 @@
 # CommanderPi
 <img src="https://i.imgur.com/qKibLTt.png"></img></br>
 Easy RaspberryPi4 GUI system managment</br>
-#### Included in iRaspbian/RaspbianX!</br>
+#### Included in TwisterOS!</br>
 ### <a href="https://raspbian-x.com/">>PiLAB project<</a>
 ### Requiments
 Nothing, every Linux distrubiton has a python interpreter!
