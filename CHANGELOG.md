@@ -32,3 +32,5 @@
 * General GUI rebuild
 * Added option to set default overclock values
 * Removed unnecessary files
+## v0.4.1
+* Added writing own eeprom config
