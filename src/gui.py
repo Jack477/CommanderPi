@@ -207,7 +207,7 @@ class Bootloader_Info_Window:
 					btl.set_bootloader_value("NET_BOOT_MAX_RETRIES", NET_BOOT_MAX_RETRIES_entry.get())
 					btl.write_bootloader()
 					master.destroy()
-					print("It works!")	
+					msb.showinfo(title="", message="Now you need to reboot")
 					#rs.reboot()
 		def cancel():
 			importlib.reload(btl)
