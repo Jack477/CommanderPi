@@ -42,6 +42,7 @@ def write_bootloader():
 
 	#os.system('rpi-eeprom-config --out pieeprom-new.bin --config '+path+"/build/bootconf.txt"+' /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin')
 	os.system('rpi-eeprom-config --out /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin --config '+path+"/build/bootconf.txt"+' /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
+	os.system('sudo rpi-eeprom-update -d -f /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
 
 def read_bootloader():
 	get_actual_version()
