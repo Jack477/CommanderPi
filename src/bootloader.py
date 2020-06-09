@@ -4,8 +4,48 @@ import psutil
 
 path = os.path.dirname(os.path.realpath(__file__))
 bootloader_version = sp.getoutput('vcgencmd bootloader_version')
+x_version = bootloader_version[0:11]
+def get_actual_version():
+	month = x_version[0:3]
+	day = x_version[4:6]
+	year = x_version[7:11]
+	if month == "Jan":
+		month='01'
+	elif month == "Feb":
+		month='02'
+	elif month == "Mar":
+		month='03'
+	elif month == "Apr":
+		month='04'
+	elif month == "May":
+		month='05'
+	elif month == "Jun":
+		month='06'
+	elif month == "Jul":
+		month='07'
+	elif month == "Aug":
+		month='08'
+	elif month == "Sep":
+		month='09'
+	elif month == "Oct":
+		month='10'
+	elif month == "Nov":
+		month='11'
+	elif month == "Dec":
+		month='12'
+	print(month)
+	print(day)
+	print(year)
+	return year+"-"+month+"-"+day
+ad = get_actual_version()
+def write_bootloader():
+
+	#os.system('rpi-eeprom-config --out pieeprom-new.bin --config '+path+"/build/bootconf.txt"+' /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin')
+	os.system('rpi-eeprom-config --out /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin --config '+path+"/build/bootconf.txt"+' /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
 
 def read_bootloader():
+	get_actual_version()
+	print(x_version)
 	print(os.path.dirname(os.path.realpath(__file__)))
 	if(os.path.exists(path+"/build/bootconf.txt")):
 		f = open(path+"/build/bootconf.txt")
@@ -15,7 +55,7 @@ def read_bootloader():
 		return bootloader_config
 	else:
 		os.system('sudo mkdir '+path+'/build')
-		text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin')
+		text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
 		#os.system("rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin > build/bootconf.txt")
 		f = open(path+"/build/bootconf.txt", "w+")
 		f.write(text)
@@ -42,9 +82,11 @@ SD_BOOT_MAX_RETRIES=""
 NET_BOOT_MAX_RETRIES=""
 FREEZE_VERSION=""
 
-def set_to_var_bootloader():
-	f = open(path+"/build/bootconf.txt")
-	for line in f:
+read_bootloader()
+
+#def set_to_var_bootloader():
+f = open(path+"/build/bootconf.txt")
+for line in f:
 		if "BOOT_UART" in line:
 			BOOT_UART=line
 		if "WAKE_ON_GPIO" in line:
@@ -69,14 +111,38 @@ def set_to_var_bootloader():
 			NET_BOOT_MAX_RETRIES=line
 		if "FREEZE_VERSION" in line:
 			FREEZE_VERSION=line
+
 			
-def set_BOOT_UART(new_value):
+def set_bootloader_value(name, new_value):
+	x=""
+	if name in BOOT_UART:
+		x = BOOT_UART
+	elif name in WAKE_ON_GPIO:
+		x = WAKE_ON_GPIO
+	elif name in POWER_OFF_ON_HALT:
+		x = POWER_OFF_ON_HALT
+	elif name in DHCP_TIMEOUT:
+		x = DHCP_TIMEOUT
+	elif name in DHCP_REQ_TIMEOUT:
+		x = DHCP_REQ_TIMEOUT
+	elif name in TFTP_FILE_TIMEOUT:
+		x = TFTP_FILE_TIMEOUT
+	elif name in TFTP_IP:
+		x = TFTP_IP
+	elif name in TFTP_PREFIX:
+		x = TFTP_PREFIX
+	elif name in BOOT_ORDER:
+		x = BOOT_ORDER
+	elif name in SD_BOOT_MAX_RETRIES:
+		x = SD_BOOT_MAX_RETRIES
+	elif name in NET_BOOT_MAX_RETRIES:
+		x = NET_BOOT_MAX_RETRIES
 	print(new_value)
 	fin = open(path+"/build/bootconf.txt", "rt")
 	#read file contents to string
 	data = fin.read()
 	#replace all occurrences of the required string
-	data = data.replace(BOOT_UART, 'BOOT_UART='+new_value+'\n')
+	data = data.replace(x, name+'='+new_value+'\n')
 	#close the input file
 	fin.close()
 	#open the input file in write mode
@@ -85,5 +151,6 @@ def set_BOOT_UART(new_value):
 	fin.write(data)
 	#close the file
 	fin.close()
-	new_value = None		
+	#name= None
+	#new_value = None		
 		
