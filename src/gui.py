@@ -65,7 +65,7 @@ class Bootloader_Info_Window:
 	
 
 		master = tk.Tk()
-		master.geometry("430x500")
+		master.geometry("430x550")
 		master.title("Commander Pi")
 		
 		mainframe = Frame(master)
@@ -87,14 +87,26 @@ class Bootloader_Info_Window:
 		versionx_label = tk.Label(mainframe, text="Version information:", font=("TkDefaultFont", 11, "bold"), anchor='w' )
 		versionx_label.pack(fill=X)
 		#310
+		
+
+		
 		bootloader_version_label = tk.Label(mainframe, text=btl.bootloader_version, justify="left", wraplength="360", anchor='w')
 		bootloader_version_label.pack(fill=X)
 		
-		bootloader_label = tk.Label(mainframe, text=btl.read_bootloader(), justify="left", anchor='w')
-		bootloader_label.pack(fill=X)
+		boot_frame = Frame(mainframe)
+		boot_frame.pack(fill=X)
+		
+		bootloader_label = tk.Label(boot_frame, text=btl.read_bootloader(), justify="left", anchor='w')
+		bootloader_label.grid(row=0, column=0, rowspan=11)
+		
+
 		
 		separator = ttk.Separator(mainframe, orient='horizontal')
 		separator.pack(fill=X, expand=True, pady=5)
+		
+		setup_b = tk.Button ( mainframe, text="Setup config", command=lambda:config_boot(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
+		setup_b.pack()
+		
 		
 		link = tk.Label( mainframe, text="Official bootloader documentation", cursor="hand2", fg="#1D81DA")
 		link.pack(fill=X)
@@ -102,12 +114,106 @@ class Bootloader_Info_Window:
 		link.bind("<Button-1>", lambda e: rs.cpi_open_url(mlink))
 		
 
-		#button = Button(master, text="test")
-		#button.pack(side=RIGHT)
 		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
+		def config_boot():
+			msb.showwarning(title="Warning", message="This is only for advanced users!\nDo it on your own risk!")
+			#boot_frame.grid_forget()
+			setup_b.destroy()
+			bootloader_label.destroy()
+			config_stuff = "BOOT_UART:\nWAKE_ON_GPIO:\nPOWER_OFF_ON_HALT:\nDHCP_TIMEOUT:\nDHCP_REQ_TIMEOUT:\nTFTP_FILE_TIMEOUT:\nTFTP_IP:\nTFTP_PREFIX:\nBOOT_ORDER:\nSD_BOOT_MAX_RETRIES:\nNET_BOOT_MAX_RETRIES:\n"
+			#bootloader_label.config(text=config_stuff, font=("TkDefaultFont", 12))
+			#config_text_label = tk.Label(boot_frame, text=config_stuff, justify="left", anchor='w')
+			#config_text_label.grid(row=0, column=0, rowspan=11)
+			btl_label1 = tk.Label(boot_frame, text="BOOT_UART:", justify=LEFT, width=25, anchor='w')
+			btl_label1.grid(row=0, column=0)
+		
+			BOOT_UART_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			BOOT_UART_entry.grid(row=0, column=1, pady=0, sticky=N)
+			
+			btl_label2 = tk.Label(boot_frame, text="WAKE_ON_GPIO:", justify=LEFT, width=25, anchor='w')
+			btl_label2.grid(row=1, column=0)
+			WAKE_ON_GPIO_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			WAKE_ON_GPIO_entry.grid(row=1, column=1, pady=0, sticky=N)
+		
+			btl_label3 = tk.Label(boot_frame, text="POWER_OFF_ON_HALT:", justify=LEFT, width=25, anchor='w')
+			btl_label3.grid(row=2, column=0)		
+			POWER_OFF_ON_HALT_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			POWER_OFF_ON_HALT_entry.grid(row=2, column=1, pady=0, sticky=N)
+
+			btl_label4 = tk.Label(boot_frame, text="DHCP_TIMEOUT:", justify=LEFT, width=25, anchor='w')
+			btl_label4.grid(row=3, column=0)			
+			DHCP_TIMEOUT_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			DHCP_TIMEOUT_entry.grid(row=3, column=1, pady=0, sticky=N)
+
+			btl_label5 = tk.Label(boot_frame, text="DHCP_REQ_TIMEOUT:", justify=LEFT, width=25, anchor='w')
+			btl_label5.grid(row=4, column=0)			
+			DHCP_REQ_TIMEOUT_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			DHCP_REQ_TIMEOUT_entry.grid(row=4, column=1, pady=0, sticky=N)
+
+			btl_label6 = tk.Label(boot_frame, text="TFTP_FILE_TIMEOUT:", justify=LEFT, width=25, anchor='w')
+			btl_label6.grid(row=5, column=0)			
+			TFTP_FILE_TIMEOUT_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			TFTP_FILE_TIMEOUT_entry.grid(row=5, column=1, pady=0, sticky=N)
+
+			btl_label7 = tk.Label(boot_frame, text="TFTP_IP:", justify=LEFT, width=25, anchor='w')
+			btl_label7.grid(row=6, column=0)			
+			TFTP_IP_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			TFTP_IP_entry.grid(row=6, column=1, pady=0, sticky=N)
+			
+			btl_label8 = tk.Label(boot_frame, text="TFTP_PREFIX:", justify=LEFT, width=25, anchor='w')
+			btl_label8.grid(row=7, column=0)			
+			TFTP_PREFIX_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			TFTP_PREFIX_entry.grid(row=7, column=1, pady=0, sticky=N)
+
+
+			btl_label9 = tk.Label(boot_frame, text="BOOT_ORDER", justify=LEFT, width=25, anchor='w')
+			btl_label9.grid(row=8, column=0)			
+			BOOT_ORDER_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			BOOT_ORDER_entry.grid(row=8, column=1, pady=0, sticky=N)
+			
+			
+			btl_label10 = tk.Label(boot_frame, text="SD_BOOT_MAX_RETRIES:", justify=LEFT, width=25, anchor='w')
+			btl_label10.grid(row=9, column=0)			
+			SD_BOOT_MAX_RETRIES_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			SD_BOOT_MAX_RETRIES_entry.grid(row=9, column=1, pady=0, sticky=N)
+	
+			btl_label11 = tk.Label(boot_frame, text="NET_BOOT_MAX_RETRIES:", justify=LEFT, width=25, anchor='w')
+			btl_label11.grid(row=10, column=0)	
+			NET_BOOT_MAX_RETRIES_entry = tk.Entry(boot_frame, justify=CENTER, width=10)
+			NET_BOOT_MAX_RETRIES_entry.grid(row=10, column=1, pady=0, sticky=N)
+			
+			btl_btn1 = tk.Button(boot_frame, text="Apply and save", font=("TkDefaultFont", 10, "bold"), cursor="hand2", command=lambda:push_config())
+			btl_btn1.grid(row=11, column=1)
+			btl_btn2 = tk.Button(boot_frame, text="Cancel", font=("TkDefaultFont", 10, "bold"), cursor="hand2", command=lambda:cancel())
+			btl_btn2.grid(row=11, column=0, sticky=W)
+
+
+			def push_config():
+				confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
+				if confirm_msgb == True:
+					btl.set_bootloader_value("BOOT_UART", BOOT_UART_entry.get())
+					btl.set_bootloader_value("WAKE_ON_GPIO", WAKE_ON_GPIO_entry.get())
+					btl.set_bootloader_value("POWER_OFF_ON_HALT", POWER_OFF_ON_HALT_entry.get())
+					btl.set_bootloader_value("DHCP_TIMEOUT", DHCP_TIMEOUT_entry.get())
+					btl.set_bootloader_value("DHCP_REQ_TIMEOUT", DHCP_REQ_TIMEOUT_entry.get())
+					btl.set_bootloader_value("TFTP_FILE_TIMEOUT", TFTP_FILE_TIMEOUT_entry.get())
+					btl.set_bootloader_value("TFTP_IP", TFTP_IP_entry.get())
+					btl.set_bootloader_value("TFTP_PREFIX", TFTP_PREFIX_entry.get())
+					btl.set_bootloader_value("BOOT_ORDER", BOOT_ORDER_entry.get())
+					btl.set_bootloader_value("SD_BOOT_MAX_RETRIES", SD_BOOT_MAX_RETRIES_entry.get())
+					btl.set_bootloader_value("NET_BOOT_MAX_RETRIES", NET_BOOT_MAX_RETRIES_entry.get())
+					btl.write_bootloader()
+					master.destroy()
+					print("It works!")	
+					#rs.reboot()
+		def cancel():
+			importlib.reload(btl)
+			importlib.reload(rs)
+			master.destroy()
+			bopen(Bootloader_Info_Window)
 		master.mainloop()
 	
 
@@ -348,7 +454,7 @@ class Overclock_Window:
 				rs.overclock_gpu_freq("500")
 				rs.overclock_over_voltage("")
 				print("It works!")	
-				rs.reboot()
+				#rs.reboot()
 			else:
 				importlib.reload(rs)
 				master.destroy()			
@@ -542,7 +648,6 @@ class Window:
 		btn3 = Button( mainframe, text="About/Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
 		btn3.pack(side=BOTTOM, pady=5)
 		
-
 		#d = Info_Window()
 		master.mainloop()
 		
