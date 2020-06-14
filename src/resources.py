@@ -6,7 +6,7 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-app_version = "Version 0.4.1 new GUI!\n"
+app_version = "Version 0.4 new GUI!\n"
 def getAppVersion():
 	return app_version
 def cpi_open_url(link):
@@ -151,6 +151,7 @@ gpu_freq = "400" #default
 gexist = False
 
 arm_freq = "1500" #default
+aexist = False
 
 over_voltage = "4" #default
 oexist = False
@@ -160,6 +161,7 @@ for line in f:
 
 	if "arm_freq" in line:
 		arm_freq = line
+		aexist = True
 	if "gpu_freq" in line:
 		gpu_freq = line
 		gexist = True
@@ -225,18 +227,26 @@ def overclock_gpu_freq(gpu_new_freq):
 		
 
 def overclock_arm_freq(arm_new_freq):
-	print(arm_new_freq)
-	fin = open(config_path, "rt")
-	#read file contents to string
-	data = fin.read()
-	#replace all occurrences of the required string
-	data = data.replace(arm_freq, 'arm_freq='+arm_new_freq+'\n')
-	#close the input file
-	fin.close()
-	#open the input file in write mode
-	fin = open(config_path, "wt")
-	#overrite the input file with the resulting data
-	fin.write(data)
-	#close the file
-	fin.close()
-	arm_new_freq = None
+	global aexist
+	if aexist:
+
+		fin = open(config_path, "rt")
+		#read file contents to string
+		data = fin.read()
+		#replace all occurrences of the required string
+		data = data.replace(arm_freq, 'arm_freq='+arm_new_freq+'\n')
+		#close the input file
+		fin.close()
+		#open the input file in write mode
+		fin = open(config_path, "wt")
+		#overrite the input file with the resulting data
+		fin.write(data)
+		#close the file
+		fin.close()
+		print(arm_new_freq)
+		arm_new_freq = None
+	else:
+		aexist = True
+		file_object = open(config_path, 'a')
+		file_object.write('arm_freq='+arm_new_freq+'\n')
+		file_object.close()		
