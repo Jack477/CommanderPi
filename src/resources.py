@@ -85,8 +85,13 @@ def set_push_state(state):
 	elif (state == 3):
 		push_state3 = True
 
-def getproc():
-	cpu = sp.getoutput('lscpu | head -n 14')
+def getproc0():
+	cpu = sp.getoutput('lscpu | head -n 14 | cut -d \: -f 1 | sed -e s/$/:/')
+	cpux = str(cpu)
+	return cpux
+	
+def getproc1():
+	cpu = sp.getoutput('lscpu | head -n 14 | cut -d \: -f 2 | sed -e s/^[[:space:]]*//')
 	cpux = str(cpu)
 	return cpux
 	

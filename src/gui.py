@@ -246,10 +246,13 @@ class Proc_Info_Window:
 		separator.pack(fill=X, expand=True, pady=15)
 		
 		cpu_content_frame = Frame(mainframe)
-		cpu_content_frame.pack()
+		cpu_content_frame.pack(fill=X)
 		
-		cpu_label = tk.Label( mainframe, text = rs.getproc(), justify=LEFT)
-		cpu_label.pack(fill=X)
+		cpu_label = tk.Label( cpu_content_frame, text = rs.getproc0(), justify=LEFT, width=20, anchor='w' )
+		cpu_label.grid(row=0, column=0, rowspan=14, sticky=W)
+		
+		cpu_label2 = tk.Label( cpu_content_frame, text = rs.getproc1(), justify=LEFT, width=13, anchor='w' )
+		cpu_label2.grid(row=0, column=1, rowspan=14, sticky=W)
 		
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
 		separator2.pack(fill=X, expand=True, pady=15)	
