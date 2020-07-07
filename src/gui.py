@@ -5,6 +5,7 @@ import resources as rs
 import bootloader as btl
 import update as up
 import tkinter as tk
+import theme as th
 import importlib
 import webbrowser
 from tkinter import messagebox as msb
@@ -12,19 +13,48 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-def killwindow(event, master):
+### TODO: Move change_theme function to theme.py?
+### split resources.py into smaller files
+### move window_list from theme.py to resources
+
+def change_theme(master):
+	if th.color_mode==0:
+		th.color_mode=1
+	else:
+		th.color_mode=0
+	rs.config.set('DEFAULT', 'color_mode', str(th.color_mode))
+	with open('cpi.config', 'w') as configfile:
+		rs.config.write(configfile)
+	th.set_theme(master)
+	print(th.color_mode)
+
+### Use in window class: master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
+def on_Window_Close(master):
+	if isinstance(master, tk.Tk):
+		window_name = master.__class__
+		print(window_name)
+		th.window_list.pop()
 	master.destroy()
 
+### Using to keybind window kill
+def killwindow(event, master):
+	on_Window_Close(master)
+
+### Open new window with his own master
 def bopen(window):
 	x = window()
-def callback(url):
-	webbrowser.open_new(url)
+
+### Depracted
+#def callback(url):
+#	webbrowser.open_new(url)
+
 class Network_Window:
 	def __init__(master):
 		master = tk.Tk()
 		master.geometry("480x250")
 		master.title("Commander Pi")
-	
+		th.window_list.append(master)
+		th.set_theme(master)
 
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)	
@@ -57,7 +87,7 @@ class Network_Window:
 		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
-		
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 		master.mainloop()			
 class Bootloader_Info_Window:
 
@@ -67,7 +97,9 @@ class Bootloader_Info_Window:
 		master = tk.Tk()
 		master.geometry("430x550")
 		master.title("Commander Pi")
-		
+		th.window_list.append(master)
+
+
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)	
 		
@@ -119,7 +151,7 @@ class Bootloader_Info_Window:
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
 		def config_boot():
-			msb.showwarning(title="Warning", message="This is only for advanced users!\nDo it on your own risk!")
+
 			#boot_frame.grid_forget()
 			setup_b.destroy()
 			bootloader_label.destroy()
@@ -189,7 +221,10 @@ class Bootloader_Info_Window:
 			btl_btn1.grid(row=11, column=1)
 			btl_btn2 = tk.Button(boot_frame, text="Cancel", font=("TkDefaultFont", 10, "bold"), cursor="hand2", command=lambda:cancel())
 			btl_btn2.grid(row=11, column=0, sticky=W)
+			th.set_theme(master)
+			msb.showwarning(title="Warning", message="This is only for advanced users!\nDo it on your own risk!")
 
+			### Insert default bootloader values, TODO in future
 			#BOOT_UART_entry.insert(END, btl.BOOT_UART[-2:-1])
 			#WAKE_ON_GPIO_entry.insert(END, btl.WAKE_ON_GPIO[-2:-1])
 			#POWER_OFF_ON_HALT_entry.insert(END, btl.POWER_OFF_ON_HALT[-2:-1])
@@ -210,14 +245,16 @@ class Bootloader_Info_Window:
 					btl.set_bootloader_value("SD_BOOT_MAX_RETRIES", SD_BOOT_MAX_RETRIES_entry.get())
 					btl.set_bootloader_value("NET_BOOT_MAX_RETRIES", NET_BOOT_MAX_RETRIES_entry.get())
 					btl.write_bootloader()
-					master.destroy()
+					on_Window_Close(master)
 					msb.showinfo(title="", message="Now you need to reboot")
 					#rs.reboot()
 		def cancel():
-			importlib.reload(btl)
 			importlib.reload(rs)
-			master.destroy()
+			importlib.reload(btl)
+			on_Window_Close(master)
 			bopen(Bootloader_Info_Window)
+		th.set_theme(master)
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 		master.mainloop()
 	
 
@@ -228,7 +265,8 @@ class Proc_Info_Window:
 		master = tk.Tk()
 		master.geometry("350x400")
 		master.title("Commander Pi")
-		
+		th.window_list.append(master)
+		th.set_theme(master)
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)	
 		
@@ -260,10 +298,10 @@ class Proc_Info_Window:
 		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
-		
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
 		master.mainloop()
 	
-		
+### Depracted, to delete
 class Fast_Overclock_Window:
 
 	def __init__(master):
@@ -334,6 +372,7 @@ class Overclock_Window:
 		master = tk.Tk()
 		master.geometry("440x465")
 		master.title("Commander Pi")
+		th.window_list.append(master)
 
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)
@@ -453,7 +492,7 @@ class Overclock_Window:
 					msb.showinfo(title="Warning", message="You don't set all values!")
 			else:
 				importlib.reload(rs)
-				master.destroy()
+				on_Window_Close(master)
 		def set_default():
 			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
 			if confirm_msgb == True:
@@ -464,10 +503,11 @@ class Overclock_Window:
 				rs.reboot()
 			else:
 				importlib.reload(rs)
-				master.destroy()			
+				on_Window_Close(master)			
 				
-				
-		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")
+		th.set_theme(master)	
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
+		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")	
 		master.mainloop()
 
 class About_Window:
@@ -477,7 +517,7 @@ class About_Window:
 		master = tk.Tk()
 		master.geometry("400x450")
 		master.title("Commander Pi")
-
+		th.window_list.append(master)
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)	
 		
@@ -516,6 +556,10 @@ class About_Window:
 		
 		update_button = Button(mainframe, text="Check for updates", command=lambda:update_x(), cursor="hand2", font=("TkDefaultFont", 11, "bold"))
 		update_button.pack()
+
+		color_buton = Button(mainframe, text="Change color theme", command=lambda:change_theme(master), cursor="hand2", font=("TkDefaultFont", 11, "bold"))
+		color_buton.pack()
+
 		def update_x():
 			up.update_cpi()
 			sys.exit(0)
@@ -523,16 +567,19 @@ class About_Window:
 		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
-		
-		master.mainloop()		
+		th.set_theme(master)
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))		
+		master.mainloop()
+
+### Main window		
 class Window:
 	def __init__(master):
-	
+
 		master = tk.Tk()
 		master.geometry("420x500")
 		master.title("Commander Pi")
 		master.resizable(False, False)
-		
+		th.window_list.append(master)
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)
 		
@@ -542,7 +589,7 @@ class Window:
 		
 		loadimg = Image.open("/home/pi/CommanderPi/src/icons/title_logo.png")
 		img = ImageTk.PhotoImage(image=loadimg)
-                
+
 		img_label = tk.Label ( titleframe, image=img)
 		img_label.image = img
 		img_label.grid(row=0, column=0, columnspan=2)
@@ -607,6 +654,8 @@ class Window:
 
 				#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
 		def refresh():
+			#for x in th.window_list:
+			#	print(x.__class__)
 			ttext = rs.reftemp()
 			ptext = rs.refusage()
 			mtext = rs.refmem()
@@ -656,5 +705,7 @@ class Window:
 		btn3.pack(side=BOTTOM, pady=5)
 		
 		#d = Info_Window()
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
+		th.set_theme(master)
 		master.mainloop()
 		
