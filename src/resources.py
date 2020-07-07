@@ -1,18 +1,34 @@
 import os
 import subprocess as sp
 import fileinput
+import configparser
 import psutil
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-app_version = "Version 0.4.1 new GUI!\n"
+
+config = configparser.ConfigParser()
+if os.path.exists('cpi.config'):
+	config.read('cpi.config')
+	print("Exist and read")
+else:
+	print("Creating config...")
+	config['DEFAULT'] = {'color_mode': '0',
+	'version': '0.4.2'}
+	with open('cpi.config', 'w') as configfile:
+		config.write(configfile)
+
+### update stuff
+app_version = "Version 0.4.2\n"
 def getAppVersion():
 	return app_version
+
+### Open url link
 def cpi_open_url(link):
 	os.system('sudo -upi chromium-browser '+link)
 
-##NETWORK
+### NETWORK stuff
 eth0 = sp.getoutput('sudo ifconfig eth0')
 ipv4eth = "Not set up"
 ipv6eth = "Not set up"
@@ -40,12 +56,12 @@ for line in wlan0.splitlines():
 wlan0_data = "IPv4 "+ipv4wlan0+"\nIPv6 "+ipv6wlan0+"\nMAC "+macwlan0
 
 
-##DEPRACTED
+### DEPRACTED
 ethernet_driver = sp.getoutput('sudo ethtool -i eth0')
 wlan_driver = sp.getoutput('sudo ethtool -i wlan0')
 
 
-##DISK SPACE 
+### DISK SPACE 
 hdd = psutil.disk_usage('/')
 def get_total_space():
 	return hdd.total / (2**30)
@@ -70,7 +86,7 @@ img_path = os.path.dirname('logo.png')
 
 
 
-#Check entry in gui is preesed
+#### Check entry in gui is preesed
 push_state1 = False
 push_state2 = False
 push_state3 = False
@@ -94,9 +110,10 @@ def getproc1():
 	cpu = sp.getoutput('lscpu | head -n 14 | cut -d \: -f 2 | sed -e s/^[[:space:]]*//')
 	cpux = str(cpu)
 	return cpux
-	
+### Reboot RPI	
 def reboot():
 	os.system("sudo reboot now")
+	
 cpu_usage_path = "build/cpu_usage.txt"
 temperature = "build/actual_temp.txt"
 
