@@ -9,14 +9,14 @@ from PIL import Image, ImageTk
 
 
 config = configparser.ConfigParser()
-if os.path.exists('cpi.config'):
-	config.read('cpi.config')
+if os.path.exists('CommanderPi/src/cpi.config'):
+	config.read('CommanderPi/src/cpi.config')
 	print("Exist and read")
 else:
 	print("Creating config...")
 	config['DEFAULT'] = {'color_mode': '0',
 	'version': '0.4.2'}
-	with open('cpi.config', 'w') as configfile:
+	with open('CommanderPi/src/cpi.config', 'x') as configfile:
 		config.write(configfile)
 
 ### update stuff
