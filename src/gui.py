@@ -23,7 +23,7 @@ def change_theme(master):
 	else:
 		th.color_mode=0
 	rs.config.set('DEFAULT', 'color_mode', str(th.color_mode))
-	with open('cpi.config', 'w') as configfile:
+	with open('CommanderPi/src/cpi.config', 'w') as configfile:
 		rs.config.write(configfile)
 	th.set_theme(master)
 	#print(th.color_mode)
