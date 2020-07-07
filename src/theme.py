@@ -16,7 +16,7 @@ default_font_color="Black"
 def set_theme(master):
 	#defaultbg = tk.cget('bg')
 	#print(defaultbg)
-	print("Acutal fucking color mode is: "+str(color_mode))
+	#print("Acutal fucking color mode is: "+str(color_mode))
 	if int(color_mode)==1:
 		default_background_color="Black"
 		default_font_color="White"
