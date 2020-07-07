@@ -26,7 +26,7 @@ def change_theme(master):
 	with open('cpi.config', 'w') as configfile:
 		rs.config.write(configfile)
 	th.set_theme(master)
-	print(th.color_mode)
+	#print(th.color_mode)
 
 ### Use in window class: master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 def on_Window_Close(master):
