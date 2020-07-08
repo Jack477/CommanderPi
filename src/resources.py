@@ -16,7 +16,7 @@ else:
 	print("Creating config...")
 	config['DEFAULT'] = {'color_mode': '0',
 	'version': '0.4.2'}
-	with open('CommanderPi/src/cpi.config', 'x') as configfile:
+	with open('CommanderPi/src/cpi.config', 'w') as configfile:
 		config.write(configfile)
 
 ### update stuff
