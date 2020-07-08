@@ -12,7 +12,8 @@ Nothing, every Linux distrubiton has a python interpreter!
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 ## Download
 https://drive.google.com/file/d/1Nv5QdT0JlzeTMutlWBlLifHwayTooo96/view?usp=sharing
-## Update
+## ~~Update~~
+## Not working at now! Don't use it, just download new version and put all files from /src folder to CommanderPi/src
 -You must have version min 0.3.1 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
 ### USAGE: </br>
