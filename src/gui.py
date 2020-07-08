@@ -18,7 +18,8 @@ from PIL import Image, ImageTk
 ### move window_list from theme.py to resources
 
 def change_theme(master):
-	if th.color_mode==0:
+	if int(th.color_mode)==0:
+		print("Setting color theme to 1")
 		th.color_mode=1
 	else:
 		th.color_mode=0
