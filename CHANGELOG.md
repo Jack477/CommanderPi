@@ -36,4 +36,4 @@
 * Added writing own eeprom config
 ## v0.4.2
 * Added dark theme, switch it in about section
-* Added automaticly created app config fil
+* Added automaticly created app config file
