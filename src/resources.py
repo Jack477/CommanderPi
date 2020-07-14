@@ -6,17 +6,17 @@ import psutil
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
-
+home_path = sys.argv[1]
 
 config = configparser.ConfigParser()
-if os.path.exists('CommanderPi/src/cpi.config'):
-	config.read('CommanderPi/src/cpi.config')
+if os.path.exists(home_path+'/CommanderPi/src/cpi.config'):
+	config.read(home_path+'/CommanderPi/src/cpi.config')
 	print("Exist and read")
 else:
 	print("Creating config...")
 	config['DEFAULT'] = {'color_mode': '0',
 	'version': '0.4.2'}
-	with open('CommanderPi/src/cpi.config', 'w') as configfile:
+	with open(home_path+'/CommanderPi/src/cpi.config', 'w') as configfile:
 		config.write(configfile)
 
 ### update stuff
