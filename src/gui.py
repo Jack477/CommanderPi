@@ -16,7 +16,7 @@ from PIL import Image, ImageTk
 ### TODO: Move change_theme function to theme.py?
 ### split resources.py into smaller files
 ### move window_list from theme.py to resources
-
+home_path = sys.argv[1]
 def change_theme(master):
 	if int(th.color_mode)==0:
 		print("Setting color theme to 1")
@@ -24,7 +24,7 @@ def change_theme(master):
 	else:
 		th.color_mode=0
 	rs.config.set('DEFAULT', 'color_mode', str(th.color_mode))
-	with open('CommanderPi/src/cpi.config', 'w') as configfile:
+	with open(home_path+'/CommanderPi/src/cpi.config', 'w') as configfile:
 		rs.config.write(configfile)
 	th.set_theme(master)
 	#print(th.color_mode)
@@ -63,7 +63,7 @@ class Network_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 				
-		image = Image.open("/home/pi/CommanderPi/src/icons/Networkings.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/Networkings.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  Networking", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -107,7 +107,7 @@ class Bootloader_Info_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 				
-		image = Image.open("/home/pi/CommanderPi/src/icons/Bootloaders.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/Bootloaders.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  Bootloader", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -274,7 +274,7 @@ class Proc_Info_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 				
-		image = Image.open("/home/pi/CommanderPi/src/icons/CPUs.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/CPUs.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  CPU Details", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -382,7 +382,7 @@ class Overclock_Window:
 		titleframe.pack(fill=X)
 				
 		
-		image = Image.open("/home/pi/CommanderPi/src/icons/Overclockings.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/Overclockings.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  Overclocking", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -403,7 +403,7 @@ class Overclock_Window:
 		arm_freq_entry = tk.Entry( entry_frame, justify=CENTER, width=10)
 		arm_freq_entry.grid(row=0, column=1, ipady=3)
 		
-		image1 = Image.open("/home/pi/CommanderPi/src/icons/Checks.png")
+		image1 = Image.open(home_path+"/CommanderPi/src/icons/Checks.png")
 		photo1 = ImageTk.PhotoImage(image1, master=entry_frame) 
 		
 		arm_freq_b = tk.Button ( entry_frame, text="Set", command = lambda:overclock_push(arm_freq_entry, 1), font=("TkDefaultFont", 10, "bold"), cursor="hand2", image = photo1, compound=LEFT)
@@ -525,7 +525,7 @@ class About_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 				
-		image = Image.open("/home/pi/CommanderPi/src/icons/logo.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/logo.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  About Application", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -588,7 +588,7 @@ class Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack()
 		
-		loadimg = Image.open("/home/pi/CommanderPi/src/icons/title_logo.png")
+		loadimg = Image.open(home_path+"/CommanderPi/src/icons/title_logo.png")
 		img = ImageTk.PhotoImage(image=loadimg)
 
 		img_label = tk.Label ( titleframe, image=img)
@@ -679,23 +679,23 @@ class Window:
 		btn_frame = Frame(mainframe)
 		btn_frame.pack(fill=X)
 		
-		photo1 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/CPUs.png") 
+		photo1 = PhotoImage(file = home_path+"/CommanderPi/src/icons/CPUs.png") 
 		#photoimage1 = photo1.subsample(15, 15) 
 		
 		proc_info_button = Button ( btn_frame, text="CPU details", command = lambda:bopen(Proc_Info_Window), width=60, height=80, cursor="hand2", image = photo1, compound=TOP)
 		proc_info_button.grid(row=0, column=0, padx=4)
 		
-		photo2 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/Bootloaders.png")  
+		photo2 = PhotoImage(file = home_path+"/CommanderPi/src/icons/Bootloaders.png")  
 		
 		btn4 = Button (btn_frame, text="Bootloader", command = lambda:bopen(Bootloader_Info_Window), width=60, height=80, cursor="hand2", image = photo2, compound=TOP)
 		btn4.grid(row=0, column=1, padx=4)
 		
-		photo3 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/Networkings.png")  		
+		photo3 = PhotoImage(file = home_path+"/CommanderPi/src/icons/Networkings.png")  		
 		
 		btn5 = Button (btn_frame, text="Network", command = lambda:bopen(Network_Window),  width=60, height=80, cursor="hand2", image = photo3, compound=TOP)
 		btn5.grid(row=0, column=2, padx=4)
 		
-		photo4 = PhotoImage(file = r"/home/pi/CommanderPi/src/icons/Overclockings.png") 
+		photo4 = PhotoImage(file = home_path+"/CommanderPi/src/icons/Overclockings.png") 
 		
 		btn2 = Button(btn_frame, text="Overclock", command = lambda:bopen(Overclock_Window),  width=60, height=80, cursor="hand2", image = photo4, compound=TOP)
 		btn2.grid(row=0, column=3, padx=4)
