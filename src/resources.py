@@ -3,6 +3,7 @@ import subprocess as sp
 import fileinput
 import configparser
 import psutil
+from os import path
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
@@ -167,8 +168,14 @@ processor_architecture = sp.getoutput('uname -m')
 host_name = sp.getoutput('uname -n')
 system_name = sp.getoutput('uname')
 kernel_version = sp.getoutput('uname -r')
-
-config_path = "/boot/config.txt"
+config_path=""
+if path.exists("/boot/config.txt"):
+	config_path = "/boot/config.txt"
+elif path.exists("/boot/firmware/usercfg.txt"):
+	config_path = "/boot/firmware/usercfg.txt"
+else:
+	print("Can't find RaspberryPi config file!")
+print(config_path)
 gpu_freq = "400" #default
 gexist = False
 
