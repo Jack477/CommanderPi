@@ -18,6 +18,7 @@ def download_git(url, name):
 	print ("download file location: ", filename)
 	#print ("download headers: ", headers)
 def update_cpi():
+	url = "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py"
 	with urllib.request.urlopen(url) as f:
 		xcontent = f.read().decode('utf-8')
 		xcontent = xcontent.splitlines()
