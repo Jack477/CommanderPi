@@ -10,6 +10,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Easy overclocking! </br>
 -Check actually bootloader configuration and setup your own!</br>
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
+<img src="https://i.imgur.com/jCULp4U.png"></img></br>
 ## Download
 https://drive.google.com/file/d/1C_w4EyrAGEkuvyB8Y4i5vKXKsfAOK5RZ/view?usp=sharing
 ## Update
