@@ -563,7 +563,7 @@ class About_Window:
 
 		def update_x():
 			up.update_cpi()
-			sys.exit(0)
+
 		
 		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
