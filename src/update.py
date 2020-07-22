@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import sys
 import urllib.request
 import os
 import resources as rs
@@ -27,11 +28,12 @@ def update_cpi():
 			if "app_version =" in line:
 				xversion=line
 		if rs.app_version[:-1] in xversion:
-			msb.showinfo(title=None, message="There is not update available!")
+			msb.showinfo(title=None, message="There is no update available!")
 		else:
 			delete_old()
 			for f, x in zip(Files, Names):
 				download_git(f, x)
+			sys.exit(0)
 def check_update():
 	url = "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py"
 	with urllib.request.urlopen(url) as f:
