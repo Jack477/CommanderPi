@@ -7,6 +7,7 @@ from os import path
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
+
 home_path = sys.argv[1]
 
 config = configparser.ConfigParser()
@@ -21,8 +22,8 @@ else:
 		config.write(configfile)
 
 ### update stuff
-app_version = "Version 0.4.2\n"
-def getAppVersion():
+app_version = "Version 0.4.5\n"
+def get_app_version():
 	return app_version
 
 ### Open url link
