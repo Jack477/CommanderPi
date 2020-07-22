@@ -37,3 +37,6 @@
 ## v0.4.2
 * Added dark theme, switch it in about section
 * Added automaticly created app config file
+## v0.4.5
+* Fixed automaticly updates
+* Added message when update is available
