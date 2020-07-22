@@ -2,21 +2,11 @@
 import urllib.request
 import os
 import resources as rs
+from tkinter import messagebox as msb
 
-#def update_alert():
-#	git_version=""
-#	data = ""
-#	data = urllib.request.urlopen('https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/update.py')
-#	for line in data.readlines():
-#		print(line)
-#		if "app_version" in line:
-#			git_version = line
-#	print(git_version)
-
-	#print(git_version)
 path = os.path.dirname(os.path.realpath(__file__))
-Files = ["https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/gui.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/bootloader.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/main.py"]
-Names = ["gui.py", "resources.py", "bootloader.py", "main.py"]
+Files = ["https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/gui.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/bootloader.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/main.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/update.py", "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/theme.py"]
+Names = ["gui.py", "resources.py", "bootloader.py", "main.py", "update.py", "theme.py"]
 def delete_old():
 	for name in Names:
 		os.system('rm '+path+'/'+name)
@@ -28,6 +18,32 @@ def download_git(url, name):
 	print ("download file location: ", filename)
 	#print ("download headers: ", headers)
 def update_cpi():
-	delete_old()
-	for f, x in zip(Files, Names):
-		download_git(f, x)
+	with urllib.request.urlopen(url) as f:
+		xcontent = f.read().decode('utf-8')
+		xcontent = xcontent.splitlines()
+		xversion = ""
+		for line in xcontent:
+			if "app_version =" in line:
+				xversion=line
+		if rs.app_version[:-1] in xversion:
+			msb.showinfo(title=None, message="There is not update available!")
+		else:
+			delete_old()
+			for f, x in zip(Files, Names):
+				download_git(f, x)
+def check_update():
+	url = "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py"
+	with urllib.request.urlopen(url) as f:
+		xcontent = f.read().decode('utf-8')
+		xcontent = xcontent.splitlines()
+		xversion = ""
+		for line in xcontent:
+			if "app_version =" in line:
+				xversion=line
+		if rs.app_version[:-1] in xversion:
+			print("It works bc it's same version!")
+		else:
+			msb.showinfo(title=None, message="Update is available!")
+		print(rs.app_version)
+		print(xversion)
+
