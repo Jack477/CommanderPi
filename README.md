@@ -11,10 +11,9 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Check actually bootloader configuration and setup your own!</br>
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 ## Download
-https://drive.google.com/file/d/1Gz3kLBrmMt9wCPXAg_ual31gtmV7g4FX/view?usp=sharing
-## ~~Update~~
-## Not working at now! Don't use it, just download new version and put all files from /src folder to CommanderPi/src
--You must have version min 0.3.1 (if you don't use download and reinstall app)</br>
+https://drive.google.com/file/d/1C_w4EyrAGEkuvyB8Y4i5vKXKsfAOK5RZ/view?usp=sharing
+## Update
+-You must have version min 0.4.5 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
 ### USAGE: </br>
 (first make install executable! `sudo chmod +x install.sh` )</br>
