@@ -544,7 +544,7 @@ class About_Window:
 		text_label = tk.Label( content_frame, text="By Jack477\nFor Twister OS\n\nGraphic elements by grayduck\nIcon derived from a work by Vectors Market\nApp idea by Salva\n", justify=CENTER)
 		text_label.pack(fill=X)
 		
-		version_label = tk.Label( content_frame, text=rs.getAppVersion(), font=("TkDefaultFont", 11, "bold"), justify=CENTER)
+		version_label = tk.Label( content_frame, text=rs.get_app_version(), font=("TkDefaultFont", 11, "bold"), justify=CENTER)
 		version_label.pack()
 		
 		link = tk.Label( content_frame, text="Changelog", cursor="hand2", fg="#1D81DA", pady=5)
@@ -708,5 +708,6 @@ class Window:
 		#d = Info_Window()
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 		th.set_theme(master)
+		up.check_update()
 		master.mainloop()
 		
