@@ -22,7 +22,7 @@ else:
 		config.write(configfile)
 
 ### update stuff
-app_version = "Version 0.4.5\n"
+app_version = "Version 0.5\n"
 def get_app_version():
 	return app_version
 
@@ -39,7 +39,7 @@ for line in eth0.splitlines():
 		if "netmask" in line:
 			ipv4eth = line[13:26]
 		if "inet6" in line:
-			ipv6eth = line[14:38]
+			ipv6eth = line[14:39]
 		if "ether" in line:
 			mac = line[14:32]
 eth0_data = "IPv4 "+ipv4eth+"\nIPv6 "+ipv6eth+"\nMAC "+mac
@@ -52,7 +52,7 @@ for line in wlan0.splitlines():
 		if "netmask" in line:
 			ipv4wlan0 = line[13:26]
 		if "inet6" in line:
-			ipv6wlan0 = line[14:38]
+			ipv6wlan0 = line[14:39]
 		if "ether" in line:
 			macwlan0 = line[14:32]
 wlan0_data = "IPv4 "+ipv4wlan0+"\nIPv6 "+ipv6wlan0+"\nMAC "+macwlan0

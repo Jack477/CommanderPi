@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import sys
 import urllib.request
+import socket
 import os
 import resources as rs
 from tkinter import messagebox as msb
@@ -34,19 +35,31 @@ def update_cpi():
 			for f, x in zip(Files, Names):
 				download_git(f, x)
 			sys.exit(0)
+def is_connected(hostname):
+  try:
+    host = socket.gethostbyname(hostname)
+    s = socket.create_connection((host, 80), 2)
+    s.close()
+    return True
+  except:
+     pass
+  return False
 def check_update():
 	url = "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py"
-	with urllib.request.urlopen(url) as f:
-		xcontent = f.read().decode('utf-8')
-		xcontent = xcontent.splitlines()
-		xversion = ""
-		for line in xcontent:
-			if "app_version =" in line:
-				xversion=line
-		if rs.app_version[:-1] in xversion:
-			print("It works bc it's same version!")
-		else:
-			msb.showinfo(title=None, message="Update is available!")
-		print(rs.app_version)
-		print(xversion)
+	if is_connected("1.1.1.1"):
+		with urllib.request.urlopen(url) as f:
+			xcontent = f.read().decode('utf-8')
+			xcontent = xcontent.splitlines()
+			xversion = ""
+			for line in xcontent:
+				if "app_version =" in line:
+					xversion=line
+			if rs.app_version[:-1] in xversion:
+				print("It works bc it's same version!")
+			else:
+				msb.showinfo(title=None, message="Update is available!")
+			print(rs.app_version)
+			print(xversion)
+	else:
+		print("Network is disconnected")
 
