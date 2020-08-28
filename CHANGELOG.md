@@ -40,3 +40,5 @@
 ## v0.4.5
 * Fixed automaticly updates
 * Added message when update is available
+## v0.5
+* After holiday break fixed a lot of requested issues
