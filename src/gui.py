@@ -708,6 +708,7 @@ class Window:
 		#d = Info_Window()
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 		th.set_theme(master)
-		up.check_update()
+		if up.check_update() == False:
+			msb.showinfo(title=None, message="Network is disconnected.")
 		master.mainloop()
 		
