@@ -60,6 +60,8 @@ def check_update():
 				msb.showinfo(title=None, message="Update is available!")
 			print(rs.app_version)
 			print(xversion)
+			return True
 	else:
 		print("Network is disconnected")
+		return False
 
