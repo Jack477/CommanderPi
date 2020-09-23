@@ -8,6 +8,12 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 
+
+### TODO
+### ADD 64 BIT KERNEL SWITCH
+### arm_64bit=1 - ON
+### arm_64bit=1 - OFF
+### CHECK VERSION OF BOOTLOADER //maybe bootloader.py?
 home_path = sys.argv[1]
 
 config = configparser.ConfigParser()
@@ -22,7 +28,7 @@ else:
 		config.write(configfile)
 
 ### update stuff
-app_version = "Version 0.5\n"
+app_version = "Version 0.6\n"
 def get_app_version():
 	return app_version
 
@@ -135,7 +141,7 @@ def refusage():
 		buff = str(buff)
 		cpu_usage = buff + "MHz"
 	return cpu_usage
-	
+print(refusage())
 	
 def refmem():
 	memory_usex = psutil.virtual_memory().percent
@@ -177,6 +183,7 @@ elif path.exists("/boot/firmware/usercfg.txt"):
 else:
 	print("Can't find RaspberryPi config file!")
 print(config_path)
+
 gpu_freq = "400" #default
 gexist = False
 
@@ -185,6 +192,13 @@ aexist = False
 
 over_voltage = "4" #default
 oexist = False
+
+arm_64bit = "0" #default
+arm_64bitexist = False
+
+force_turbo = "0"
+force_turboexist = False
+
 f = open(config_path)
 for line in f:
 
@@ -198,16 +212,79 @@ for line in f:
 	if "over_voltage" in line:
 		over_voltage = line
 		oexist = True
-		
+	if "arm_64bit" in line:
+		arm_64bit = line
+		arm_64bitexist = True
+	if "force_turbo" in line:
+		force_turbo = line
+		force_turboexist = True
 f.close()
+def get_kernel_mode():
+	if "arm_64bit=1" in arm_64bit:
+		return "64bit"
+	else:
+		return "32bit"
+def set_force_turbo():
+	global force_turboexist
+	force_turbo_new = ""
+	if force_turboexist:
+		if "force_turbo=0" in force_turbo:
+			force_turbo_new="1"
+		else:
+			force_turbo_new="0"
+		fin = open(config_path, "rt")
+		data = fin.read()
+		data = data.replace(force_turbo, 'force_turbo='+force_turbo_new+'\n')
+		#close the input file
+		fin.close()
+		#open the input file in write mode
+		fin = open(config_path, "wt")
+		#overrite the input file with the resulting data
+		fin.write(data)
+		#close the file
+		fin.close()
+		print(force_turbo_new)
+		force_turbo_new = None
+	else:
+		force_turboexist = True
+		force_turbo_new = "1"
+		file_object = open(config_path, 'a')
+		file_object.write('force_turbo='+force_turbo_new+'\n')
+		file_object.close()
 
-
+def set_kernel():
+	global arm_64bitexist
+	arm_64bit_new = ""
+	if arm_64bitexist:
+		if "arm_64bit=0" in arm_64bit:
+			arm_64bit_new="1"
+		else:
+			arm_64bit_new="0"
+		fin = open(config_path, "rt")
+		data = fin.read()
+		data = data.replace(arm_64bit, 'arm_64bit='+arm_64bit_new+'\n')
+		#close the input file
+		fin.close()
+		#open the input file in write mode
+		fin = open(config_path, "wt")
+		#overrite the input file with the resulting data
+		fin.write(data)
+		#close the file
+		fin.close()
+		print(arm_64bit_new)
+		arm_64bit_new = None
+	else:
+		arm_64bitexist = True
+		arm_64bit_new = "1"
+		file_object = open(config_path, 'a')
+		file_object.write('arm_64bit='+arm_64bit_new+'\n')
+		file_object.close()
 
 
 def overclock_over_voltage(new_over_voltage):
 	global oexist
 	if oexist:
-		
+
 		fin = open(config_path, "rt")
 		#read file contents to string
 		data = fin.read()
