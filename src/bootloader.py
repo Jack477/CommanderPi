@@ -8,6 +8,13 @@ x_version = bootloader_version[0:11]
 def get_actual_version():
 	month = x_version[0:3]
 	day = x_version[4:6]
+	xday = ''
+	for x in day:
+		if x == ' ':
+			xday+='0'
+		else:
+			xday+=x
+	day = xday
 	year = x_version[7:11]
 	if month == "Jan":
 		month='01'
@@ -38,6 +45,7 @@ def get_actual_version():
 	print(year)
 	return year+"-"+month+"-"+day
 ad = get_actual_version()
+print('Here is ad: '+ad)
 def write_bootloader():
 
 	#os.system('rpi-eeprom-config --out pieeprom-new.bin --config '+path+"/build/bootconf.txt"+' /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin')
