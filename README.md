@@ -13,7 +13,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 <img src="https://i.imgur.com/jCULp4U.png"></img></br>
 ## Download
-https://drive.google.com/file/d/1C_w4EyrAGEkuvyB8Y4i5vKXKsfAOK5RZ/view?usp=sharing
+`cd ~ && git clone https://github.com/Jack477/CommanderPi && cd CommanderPi && chmod +x install.sh && ./install.sh`
 ## Update
 -You must have version min 0.4.5 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
@@ -39,11 +39,11 @@ Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG
 </br>
 
 ### TODO
-- [x] system basic informations
-- [x] overclock
-- [x] eeprom
-- [x] network
-- [x] automaticly updates
+- [x] System basic information
+- [x] Vverclock
+- [x] EEPROM
+- [x] Network
+- [x] Automaticly updates
 
 ## Support me
 All my work is provided for free, I'm doing stuff from fans for fans and learning by this too, improving TwisterOS.</br>
