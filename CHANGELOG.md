@@ -2,7 +2,7 @@
 * Added basic system information
 * Live CPU temp
 * Live CPU usage in MHz/GHz
-* Aded overclocking
+* Added overclocking
 ## v0.1.2
 * Fixed some Overclocking menu issues
 * Added live memory usage in percent
@@ -42,3 +42,7 @@
 * Added message when update is available
 ## v0.5
 * After holiday break fixed a lot of requested issues
+## v0.6
+* Added switching between 64 and 32 bit kernel mode
+* Fixed reading bootloader config in newest version
+* Added display of kernel mode on main window
