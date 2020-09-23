@@ -9,6 +9,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 -Check your system information like CPU temperature, CPU usage, kernel version etc by user friendly menu </br>
 -Easy overclocking! </br>
 -Check actually bootloader configuration and setup your own!</br>
+-Switch between 64bit and 32bit kernel! (EXPERIMENTAL)</br>
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 <img src="https://i.imgur.com/jCULp4U.png"></img></br>
 ## Download
@@ -43,3 +44,8 @@ Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG
 - [x] eeprom
 - [x] network
 - [x] automaticly updates
+
+## Support me
+All my work is provided for free, I'm doing stuff from fans for fans and learning by this too, improving TwisterOS.</br>
+I'm student, next year I'm going to Institute of Technology. If you like my work you can support me, thank you!
+https://www.paypal.com/paypalme/jack47legos
