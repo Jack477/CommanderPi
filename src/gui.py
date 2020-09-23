@@ -139,7 +139,21 @@ class Bootloader_Info_Window:
 		
 		setup_b = tk.Button ( mainframe, text="Setup config", command=lambda:config_boot(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
 		setup_b.pack()
-		
+
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=5)
+
+		kernel_frame = Frame(mainframe)
+		kernel_frame.pack()
+
+		exp_label = tk.Label( kernel_frame, text="Experimental", font=("TkDefaultFont", 12, "bold"), fg="#961EB6")
+		exp_label.grid(row=0, column=0)
+
+		kernel_button = tk.Button( kernel_frame, text="Switch kernel mode", command=lambda:switch_kernel(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
+		kernel_button.grid(row=1, column=0)
+
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=5)
 		
 		link = tk.Label( mainframe, text="Official bootloader documentation", cursor="hand2", fg="#1D81DA")
 		link.pack(fill=X)
@@ -151,9 +165,15 @@ class Bootloader_Info_Window:
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
-		def config_boot():
+		def switch_kernel():
+				confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly\n Are you sure?")
+				if confirm_msgb == True:
+					rs.set_kernel()
+					rs.reboot()
 
+		def config_boot():
 			#boot_frame.grid_forget()
+			msb.showwarning(title="Warning", message="This is only for advanced users!\nDo it on your own risk!")
 			setup_b.destroy()
 			bootloader_label.destroy()
 			config_stuff = "BOOT_UART:\nWAKE_ON_GPIO:\nPOWER_OFF_ON_HALT:\nDHCP_TIMEOUT:\nDHCP_REQ_TIMEOUT:\nTFTP_FILE_TIMEOUT:\nTFTP_IP:\nTFTP_PREFIX:\nBOOT_ORDER:\nSD_BOOT_MAX_RETRIES:\nNET_BOOT_MAX_RETRIES:\n"
@@ -223,7 +243,7 @@ class Bootloader_Info_Window:
 			btl_btn2 = tk.Button(boot_frame, text="Cancel", font=("TkDefaultFont", 10, "bold"), cursor="hand2", command=lambda:cancel())
 			btl_btn2.grid(row=11, column=0, sticky=W)
 			th.set_theme(master)
-			msb.showwarning(title="Warning", message="This is only for advanced users!\nDo it on your own risk!")
+
 
 			### Insert default bootloader values, TODO in future
 			#BOOT_UART_entry.insert(END, btl.BOOT_UART[-2:-1])
@@ -616,38 +636,44 @@ class Window:
 		kernel_version_label2 = tk.Label( infoframe, text = rs.kernel_version , width=15, anchor='w')
 		kernel_version_label2.grid(row=2, column=1)
 		
+		kernel_mode_label = tk.Label( infoframe, text = "Operating mode: ", width=30, anchor='w')
+		kernel_mode_label.grid(row=3, column=0, sticky=W)
+
+		kernel_mode_label2 = tk.Label( infoframe, text = rs.get_kernel_mode(), width=15, anchor='w')
+		kernel_mode_label2.grid(row=3, column=1)
+
 		processor_architecture_label = tk.Label( infoframe, text="Processor architecture: ", width=30, anchor='w' )
-		processor_architecture_label.grid(row=3, column=0, sticky=W)
+		processor_architecture_label.grid(row=4, column=0, sticky=W)
 		
 		processor_architecture_label2 = tk.Label( infoframe, text=rs.processor_architecture, width=15, anchor='w')
-		processor_architecture_label2.grid(row=3, column=1)
+		processor_architecture_label2.grid(row=4, column=1)
 		
 		
 		memory_use_label = tk.Label( infoframe, text = "Memory usage: ", width=30, anchor='w' )
-		memory_use_label.grid(row=4, column=0, sticky=W)
+		memory_use_label.grid(row=5, column=0, sticky=W)
 		
 		memory_use_label2 = tk.Label( infoframe, text = "", width=15, anchor='w' )
-		memory_use_label2.grid(row=4, column=1)
+		memory_use_label2.grid(row=5, column=1)
 		
 		actual_cpu_temp_label = tk.Label( infoframe, text = "Actual CPU temperature: ", width=30, anchor='w' )
-		actual_cpu_temp_label.grid(row=5, column=0, sticky=W)
+		actual_cpu_temp_label.grid(row=6, column=0, sticky=W)
 		
 		actual_cpu_temp_label2 = tk.Label( infoframe, text = "", width=15, anchor='w' )
-		actual_cpu_temp_label2.grid(row=5, column=1)
+		actual_cpu_temp_label2.grid(row=6, column=1)
 		
 		actual_cpu_usage_label = tk.Label( infoframe, text = "Processor frequency usage is: ", width=30, anchor='w')
-		actual_cpu_usage_label.grid(row=6, column=0, sticky=W)
+		actual_cpu_usage_label.grid(row=7, column=0, sticky=W)
 		
 		actual_cpu_usage_label2 = tk.Label(infoframe, text = "",  width=15, anchor='w')
-		actual_cpu_usage_label2.grid(row=6, column=1)
+		actual_cpu_usage_label2.grid(row=7, column=1)
 		
 		
 		used_label = tk.Label ( infoframe, text="Used disk space: ", width=30, anchor='w')
-		used_label.grid(row=7, column=0, sticky=W)
+		used_label.grid(row=8, column=0, sticky=W)
 		
 		##BORDER TO TABLE borderwidth=2, relief="groove",
 		used_label2 = tk.Label ( infoframe, text=rs.used+"/"+rs.total+" GiB", width=15, anchor='w')
-		used_label2.grid(row=7, column=1)
+		used_label2.grid(row=8, column=1)
 		
 		
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
@@ -704,6 +730,8 @@ class Window:
 		
 		btn3 = Button( mainframe, text="About/Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
 		btn3.pack(side=BOTTOM, pady=5)
+
+		
 		
 		#d = Info_Window()
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
