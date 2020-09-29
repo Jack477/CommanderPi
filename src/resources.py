@@ -28,7 +28,7 @@ else:
 		config.write(configfile)
 
 ### update stuff
-app_version = "Version 0.6\n"
+app_version = "Version 0.6.1\n"
 def get_app_version():
 	return app_version
 
