@@ -224,16 +224,49 @@ def get_kernel_mode():
 		return "64bit"
 	else:
 		return "32bit"
+
+def get_force_turbo():
+	if "force_turbo=1" in force_turbo:
+		return "ON"
+	else:
+		return "OFF"
+### CHECK IF OVERVOLTAGE EXIST!!!
 def set_force_turbo():
 	global force_turboexist
+	global oexist
+	print(oexist)
+	print(force_turboexist)
 	force_turbo_new = ""
-	if force_turboexist:
-		if "force_turbo=0" in force_turbo:
-			force_turbo_new="1"
-		else:
-			force_turbo_new="0"
+	if force_turboexist and oexist:
+		print("FORCE TURBO EXIST")
 		fin = open(config_path, "rt")
 		data = fin.read()
+		if "force_turbo=0" in force_turbo:
+			force_turbo_new="1"
+			if oexist:
+				fin = open(config_path, "rt")
+				data = fin.read()
+				data = data.replace(over_voltage, 'over_voltage=6\n')
+				fin.close()
+				fin = open(config_path, "wt")
+				fin.write(data)
+				fin.close()
+			else:
+				oexist = True
+				file_object = open(config_path, 'a')
+				file_object.write('over_voltage=6\n')
+				file_object.close()
+		else:
+			force_turbo_new="0"
+
+			#fin = open(config_path, "rt")
+			#data = fin.read()
+			#data = data.replace(over_voltage, '#over_voltage=6\n')
+			#fin.close()
+			#fin = open(config_path, "wt")
+			#fin.write(data)
+			#fin.close()
+
 		data = data.replace(force_turbo, 'force_turbo='+force_turbo_new+'\n')
 		#close the input file
 		fin.close()
@@ -245,12 +278,42 @@ def set_force_turbo():
 		fin.close()
 		print(force_turbo_new)
 		force_turbo_new = None
+
 	else:
-		force_turboexist = True
-		force_turbo_new = "1"
-		file_object = open(config_path, 'a')
-		file_object.write('force_turbo='+force_turbo_new+'\n')
-		file_object.close()
+		if oexist:
+			fin = open(config_path, "rt")
+			data = fin.read()
+			data = data.replace(over_voltage, 'over_voltage=6\n')
+			fin.close()
+			fin = open(config_path, "wt")
+			fin.write(data)
+			fin.close()
+		else:
+			oexist = True
+			file_object = open(config_path, 'a')
+			file_object.write('over_voltage=6\n')
+			file_object.close()
+
+		if force_turboexist:
+			if "force_turbo=0" in force_turbo:
+				force_turbo_new="1"
+			else:
+				force_turbo_new="0"
+			fin = open(config_path, "rt")
+			data = fin.read()
+			data = data.replace(force_turbo, 'force_turbo='+force_turbo_new+'\n')
+			fin.close()
+			fin = open(config_path, "wt")
+			fin.write(data)
+			fin.close()
+		else:
+			print(force_turbo_new)
+			force_turboexist = True
+			force_turbo_new = "1"
+			file_object = open(config_path, 'a')
+			file_object.write('force_turbo='+force_turbo_new+'\n')
+			file_object.close()
+			force_turbo_new = None
 
 def set_kernel():
 	global arm_64bitexist
