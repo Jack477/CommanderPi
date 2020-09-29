@@ -46,3 +46,6 @@
 * Added switching between 64 and 32 bit kernel mode
 * Fixed reading bootloader config in newest version
 * Added display of kernel mode on main window
+## v0.6.1
+* Added force_turbo mode
+* Moved "Switch kernel" button to main frame
