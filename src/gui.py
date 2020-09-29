@@ -143,17 +143,17 @@ class Bootloader_Info_Window:
 		separator = ttk.Separator(mainframe, orient='horizontal')
 		separator.pack(fill=X, expand=True, pady=5)
 
-		kernel_frame = Frame(mainframe)
-		kernel_frame.pack()
+		#kernel_frame = Frame(mainframe)
+		#kernel_frame.pack()
 
-		exp_label = tk.Label( kernel_frame, text="Experimental", font=("TkDefaultFont", 12, "bold"), fg="#961EB6")
-		exp_label.grid(row=0, column=0)
+		#exp_label = tk.Label( kernel_frame, text="Experimental", font=("TkDefaultFont", 12, "bold"), fg="#961EB6")
+		#exp_label.grid(row=0, column=0)
 
-		kernel_button = tk.Button( kernel_frame, text="Switch kernel mode", command=lambda:switch_kernel(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
-		kernel_button.grid(row=1, column=0)
+		#kernel_button = tk.Button( kernel_frame, text="Switch kernel mode", command=lambda:switch_kernel(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
+		#kernel_button.grid(row=1, column=0)
 
-		separator = ttk.Separator(mainframe, orient='horizontal')
-		separator.pack(fill=X, expand=True, pady=5)
+		#separator = ttk.Separator(mainframe, orient='horizontal')
+		#separator.pack(fill=X, expand=True, pady=5)
 		
 		link = tk.Label( mainframe, text="Official bootloader documentation", cursor="hand2", fg="#1D81DA")
 		link.pack(fill=X)
@@ -320,69 +320,6 @@ class Proc_Info_Window:
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
-		master.mainloop()
-	
-### Depracted, to delete
-class Fast_Overclock_Window:
-
-	def __init__(master):
-	
-		master = tk.Tk()
-		master.geometry("350x400")
-		master.title("Commander Pi")
-
-		title_label = tk.Label( master, text = "Fast overclocking for non-advanced users!\n")	
-		title_label.grid(row=0, column=0, columnspan=2)			
-		
-		factory_label = tk.Label( master, text="factory settings", justify=CENTER, fg="green", wraplength="150", borderwidth=2, relief="groove", width="30")
-		factory_label.grid(row=1, column=0)
-		
-		factory_b = tk.Button(master, text="Factory", justify=CENTER, width="7", command = lambda:confirum_push(1))
-		factory_b.grid(row=1, column=1)
-		
-		stable_label = tk.Label( master, text="stable settings, you should have a cooling", justify=CENTER, fg="yellow", wraplength="150", borderwidth=2, relief="groove", width="30")
-		stable_label.grid(row=2, column=0)
-		
-		stable_b = tk.Button(master, text="Stable", justify=CENTER, width="7", command = lambda:confirum_push(2))
-		stable_b.grid(row=2, column=1)	
-		
-		extreme_label = tk.Label( master, text="extreme settings, you must have a cooling!", justify=CENTER, fg="red", wraplength="150", borderwidth=2, relief="groove", width="30")
-		extreme_label.grid(row=3, column=0)
-		
-		factory_b = tk.Button(master, text="Extreme", justify=CENTER, width="7", command = lambda:confirum_push(3))
-		factory_b.grid(row=3, column=1)
-
-		def confirum_push(num):
-			arm_freq="0"
-			gpu_freq="0"
-			over_voltage="0"
-			if num == 1:
-				arm_freq="1500"
-				gpu_freq="400"
-				over_voltage="4"	
-			if num == 2:
-				arm_freq="2000"
-				gpu_freq="600"
-				over_voltage="6"	
-			if num == 3:
-				arm_freq="2147"
-				gpu_freq="750"
-				over_voltage="6"
-			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
-			if confirm_msgb == True:
-				#rs.overclock_arm_freq(arm_freq)
-				#rs.overclock_gpu_freq(gpu_freq)
-				#rs.overclock_over_voltage(over_voltage)
-				print("It works!")
-				print(arm_freq)
-				print(gpu_freq)
-				print(over_voltage)
-				master.destroy()
-				#rs.reboot()
-
-			else:
-				importlib.reload(rs)
-				master.destroy()
 		master.mainloop()
 	
 		
@@ -597,7 +534,7 @@ class Window:
 	def __init__(master):
 
 		master = tk.Tk()
-		master.geometry("420x500")
+		master.geometry("420x570")
 		master.title("Commander Pi")
 		master.resizable(False, False)
 		th.window_list.append(master)
@@ -647,33 +584,38 @@ class Window:
 		
 		processor_architecture_label2 = tk.Label( infoframe, text=rs.processor_architecture, width=15, anchor='w')
 		processor_architecture_label2.grid(row=4, column=1)
+
+		force_turbo_label = tk.Label( infoframe, text="Force_turbo: ", width=30, anchor='w' )
+		force_turbo_label.grid(row=5, column=0, sticky=W)
 		
-		
+		force_turbo_label2 = tk.Label( infoframe, text=rs.get_force_turbo(), width=15, anchor='w')
+		force_turbo_label2.grid(row=5, column=1)
+
 		memory_use_label = tk.Label( infoframe, text = "Memory usage: ", width=30, anchor='w' )
-		memory_use_label.grid(row=5, column=0, sticky=W)
+		memory_use_label.grid(row=6, column=0, sticky=W)
 		
 		memory_use_label2 = tk.Label( infoframe, text = "", width=15, anchor='w' )
-		memory_use_label2.grid(row=5, column=1)
+		memory_use_label2.grid(row=6, column=1)
 		
 		actual_cpu_temp_label = tk.Label( infoframe, text = "Actual CPU temperature: ", width=30, anchor='w' )
-		actual_cpu_temp_label.grid(row=6, column=0, sticky=W)
+		actual_cpu_temp_label.grid(row=7, column=0, sticky=W)
 		
 		actual_cpu_temp_label2 = tk.Label( infoframe, text = "", width=15, anchor='w' )
-		actual_cpu_temp_label2.grid(row=6, column=1)
+		actual_cpu_temp_label2.grid(row=7, column=1)
 		
 		actual_cpu_usage_label = tk.Label( infoframe, text = "Processor frequency usage is: ", width=30, anchor='w')
-		actual_cpu_usage_label.grid(row=7, column=0, sticky=W)
+		actual_cpu_usage_label.grid(row=8, column=0, sticky=W)
 		
 		actual_cpu_usage_label2 = tk.Label(infoframe, text = "",  width=15, anchor='w')
-		actual_cpu_usage_label2.grid(row=7, column=1)
+		actual_cpu_usage_label2.grid(row=8, column=1)
 		
 		
 		used_label = tk.Label ( infoframe, text="Used disk space: ", width=30, anchor='w')
-		used_label.grid(row=8, column=0, sticky=W)
+		used_label.grid(row=9, column=0, sticky=W)
 		
 		##BORDER TO TABLE borderwidth=2, relief="groove",
 		used_label2 = tk.Label ( infoframe, text=rs.used+"/"+rs.total+" GiB", width=15, anchor='w')
-		used_label2.grid(row=8, column=1)
+		used_label2.grid(row=9, column=1)
 		
 		
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
@@ -696,8 +638,6 @@ class Window:
 			
 		refresh()
 		
-		#fast_overclock_b = Button(master, text="Overclocking for non-advanced", command = lambda:bopen(Fast_Overclock_Window), width=20, cursor="hand2", fg="green")
-		#fast_overclock_b.pack(fill=X)
 		
 		advanced_label = tk.Label( mainframe, text = "Advanced tools", font=("TkDefaultFont", 11, "bold"), anchor='w' )	
 		advanced_label.pack(fill=X)
@@ -726,11 +666,25 @@ class Window:
 		btn2 = Button(btn_frame, text="Overclock", command = lambda:bopen(Overclock_Window),  width=60, height=80, cursor="hand2", image = photo4, compound=TOP)
 		btn2.grid(row=0, column=3, padx=4)
 		
+		btn_kernel = Button(btn_frame, text="Switch kernel 32/64bit", command = lambda:switch_kernel(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		btn_kernel.grid(row=1, column=0, columnspan=2, padx=4, pady=5)
 
+		btn_force_turbo = Button(btn_frame, text="force_turbo mode", command = lambda:switch_turbo(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		btn_force_turbo.grid(row=1, column=2, columnspan=2, padx=4, pady=5)
 		
 		btn3 = Button( mainframe, text="About/Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
 		btn3.pack(side=BOTTOM, pady=5)
 
+		def switch_turbo():
+			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are not busy.\n Over voltage will be set to 6.\n Are you sure?")
+			if confirm_msgb == True:
+				rs.set_force_turbo()
+				rs.reboot()			
+		def switch_kernel():
+			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly\n Are you sure?")
+			if confirm_msgb == True:
+				rs.set_kernel()
+				rs.reboot()
 		
 		
 		#d = Info_Window()
