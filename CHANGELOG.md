@@ -49,3 +49,7 @@
 ## v0.6.1
 * Added force_turbo mode
 * Moved "Switch kernel" button to main frame
+## v0.7
+* Added live GPU (v3d) usage frequency
+* Added limit for over_voltage between 0-16 -> https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md
+* Fixed reading bootloader version (again)
