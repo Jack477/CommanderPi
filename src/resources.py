@@ -10,10 +10,9 @@ from PIL import Image, ImageTk
 
 
 ### TODO
-### ADD 64 BIT KERNEL SWITCH
-### arm_64bit=1 - ON
-### arm_64bit=1 - OFF
-### CHECK VERSION OF BOOTLOADER //maybe bootloader.py?
+### ADD v3d frequency display
+### ADD over_voltage range values
+### Fix bootloader read
 home_path = sys.argv[1]
 
 config = configparser.ConfigParser()
@@ -28,7 +27,7 @@ else:
 		config.write(configfile)
 
 ### update stuff
-app_version = "Version 0.6.1\n"
+app_version = "Version 0.7\n"
 def get_app_version():
 	return app_version
 
@@ -141,6 +140,20 @@ def refusage():
 		buff = str(buff)
 		cpu_usage = buff + "MHz"
 	return cpu_usage
+
+def refgpu():
+	gpu_usagex = sp.getoutput('vcgencmd measure_clock v3d')
+	gpu_usage = ""
+	buff=gpu_usagex[14:17]
+	buff=int(buff)
+	buffg=gpu_usagex[14:15]
+	buffm=gpu_usagex[15:16]
+	if ( buff < 200 ):
+		gpu_usage = buffg+ "." + buffm + "GHz"
+	else:
+		buff = str(buff)
+		gpu_usage = buff + "MHz"
+	return gpu_usage
 print(refusage())
 	
 def refmem():
