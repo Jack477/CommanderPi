@@ -53,6 +53,7 @@ def write_bootloader():
 	os.system('sudo rpi-eeprom-update -d -f /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
 
 def read_bootloader():
+	text = ''
 	get_actual_version()
 	print(x_version)
 	print(os.path.dirname(os.path.realpath(__file__)))
@@ -64,7 +65,10 @@ def read_bootloader():
 		return bootloader_config
 	else:
 		os.system('sudo mkdir '+path+'/build')
-		text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
+		if os.path.exists('/lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin'):
+			text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
+		else:
+			text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-07-16.bin')
 		#os.system("rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin > build/bootconf.txt")
 		f = open(path+"/build/bootconf.txt", "w+")
 		f.write(text)
