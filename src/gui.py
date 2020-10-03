@@ -428,9 +428,17 @@ class Overclock_Window:
 		def overclock_push(entry_stuff, state):
 			entry_instance = entry_stuff.get()
 			if entry_instance.isdigit():
-				rs.set_push_state(state)
-				entry_stuff.config(state='disabled')
-				print("Its a number so it works!")
+				if state == 3:
+					if (int(entry_instance) >= 0) and (int(entry_instance) <= 16):
+						rs.set_push_state(state)
+						entry_stuff.config(state='disabled')
+						print("Its a number so it works!")
+					else:
+						print("Overvoltage can be beetwen 0-16")
+				else:
+					rs.set_push_state(state)
+					entry_stuff.config(state='disabled')
+					print("Its a number so it works!")
 			else:
 				print("Its not a number!")
 			
@@ -534,7 +542,7 @@ class Window:
 	def __init__(master):
 
 		master = tk.Tk()
-		master.geometry("420x570")
+		master.geometry("420x580")
 		master.title("Commander Pi")
 		master.resizable(False, False)
 		th.window_list.append(master)
@@ -609,13 +617,18 @@ class Window:
 		actual_cpu_usage_label2 = tk.Label(infoframe, text = "",  width=15, anchor='w')
 		actual_cpu_usage_label2.grid(row=8, column=1)
 		
+		actual_gpu_usage_label = tk.Label( infoframe, text = "GPU frequency (V3D) usage is: ", width=30, anchor='w')
+		actual_gpu_usage_label.grid(row=9, column=0, sticky=W)
 		
+		actual_gpu_usage_label2 = tk.Label(infoframe, text = "",  width=15, anchor='w')
+		actual_gpu_usage_label2.grid(row=9, column=1)
+
 		used_label = tk.Label ( infoframe, text="Used disk space: ", width=30, anchor='w')
-		used_label.grid(row=9, column=0, sticky=W)
+		used_label.grid(row=10, column=0, sticky=W)
 		
 		##BORDER TO TABLE borderwidth=2, relief="groove",
 		used_label2 = tk.Label ( infoframe, text=rs.used+"/"+rs.total+" GiB", width=15, anchor='w')
-		used_label2.grid(row=9, column=1)
+		used_label2.grid(row=10, column=1)
 		
 		
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
@@ -628,11 +641,13 @@ class Window:
 			ttext = rs.reftemp()
 			ptext = rs.refusage()
 			mtext = rs.refmem()
+			gtext = rs.refgpu()
 			#dtext = str(rs.get_disk_percent())
 			#dtext = "CPU usage " + rs.cpu_usagex +" MHz"
 			memory_use_label2.configure(text = mtext + "/100%")
 			actual_cpu_temp_label2.configure(text = ttext)
 			actual_cpu_usage_label2.configure(text = ptext)
+			actual_gpu_usage_label2.configure(text = gtext)
 			#disk_use_label.configure(text = "Disk space usage" +dtext+"/100%")
 			master.after(1000, refresh)
 			
