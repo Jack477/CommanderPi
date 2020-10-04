@@ -6,22 +6,18 @@ path = os.path.dirname(os.path.realpath(__file__))
 bootloader_version = sp.getoutput('vcgencmd bootloader_version')
 x_version = bootloader_version[0:11]
 def get_actual_version():
-	MONTHS = {"Jan":"01", "Feb":"01", "Mar":"01", "Apr":"01", "May":"01", "Jun":"01", "Jul":"01", "Aug":"01", "Sep":"01", "Oct":"01", "Nov":"01", "Dec":"01"}
-	month = x_version[0:3]
-	day = x_version[4:6]
-	xday = ''
-	for x in day:
-		if x == ' ':
-			xday+='0'
-		else:
-			xday+=x
-	day = xday
-	year = x_version[7:11]
-	month = MONTHS[month]
+	x_version_split = x_version.split()
+	print(x_version_split)
+	MONTHS = {"Jan":"01", "Feb":"02", "Mar":"03", "Apr":"04", "May":"05", "Jun":"06", "Jul":"07", "Aug":"08", "Sep":"09", "Oct":"10", "Nov":"11", "Dec":"12"}
+	month = MONTHS[x_version_split[0]]
+	day = x_version_split[1]
+	if int(day) < 10:
+		day = f"0{day}"
+	year = x_version_split[2]
 	print(month)
 	print(day)
 	print(year)
-	return year+"-"+month+"-"+day
+	return f"{year}-{month}-{day}"
 ad = get_actual_version()
 print('Here is ad: '+ad)
 def write_bootloader():
