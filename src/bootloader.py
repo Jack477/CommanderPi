@@ -6,6 +6,7 @@ path = os.path.dirname(os.path.realpath(__file__))
 bootloader_version = sp.getoutput('vcgencmd bootloader_version')
 x_version = bootloader_version[0:11]
 def get_actual_version():
+	MONTHS = {"Jan":"01", "Feb":"01", "Mar":"01", "Apr":"01", "May":"01", "Jun":"01", "Jul":"01", "Aug":"01", "Sep":"01", "Oct":"01", "Nov":"01", "Dec":"01"}
 	month = x_version[0:3]
 	day = x_version[4:6]
 	xday = ''
@@ -16,30 +17,7 @@ def get_actual_version():
 			xday+=x
 	day = xday
 	year = x_version[7:11]
-	if month == "Jan":
-		month='01'
-	elif month == "Feb":
-		month='02'
-	elif month == "Mar":
-		month='03'
-	elif month == "Apr":
-		month='04'
-	elif month == "May":
-		month='05'
-	elif month == "Jun":
-		month='06'
-	elif month == "Jul":
-		month='07'
-	elif month == "Aug":
-		month='08'
-	elif month == "Sep":
-		month='09'
-	elif month == "Oct":
-		month='10'
-	elif month == "Nov":
-		month='11'
-	elif month == "Dec":
-		month='12'
+	month = MONTHS[month]
 	print(month)
 	print(day)
 	print(year)
