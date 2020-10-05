@@ -693,12 +693,12 @@ class Window:
 		btn3.pack(side=BOTTOM, pady=5)
 
 		def switch_turbo():
-			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are not busy.\n Over voltage will be set to 6.\n Are you sure?")
+			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are not busy.\n Over voltage will be set to 6. System will restart.\n Are you sure?")
 			if confirm_msgb == True:
 				rs.set_force_turbo()
 				rs.reboot()			
 		def switch_kernel():
-			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly\n Are you sure?")
+			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\n Are you sure?")
 			if confirm_msgb == True:
 				rs.set_kernel()
 				rs.reboot()
