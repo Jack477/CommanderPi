@@ -545,6 +545,8 @@ class Window:
 		master.geometry("420x580")
 		master.title("Commander Pi")
 		master.resizable(False, False)
+		icon = PhotoImage(file = home_path+"/CommanderPi/src/icon.png")
+		master.iconphoto(True, icon)
 		th.window_list.append(master)
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)
