@@ -27,7 +27,7 @@ else:
 		config.write(configfile)
 
 ### update stuff
-app_version = "Version 0.7\n"
+app_version = "Version 0.7.1\n"
 def get_app_version():
 	return app_version
 
@@ -61,6 +61,35 @@ for line in wlan0.splitlines():
 		if "ether" in line:
 			macwlan0 = line[14:32]
 wlan0_data = "IPv4 "+ipv4wlan0+"\nIPv6 "+ipv6wlan0+"\nMAC "+macwlan0
+
+def get_country_code():
+	country_code = sp.getoutput('iw reg get')
+	country_code = country_code.splitlines()
+	xcountry_code = ''
+	for line in country_code:
+		if "country" in line:
+			xcountry_code = line
+	return xcountry_code
+
+print("Country code is:")
+print(get_country_code())
+
+def set_country_code(code):
+	path = "/etc/default/crda"
+	xcode = ""
+	with open(path) as f:
+		for line in f:
+			if "REGDOMAIN=" in line:
+				xcode = line
+	print(xcode)
+	fin = open(path, "rt")
+	data = fin.read()
+	data = data.replace(xcode, 'REGDOMAIN='+str(code))
+	fin.close()
+	fin = open(path, "wt")
+	fin.write(data)
+	fin.close()
+	os.system("sudo iw reg set "+code)
 
 
 ### DEPRACTED
