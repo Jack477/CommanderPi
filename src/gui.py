@@ -52,10 +52,10 @@ def bopen(window):
 class Network_Window:
 	def __init__(master):
 		master = tk.Tk()
-		master.geometry("480x250")
+		master.geometry("480x280")
 		master.title("Commander Pi")
 		th.window_list.append(master)
-		th.set_theme(master)
+
 
 		mainframe = Frame(master)
 		mainframe.pack(padx=10, pady=10)	
@@ -85,8 +85,31 @@ class Network_Window:
 		wlan_label = tk.Label( network_frame, text = rs.wlan0_data, borderwidth=2, relief="groove",  height=7, width=25, anchor='w', justify=LEFT )
 		wlan_label.grid(row=1, column=1, sticky = W)
 		
+		cc_frame = Frame(mainframe)
+		cc_frame.pack()
+
+		country_code_label = tk.Label( cc_frame, text="Set your country code", font=("TkDefaultFont", 11, "bold"))
+		country_code_label.grid(row=0, column=0, columnspan=2)
+
+		country_code_entry = tk.Entry( cc_frame, justify=CENTER, width=5)
+		country_code_entry.grid(row=1, column=0, sticky=E)
+
+		country_code_button = tk.Button( cc_frame, text="Apply", command=lambda:push_cc(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
+		country_code_button.grid(row=1, column=1)
+
 		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
+
+		def push_cc():
+			code = country_code_entry.get()
+			if isinstance(code, str) and len(code) == 2:
+				code = code.upper()
+				rs.set_country_code(code)
+				msb.showinfo(title="Done!", message="Your country code is now set as "+code)
+			else:
+				msb.showwarning(title="Error", message="Country code should be two letters!")
+
+		th.set_theme(master)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 		master.mainloop()			
@@ -545,6 +568,7 @@ class Window:
 		master.geometry("420x580")
 		master.title("Commander Pi")
 		master.resizable(False, False)
+		#master.iconbitmap("@"+home_path+"/CommanderPi/src/xicon.ico")
 		icon = PhotoImage(file = home_path+"/CommanderPi/src/icon.png")
 		master.iconphoto(True, icon)
 		th.window_list.append(master)
