@@ -53,3 +53,5 @@
 * Added live GPU (v3d) usage frequency
 * Added limit for over_voltage between 0-16 -> https://www.raspberrypi.org/documentation/configuration/config-txt/overclocking.md
 * Fixed reading bootloader version (again)
+## v0.7.1
+* Added option to set country code for WiFi because some PI users have problem with it
