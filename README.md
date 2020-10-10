@@ -46,5 +46,5 @@ Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG
 ## Support me
 All my work is provided for free, I'm doing stuff from fans for fans and learning by this too, improving TwisterOS.</br>
 I'm student, next year I'm going to Institute of Technology. If you like my work you can support me, thank you!
-https://paypal.me/jack47legos
 [![paypal.me/jack47legos](https://ionicabizau.github.io/badges/paypal.svg)](https://www.paypal.me/jack47legos)
+https://paypal.me/jack47legos
