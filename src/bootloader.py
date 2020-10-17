@@ -6,25 +6,16 @@ path = os.path.dirname(os.path.realpath(__file__))
 bootloader_version = sp.getoutput('vcgencmd bootloader_version')
 x_version = bootloader_version[0:11]
 def get_actual_version():
-	x_version_split = x_version.split()
-	print(x_version_split)
-	MONTHS = {"Jan":"01", "Feb":"02", "Mar":"03", "Apr":"04", "May":"05", "Jun":"06", "Jul":"07", "Aug":"08", "Sep":"09", "Oct":"10", "Nov":"11", "Dec":"12"}
-	month = MONTHS[x_version_split[0]]
-	day = x_version_split[1]
-	if int(day) < 10:
-		day = f"0{day}"
-	year = x_version_split[2]
-	print(month)
-	print(day)
-	print(year)
-	return f"{year}-{month}-{day}"
+	latest_eeprom = sp.getoutput("ls /lib/firmware/raspberrypi/bootloader/stable -r | grep --color=never 'pieeprom' | head -n 1")
+	return latest_eeprom
+
 ad = get_actual_version()
 print('Here is ad: '+ad)
 def write_bootloader():
 
 	#os.system('rpi-eeprom-config --out pieeprom-new.bin --config '+path+"/build/bootconf.txt"+' /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin')
-	os.system('rpi-eeprom-config --out /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin --config '+path+"/build/bootconf.txt"+' /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
-	os.system('sudo rpi-eeprom-update -d -f /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
+	os.system(f'rpi-eeprom-config --out /lib/firmware/raspberrypi/bootloader/stable/{ad} --config {path}/build/bootconf.txt /lib/firmware/raspberrypi/bootloader/stable/{ad}')
+	os.system(f'sudo rpi-eeprom-update -d -f /lib/firmware/raspberrypi/bootloader/stable/{ad}')
 
 def read_bootloader():
 	text = ''
@@ -38,17 +29,17 @@ def read_bootloader():
 		print("File is exist!")
 		return bootloader_config
 	else:
-		os.system('sudo mkdir '+path+'/build')
-		if os.path.exists('/lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin'):
-			text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-'+ad+'.bin')
+		os.system(f'sudo mkdir {path}/build')
+		if os.path.exists(f'/lib/firmware/raspberrypi/bootloader/stable/{ad}'):
+			text = sp.getoutput(f'rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/{ad}')
 		else:
 			text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-07-16.bin')
 		#os.system("rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin > build/bootconf.txt")
-		f = open(path+"/build/bootconf.txt", "w+")
+		f = open(f"{path}/build/bootconf.txt", "w+")
 		f.write(text)
 		print("File is not exist! Creating file...")
 		f.close()
-		f2 = open(path+"/build/bootconf.txt")
+		f2 = open(f"{path}/build/bootconf.txt")
 		bootloader_config = f2.read()
 		f2.close()
 		print("File created")
