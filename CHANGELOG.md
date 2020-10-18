@@ -55,3 +55,6 @@
 * Fixed reading bootloader version (again)
 ## v0.7.1
 * Added option to set country code for WiFi because some PI users have problem with it
+## v0.7.1
+* Fixed error with older PI versions (still all is designed for PI 4!)
+* Added additional path for Ubuntu config.txt
