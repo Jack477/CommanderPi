@@ -27,7 +27,8 @@ else:
 		config.write(configfile)
 
 ### update stuff
-app_version = "Version 0.7.1\n"
+app_version = "Version 0.7.2\n"
+print("Here is app-1 "+app_version[:-1])
 def get_app_version():
 	return app_version
 
@@ -222,6 +223,8 @@ if path.exists("/boot/config.txt"):
 	config_path = "/boot/config.txt"
 elif path.exists("/boot/firmware/usercfg.txt"):
 	config_path = "/boot/firmware/usercfg.txt"
+elif path.exists("/boot/firmware/config.txt"):
+	config_path = "/boot/firmware/config.txt"
 else:
 	print("Can't find RaspberryPi config file!")
 print(config_path)
