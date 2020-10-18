@@ -223,8 +223,6 @@ if path.exists("/boot/config.txt"):
 	config_path = "/boot/config.txt"
 elif path.exists("/boot/firmware/usercfg.txt"):
 	config_path = "/boot/firmware/usercfg.txt"
-elif path.exists("/boot/firmware/config.txt"):
-	config_path = "/boot/firmware/config.txt"
 else:
 	print("Can't find RaspberryPi config file!")
 print(config_path)
