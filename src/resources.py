@@ -17,17 +17,52 @@ home_path = sys.argv[1]
 
 config = configparser.ConfigParser()
 if os.path.exists(home_path+'/CommanderPi/src/cpi.config'):
-	config.read(home_path+'/CommanderPi/src/cpi.config')
-	print("Exist and read")
+	#config.read(home_path+'/CommanderPi/src/cpi.config')
+	print("Exist: cpi.config")
 else:
 	print("Creating config...")
 	config['DEFAULT'] = {'color_mode': '0',
-	'version': '0.4.2'}
+	'version': '0.4.2'} # what is this version for?
+#	'version': '0.7.2'} # inject into app_version
 	with open(home_path+'/CommanderPi/src/cpi.config', 'w') as configfile:
 		config.write(configfile)
+		print("Create: cpi.config")
+config.read(home_path+'/CommanderPi/src/cpi.config')
+
+### auto update
+auto_check=True
+if 'auto_check' in config['DEFAULT']:
+	if config['DEFAULT']['auto_check']=='false':
+		auto_check=False
+	if config['DEFAULT']['auto_check']=='False':
+		auto_check=False
+	if config['DEFAULT']['auto_check']=='FALSE':
+		auto_check=False
+	if config['DEFAULT']['auto_check']=='no':
+		auto_check=False
+	if config['DEFAULT']['auto_check']=='No':
+		auto_check=False
+	if config['DEFAULT']['auto_check']=='NO':
+		auto_check=False
+	if config['DEFAULT']['auto_check']=='true':
+		auto_check=True
+	if config['DEFAULT']['auto_check']=='True':
+		auto_check=True
+	if config['DEFAULT']['auto_check']=='TRUE':
+		auto_check=True
+	if config['DEFAULT']['auto_check']=='yes':
+		auto_check=True
+	if config['DEFAULT']['auto_check']=='Yes':
+		auto_check=True
+	if config['DEFAULT']['auto_check']=='YES':
+		auto_check=True
+
+def get_auto_check():
+	return auto_check
 
 ### update stuff
-app_version = "Version 0.7.2\n"
+app_version = "Version 0.7.2\n" # this version number should come from the config
+#app_version = "Version "+config['DEFAULT']['version']+"\n"
 print("Here is app-1 "+app_version[:-1])
 def get_app_version():
 	return app_version

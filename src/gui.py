@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 import os
+#import cpi_config as cf
 import resources as rs
 import bootloader as btl
 import update as up
@@ -731,6 +732,8 @@ class Window:
 		#d = Info_Window()
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 		th.set_theme(master)
-		up.check_update()
+		if rs.auto_check:        # move this to cf.auto_check
+			up.check_update()
+
 		master.mainloop()
 		
