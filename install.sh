@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 problem=$(dpkg -s python3-tk|grep installed)
 path=$(pwd)
 echo $path
