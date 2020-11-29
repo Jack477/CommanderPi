@@ -13,7 +13,7 @@ Nothing, every Linux distrubiton has a python interpreter!
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 <img src="https://i.imgur.com/jCULp4U.png"></img></br>
 ## Download
-https://drive.google.com/file/d/1DjFVZxD3sufDenERN9vidjAQAmRLq2k1/view?usp=sharing
+https://drive.google.com/file/d/12Lo9WWjix-88N6P-C8aeISUYX_xOlcKg/view?usp=sharing
 ## Update
 -You must have version min 0.4.5 (if you don't use download and reinstall app)</br>
 -Use `Update application` button in About window
