@@ -55,11 +55,11 @@ def check_update():
 				if "app_version =" in line:
 					xversion=line
 			if rs.app_version[:-1] in xversion:
-				print("It works bc it's same version!")
+				print("It works because it's same version!")
 			else:
-				msb.showinfo(title=None, message="Update is available!")
+				msb.showinfo(title=None, message="An update is available!")
 			print(rs.app_version)
 			print(xversion)
 	else:
-		print("Network is disconnected")
+		print("Network is disconnected.")
 

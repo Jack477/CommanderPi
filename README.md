@@ -1,51 +1,53 @@
 # CommanderPi
 <img src="https://i.imgur.com/qKibLTt.png"></img></br>
-Easy RaspberryPi4 GUI system managment</br>
+Easy Raspberry Pi 4 GUI system manager.</br>
 #### Included in TwisterOS!</br>
 ### <a href="https://raspbian-x.com/">>PiLAB project<</a>
-### Requiments
-Nothing, every Linux distrubiton has a python interpreter!
+### Requirements
+Nothing, every Linux distribution has a Python interpreter!
 ## Features
--Check your system information like CPU temperature, CPU usage, kernel version etc by user friendly menu </br>
+-Check your system information (CPU temperature, CPU usage, Kernel version,etc) with an user friendly menu.</br>
 -Easy overclocking! </br>
--Check actually bootloader configuration and setup your own!</br>
--Switch between 64bit and 32bit kernel! (EXPERIMENTAL)</br>
+-Checks the actual bootloader configuration and setup your own!</br>
+-Switch between the 64bit and 32bit Linux Kernel! (EXPERIMENTAL)</br>
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 <img src="https://i.imgur.com/jCULp4U.png"></img></br>
-## Download
+## To download the software.
 https://drive.google.com/file/d/1Ym5pdf4-0bTj-uxYpsU0AYnIosziTbYq/view?usp=sharing
-## Update
--You must have version min 0.4.5 (if you don't use download and reinstall app)</br>
--Use `Update application` button in About window
+##  Steps to update the software.
+-CommanderPi must be version 0.4.5+ to update. ( If your version of CommanderPi doesn't fulfill those requirements, you should 
+download the newest version and reinstall it.)</br>
+
+-Press the `Update application` button in the About window.
 ### USAGE: </br>
 (first make install executable! `sudo chmod +x install.sh` )</br>
  Then install it with `./install.sh`</br>
 * **OVERCLOCKING**
-1. Go to Overclocking menu
-1. Set arm_freq
-1. Set gpu_freq
-1. Set over_voltage
+1. Go to the Overclocking menu.
+1. Set the arm_freq.
+1. Set the gpu_freq.
+1. Set the over_voltage.
 1. **CLICK BOTTOM BUTTON TO RESTART RPI!**
-1. Enjoy that!
+1. Enjoy your new overclock!
 * **EEPROM/BOOTLOADER**
-1. Go to Bootloader menu
-1. Set <b>all</b> values
-1. Click 'Apply and save' to apply your own config
-1. Restart Pi
+1. Go to the Bootloader menu.
+1. Select "Set <b>all</b> values."
+1. Click 'Apply and save' to apply your own configuration.
+1. Restart your Raspberry Pi.
 </br>
 
 ## Version history </br>
-Change log <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md">click here</a>
+To see the version history, <a href="https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md">click here.</a>
 </br>
 
 ### TODO
-- [x] system basic informations
-- [x] overclock
-- [x] eeprom
-- [x] network
-- [x] automaticly updates
+- [x] Basic system informations.
+- [x] Overclock.
+- [x] EEPROM.
+- [x] Network.
+- [x] Automatic updater.
 
 ## Support me
 All my work is provided for free, I'm doing stuff from fans for fans and learning by this too, improving TwisterOS.</br>
-I'm student, next year I'm going to Institute of Technology. If you like my work you can support me, thank you!
+I'm a student, Next year, I'm going to the Institute of Technology. If you like my work, you can support me. Thanks you!
 https://www.paypal.com/paypalme/jack47legos
