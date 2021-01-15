@@ -227,7 +227,7 @@ elif path.exists("/boot/firmware/usercfg.txt"):
 elif path.exists("/media/pi/boot/config.txt"):
 	config_path = "/media/pi/boot/config.txt"
 else:
-	print("Can't find RaspberryPi config file!")
+	print("Can't find the Raspberry Pi config file!")
 print(config_path)
 
 gpu_freq = "400" #default
@@ -276,7 +276,7 @@ def get_force_turbo():
 		return "ON"
 	else:
 		return "OFF"
-### CHECK IF OVERVOLTAGE EXIST!!!
+### CHECK IF OVERVOLTAGE EXISTS!!!
 def set_force_turbo():
 	global force_turboexist
 	global oexist
@@ -284,7 +284,7 @@ def set_force_turbo():
 	print(force_turboexist)
 	force_turbo_new = ""
 	if force_turboexist and oexist:
-		print("FORCE TURBO EXIST")
+		print("FORCE TURBO EXISTS")
 		fin = open(config_path, "rt")
 		data = fin.read()
 		if "force_turbo=0" in force_turbo:

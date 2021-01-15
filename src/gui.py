@@ -19,7 +19,7 @@ from PIL import Image, ImageTk
 home_path = sys.argv[1]
 def change_theme(master):
 	if int(th.color_mode)==0:
-		print("Setting color theme to 1")
+		print("Setting color theme to 1.")
 		th.color_mode=1
 	else:
 		th.color_mode=0
@@ -178,13 +178,13 @@ class Bootloader_Info_Window:
 		#separator = ttk.Separator(mainframe, orient='horizontal')
 		#separator.pack(fill=X, expand=True, pady=5)
 		
-		link = tk.Label( mainframe, text="Official bootloader documentation", cursor="hand2", fg="#1D81DA")
+		link = tk.Label( mainframe, text="Official bootloader documentation.", cursor="hand2", fg="#1D81DA")
 		link.pack(fill=X)
 		mlink = 'https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711_bootloader_config.md'
 		link.bind("<Button-1>", lambda e: rs.cpi_open_url(mlink))
 		
 
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close.", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
@@ -290,7 +290,7 @@ class Bootloader_Info_Window:
 					btl.set_bootloader_value("NET_BOOT_MAX_RETRIES", NET_BOOT_MAX_RETRIES_entry.get())
 					btl.write_bootloader()
 					on_Window_Close(master)
-					msb.showinfo(title="", message="Now you need to reboot")
+					msb.showinfo(title="", message="Now you need to reboot.")
 					#rs.reboot()
 		def cancel():
 			importlib.reload(rs)
@@ -455,15 +455,15 @@ class Overclock_Window:
 					if (int(entry_instance) >= 0) and (int(entry_instance) <= 16):
 						rs.set_push_state(state)
 						entry_stuff.config(state='disabled')
-						print("Its a number so it works!")
+						print("It's a number so it works!")
 					else:
-						print("Overvoltage can be beetwen 0-16")
+						print("Overvoltage can be between 0-16.")
 				else:
 					rs.set_push_state(state)
 					entry_stuff.config(state='disabled')
-					print("Its a number so it works!")
+					print("It's a number so it works!")
 			else:
-				print("Its not a number!")
+				print("It's not a number!")
 			
 		def confirum_push():
 			print(rs.push_state1)
@@ -478,7 +478,7 @@ class Overclock_Window:
 					print("It works!")
 					rs.reboot()
 				else:
-					msb.showinfo(title="Warning", message="You don't set all values!")
+					msb.showinfo(title="Warning", message="You didn't set all values!")
 			else:
 				importlib.reload(rs)
 				on_Window_Close(master)
@@ -496,7 +496,7 @@ class Overclock_Window:
 				
 		th.set_theme(master)	
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
-		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")	
+		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it at your own risk!")	
 		master.mainloop()
 
 class About_Window:
@@ -553,7 +553,7 @@ class About_Window:
 			up.update_cpi()
 
 		
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close.", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		th.set_theme(master)
@@ -717,7 +717,7 @@ class Window:
 		btn3.pack(side=BOTTOM, pady=5)
 
 		def switch_turbo():
-			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are not busy.\n Over voltage will be set to 6. System will restart.\n Are you sure?")
+			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are idle.\n Over voltage will be set to 6. System will restart.\n Are you sure?")
 			if confirm_msgb == True:
 				rs.set_force_turbo()
 				rs.reboot()			
