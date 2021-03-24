@@ -4,7 +4,8 @@ Easy Raspberry Pi 4 GUI system manager.</br>
 #### Included in TwisterOS!</br>
 ### <a href="https://raspbian-x.com/">>PiLAB project<</a>
 ### Requirements
-Nothing, every Linux distribution has a Python interpreter!
+git (if you don't have it installed run `sudo apt install git`)
+python (comes installed with most major linux distros!)
 ## Features
 -Check your system information (CPU temperature, CPU usage, Kernel version,etc) with an user friendly menu.</br>
 -Easy overclocking! </br>
