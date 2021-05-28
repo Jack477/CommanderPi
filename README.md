@@ -4,7 +4,8 @@ Easy Raspberry Pi 4 GUI system manager.</br>
 #### Included in TwisterOS!</br>
 ### <a href="https://raspbian-x.com/">>PiLAB project<</a>
 ### Requirements
-Nothing, every Linux distribution has a Python interpreter!
+git (if you don't have it installed run `sudo apt install git`)
+python (comes installed with most major linux distros!)
 ## Features
 -Check your system information (CPU temperature, CPU usage, Kernel version,etc) with an user friendly menu.</br>
 -Easy overclocking! </br>
@@ -13,15 +14,20 @@ Nothing, every Linux distribution has a Python interpreter!
 <img src="https://i.imgur.com/fSOGsL4.png"></img></br>
 <img src="https://i.imgur.com/jCULp4U.png"></img></br>
 ## To download the software.
-https://drive.google.com/file/d/1Ym5pdf4-0bTj-uxYpsU0AYnIosziTbYq/view?usp=sharing
+Open a terminal and type:
+`
+cd ~
+git clone https://github.com/Jack477/CommanderPi
+`
 ##  Steps to update the software.
 -CommanderPi must be version 0.4.5+ to update. ( If your version of CommanderPi doesn't fulfill those requirements, you should 
 download the newest version and reinstall it.)</br>
 
 -Press the `Update application` button in the About window.
 ### USAGE: </br>
-(first make install executable! `sudo chmod +x install.sh` )</br>
- Then install it with `./install.sh`</br>
+First open a terminal and type `cd CommanderPi`</br>
+(Then make install.sh executable! `sudo chmod +x install.sh` )</br>
+Finally install it with `./install.sh`</br>
 * **OVERCLOCKING**
 1. Go to the Overclocking menu.
 1. Set the arm_freq.
