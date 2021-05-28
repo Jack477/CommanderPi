@@ -21,10 +21,7 @@ def download_git(url, name):
 	#print ("download headers: ", headers)
 
 def update_cpi():
-	msb.showinfo(title=None, message="Downloading update!")
-	os.system("git pull origin master")
-	sys.exit(0)
-	'''url = "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py"
+	url = "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py"
 	with urllib.request.urlopen(url) as f:
 		xcontent = f.read().decode('utf-8')
 		xcontent = xcontent.splitlines()
@@ -38,8 +35,12 @@ def update_cpi():
 			delete_old()
 			for f, x in zip(Files, Names):
 				#download_git(f, x)
-				os.system("git pull origin master")
-			sys.exit(0)'''
+				pass
+			msb.showinfo(title=None, message="Downloading!")
+			os.system("rm -r /home/pi/CommanderPi")
+			os.system("git clone https://github.com/Jack477/CommanderPi /home/Pi/CommanderPi")
+			#os.system("git pull origin master")
+			sys.exit(0)
 def is_connected(hostname):
   try:
     host = socket.gethostbyname(hostname)
