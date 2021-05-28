@@ -5,3 +5,6 @@ __pycache__
 log.txt
 cpi.config
 bootconf.txt
+
+#ignore README.md file
+README.md

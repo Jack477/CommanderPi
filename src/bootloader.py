@@ -22,8 +22,8 @@ def read_bootloader():
 	get_actual_version()
 	print(x_version)
 	print(os.path.dirname(os.path.realpath(__file__)))
-	if(os.path.exists(path+"/build/bootconf.txt")):
-		f = open(path+"/build/bootconf.txt")
+	if(os.path.exists(path+"/bootconf.txt")):
+		f = open(path+"/bootconf.txt")
 		bootloader_config = f.read()
 		f.close()
 		print("File is exist!")
@@ -35,11 +35,11 @@ def read_bootloader():
 		else:
 			text = sp.getoutput('rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-07-16.bin')
 		#os.system("rpi-eeprom-config /lib/firmware/raspberrypi/bootloader/stable/pieeprom-2020-04-16.bin > build/bootconf.txt")
-		f = open(f"{path}/build/bootconf.txt", "w+")
+		f = open(f"{path}/bootconf.txt", "w+")
 		f.write(text)
 		print("File is not exist! Creating file...")
 		f.close()
-		f2 = open(f"{path}/build/bootconf.txt")
+		f2 = open(f"{path}/bootconf.txt")
 		bootloader_config = f2.read()
 		f2.close()
 		print("File created")
@@ -63,7 +63,7 @@ FREEZE_VERSION=""
 read_bootloader()
 
 #def set_to_var_bootloader():
-f = open(path+"/build/bootconf.txt")
+f = open(path+"/bootconf.txt")
 for line in f:
 		if "BOOT_UART" in line:
 			BOOT_UART=line
@@ -116,7 +116,7 @@ def set_bootloader_value(name, new_value):
 	elif name in NET_BOOT_MAX_RETRIES:
 		x = NET_BOOT_MAX_RETRIES
 	print(new_value)
-	fin = open(path+"/build/bootconf.txt", "rt")
+	fin = open(path+"/bootconf.txt", "rt")
 	#read file contents to string
 	data = fin.read()
 	#replace all occurrences of the required string
@@ -124,7 +124,7 @@ def set_bootloader_value(name, new_value):
 	#close the input file
 	fin.close()
 	#open the input file in write mode
-	fin = open(path+"/build/bootconf.txt", "wt")
+	fin = open(path+"/bootconf.txt", "wt")
 	#overrite the input file with the resulting data
 	fin.write(data)
 	#close the file
