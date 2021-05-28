@@ -10,7 +10,7 @@ home_path = expanduser("~%s" % user)
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 print(dir_path)
-f_content = "[Desktop Entry]\nName=CommanderPi\nComment=System info and overclocking\nExec="+dir_path+"/src/start.sh\nIcon="+dir_path+"/src/icon.png\nCategories=Utility;\nVersion=1.0\nType=Application\nTerminal=false\nStartupNotify=true"
+f_content = "[Desktop Entry]\nName=CommanderPi\nComment=System info and overclocking\nExec="+dir_path+"/src/start.sh\nIcon="+dir_path+"/src/icons/icon.png\nCategories=Utility;\nVersion=1.0\nType=Application\nTerminal=false\nStartupNotify=true"
 print(f_content)
 
 d_dir = home_path+"/Desktop/commanderpi.desktop"
