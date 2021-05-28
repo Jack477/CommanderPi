@@ -19,6 +19,7 @@ def download_git(url, name):
 	print ("download complete!")
 	print ("download file location: ", filename)
 	#print ("download headers: ", headers)
+
 def update_cpi():
 	url = "https://raw.githubusercontent.com/Jack477/CommanderPi/master/src/resources.py"
 	with urllib.request.urlopen(url) as f:
@@ -33,7 +34,8 @@ def update_cpi():
 		else:
 			delete_old()
 			for f, x in zip(Files, Names):
-				download_git(f, x)
+				#download_git(f, x)
+				os.system("git pull origin master")
 			sys.exit(0)
 def is_connected(hostname):
   try:
