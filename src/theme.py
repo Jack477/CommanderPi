@@ -18,7 +18,7 @@ def set_theme(master):
 	#print(defaultbg)
 	#print("fucking color mode is: "+str(color_mode))
 	if int(color_mode)==1:
-		default_background_color="Black"
+		default_background_color="#1b1c1e"
 		default_font_color="White"
 		master.tk_setPalette(background=default_background_color, foreground=default_font_color)
 		master.update()
@@ -57,7 +57,7 @@ def set_theme(master):
 
 	for window in window_list:
 		if int(color_mode)==1:
-			default_background_color="Black"
+			default_background_color="#1b1c1e"
 			default_font_color="White"
 			window.tk_setPalette(background=default_background_color, foreground=default_font_color)
 			window.update()
