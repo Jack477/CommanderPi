@@ -1,6 +1,6 @@
 # Ignore pycache
 __pycache__
-
+.github
 # Ignore the program's log files
 log.txt
 cpi.config
