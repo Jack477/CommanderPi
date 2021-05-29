@@ -1,5 +1,5 @@
 Installation
-1. Move "CommanderPi" folder to "/home/user_name"
+1. Type "cd CommanderPi"
 2. Make "sudo chmod +x install.sh"
 3. Run "./install.sh"
 4. Enjoy
