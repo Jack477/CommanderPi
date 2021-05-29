@@ -91,7 +91,7 @@ class Network_Window:
 		cc_frame = Frame(mainframe)
 		cc_frame.pack()
 
-		quest_icon = Image.open(home_path+"/CommanderPi/src/icons/quest.png")
+		quest_icon = Image.open(home_path+"/CommanderPi/src/icons/Quest.png")
 		quest_photo = ImageTk.PhotoImage(quest_icon, master=cc_frame)
 		country_code_label = tk.Label( cc_frame, text="Set your country code", font=("TkDefaultFont", 11, "bold"), image=quest_photo, compound=RIGHT)
 
@@ -349,7 +349,7 @@ class Addons_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 
-		image = Image.open(home_path+"/CommanderPi/src/icons/tool.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/Tool.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  Additional tools", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -404,7 +404,7 @@ class GPU_Info_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 				
-		image = Image.open(home_path+"/CommanderPi/src/icons/gpu.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/Gpu.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  GPU Details", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -415,7 +415,7 @@ class GPU_Info_Window:
 		separator.pack(fill=X, expand=True, pady=15)
 		
 		### CONTENT
-		quest_icon = Image.open(home_path+"/CommanderPi/src/icons/quest.png")
+		quest_icon = Image.open(home_path+"/CommanderPi/src/icons/Quest.png")
 		quest_photo = ImageTk.PhotoImage(quest_icon, master=mainframe)
 
 		gpu_info_label = tk.Label(mainframe, text=rs.get_gpu_info())
@@ -617,7 +617,7 @@ class About_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 				
-		image = Image.open(home_path+"/CommanderPi/src/icons/logo.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/Logo.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  About Application", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -673,7 +673,7 @@ class Window:
 		master.geometry("420x660")
 		master.title("Commander Pi")
 		master.resizable(False, False)
-		icon = PhotoImage(file = home_path+"/CommanderPi/src/icons/icon.png")
+		icon = PhotoImage(file = home_path+"/CommanderPi/src/icons/Icon.png")
 		master.iconphoto(True, icon)
 		th.window_list.append(master)
 		mainframe = Frame(master)
@@ -683,7 +683,7 @@ class Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack()
 		
-		loadimg = Image.open(home_path+"/CommanderPi/src/icons/title_logo.png")
+		loadimg = Image.open(home_path+"/CommanderPi/src/icons/Title_logo.png")
 		img = ImageTk.PhotoImage(image=loadimg)
 
 		img_label = tk.Label ( titleframe, image=img)
@@ -779,8 +779,8 @@ class Window:
 			
 		refresh()
 		
-		up_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/up.png") 
-		down_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/down.png") 
+		up_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Up.png") 
+		down_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Down.png") 
 
 		advanced_label = tk.Label( mainframe, text = "Advanced tools", font=("TkDefaultFont", 11, "bold"), anchor='w', cursor="hand2", image=up_photo, compound=RIGHT)	
 		advanced_label.bind("<Button-1>", lambda e:hide_tools())
@@ -812,13 +812,13 @@ class Window:
 		overclock_button.grid(row=0, column=3, padx=4)
 		
 
-		gpu_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/gpu.png")
+		gpu_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Gpu.png")
 
 		gpu_info_button = Button(btn_frame, text="GPU tools", command = lambda:bopen(GPU_Info_Window), width=60, height=80, cursor="hand2", image=gpu_photo, compound=TOP)
 		gpu_info_button.grid(row=1, column=1, padx=4, pady=8)
 
 
-		addons_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/tool.png")
+		addons_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Tool.png")
 
 		addons_button = Button(btn_frame, text="Addons", command=lambda:bopen(Addons_Window), width=60, height=80, cursor="hand2", image=addons_photo, compound=TOP)
 		addons_button.grid(row=1, column=2, padx=4, pady=8)
