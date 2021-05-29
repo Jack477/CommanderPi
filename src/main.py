@@ -6,7 +6,7 @@ import os
 import sys
 from tkinter import *
 ### this trick should fix missing file problem for update from 0.7.2 to 1.0
-if not os.path.exists(rs.home_path+"/CommanderPi/src/icons/gpu.png"):
+if not os.path.exists(rs.home_path+"/CommanderPi/src/icons/Gpu.png"):
     os.system("( cd ~ && rm -r "+rs.home_path+"/CommanderPi )")
     os.system("( cd ~ && git clone https://github.com/Jack477/CommanderPi "+rs.home_path+"/CommanderPi )")
     os.system("( cd ~ && sudo chown -R pi "+rs.home_path+"/CommanderPi )")

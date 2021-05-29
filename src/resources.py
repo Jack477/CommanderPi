@@ -290,12 +290,14 @@ def set_gpu_mem(new_value):
 	if gpu_memexist:
 		f = open(config_path, "rt")
 		data = f.read()
-		data.replace(gpu_mem, 'gpu_mem='+new_value+'\n')
+		data = data.replace(gpu_mem, 'gpu_mem='+new_value+'\n')
 		f.close()
 		f = open(config_path, "wt")
 		f.write(data)
 		f.close()
-
+	else:
+		with open(config_path, "a") as f:
+			f.write('gpu_mem='+new_value+'\n')
 
 
 

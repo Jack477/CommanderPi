@@ -442,7 +442,7 @@ class GPU_Info_Window:
 		def set_gpu_mem():
 			confirm_msgb = msb.askokcancel(title=None, message="Extreme values should be avoided because it can cause boot problems")
 			if confirm_msgb == True:
-				pass
+				rs.set_gpu_mem(str(gpu_mem_slider.get()))
 
 
 		def switch_kms():
