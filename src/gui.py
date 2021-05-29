@@ -828,7 +828,6 @@ class Window:
 		btn3 = Button( mainframe, text="About | Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
 		btn3.pack(side=BOTTOM, pady=7)
 
-		
 		def hide_tools():
 			global hide
 			x_pos = master.winfo_x()
@@ -844,6 +843,7 @@ class Window:
 				master.geometry("420x660")
 				hide=False
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
+		hide_tools() # hide tools as default <it looks better?>
 		th.set_theme(master)
 		up.check_update()
 		master.mainloop()

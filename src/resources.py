@@ -14,6 +14,14 @@ from PIL import Image, ImageTk
 
 home_path = sys.argv[1]
 
+print("Here is home_path "+str(home_path))
+
+### update stuff
+app_version = "Version 1.0\n"
+print("Here is app-1 "+app_version[:-1])
+def get_app_version():
+	return app_version
+
 ### create config file
 config = configparser.ConfigParser()
 if os.path.exists(home_path+'/CommanderPi/src/cpi.config'):
@@ -22,16 +30,10 @@ if os.path.exists(home_path+'/CommanderPi/src/cpi.config'):
 else:
 	print("Creating config...")
 	config['DEFAULT'] = {'color_mode': '0',
-	'version': '0.4.2'}
+	'version': app_version[:-1]}
 	with open(home_path+'/CommanderPi/src/cpi.config', 'w') as configfile:
 		config.write(configfile)
 
-
-### update stuff
-app_version = "Version 1.0\n"
-print("Here is app-1 "+app_version[:-1])
-def get_app_version():
-	return app_version
 
 ### open url at new tab in default browser
 def open_url(url):
