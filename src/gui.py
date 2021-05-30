@@ -601,6 +601,7 @@ class Overclock_Window:
 		th.set_theme(master)	
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
 		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")	
+		master.lift()
 		master.mainloop()
 
 class About_Window:
