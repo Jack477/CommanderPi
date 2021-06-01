@@ -15,6 +15,7 @@ python (comes installed with most major linux distros!)
 <img src="https://i.imgur.com/jCULp4U.png"></img></br>
 ## To download the software.
 Open a terminal and type:
+
 `
 cd ~
 git clone https://github.com/Jack477/CommanderPi
