@@ -431,7 +431,7 @@ class GPU_Info_Window:
 		gpu_mem_label=tk.Label(mainframe, text=gpu_mem, image=quest_photo, compound=RIGHT)
 		gpu_label_popup2 = rs.CreateToolTip(gpu_mem_label, " Very low or very high values should be avoided because it can cause problems like preventing Linux from booting.\n Unlike GPU's found on x86 machines,\n where increasing memory can improve 3D performance,\n the architecture of the VideoCore means there is no performance advantage\n from specifying values larger than is necessary.")
 		gpu_mem_label.pack(pady=5)
-		gpu_mem_slider = tk.Scale(mainframe, label="Default: 76 | Minimum: 16 | Maximum: 512", length=285, from_=16, to=512, orient=tk.HORIZONTAL, showvalue=1)
+		gpu_mem_slider = tk.Scale(mainframe, label="Default: 76 | Minimum: 16 | Maximum: 512", length=300, from_=16, to=512, orient=tk.HORIZONTAL, showvalue=1)
 		gpu_mem_slider.pack()
 		gpu_mem_button = tk.Button(mainframe, text="Set GPU memory and reboot",cursor="hand2", font=("TkDefaultFont", 10, "bold"), command=lambda:set_gpu_mem())
 		gpu_mem_button.pack()
