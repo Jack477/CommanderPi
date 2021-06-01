@@ -15,11 +15,14 @@ from PIL import Image, ImageTk
 
 ### TODO: Move change_theme function to theme.py?
 ### split resources.py into smaller files
-### move window_list from theme.py to resources
+
+### home path as python script terminal argument
 home_path = sys.argv[1]
+
+### change color theme, edit config file
 def change_theme(master):
 	if int(th.color_mode)==0:
-		print("Setting color theme to 1.")
+		print("Setting color theme to 1")
 		th.color_mode=1
 	else:
 		th.color_mode=0
@@ -27,7 +30,7 @@ def change_theme(master):
 	with open(home_path+'/CommanderPi/src/cpi.config', 'w') as configfile:
 		rs.config.write(configfile)
 	th.set_theme(master)
-	#print(th.color_mode)
+
 
 ### Use in window class: master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 def on_Window_Close(master):
@@ -45,9 +48,9 @@ def killwindow(event, master):
 def bopen(window):
 	x = window()
 
-### Depracted
-#def callback(url):
-#	webbrowser.open_new(url)
+
+
+### Every class is another window which is open in own master/loop
 
 class Network_Window:
 	def __init__(master):
@@ -88,8 +91,13 @@ class Network_Window:
 		cc_frame = Frame(mainframe)
 		cc_frame.pack()
 
-		country_code_label = tk.Label( cc_frame, text="Set your country code", font=("TkDefaultFont", 11, "bold"))
+		quest_icon = Image.open(home_path+"/CommanderPi/src/icons/Quest.png")
+		quest_photo = ImageTk.PhotoImage(quest_icon, master=cc_frame)
+		country_code_label = tk.Label( cc_frame, text="Set your country code", font=("TkDefaultFont", 11, "bold"), image=quest_photo, compound=RIGHT)
+
 		country_code_label.grid(row=0, column=0, columnspan=2)
+
+		country_code_tip = rs.CreateToolTip(country_code_label, "Country code defines what WiFi frequency should be used in your country.\nFor example US, DE, CA etc")
 
 		country_code_entry = tk.Entry( cc_frame, justify=CENTER, width=5)
 		country_code_entry.grid(row=1, column=0, sticky=E)
@@ -112,7 +120,8 @@ class Network_Window:
 		th.set_theme(master)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
-		master.mainloop()			
+		master.mainloop()
+		
 class Bootloader_Info_Window:
 
 	def __init__(master):
@@ -142,10 +151,7 @@ class Bootloader_Info_Window:
 		
 		versionx_label = tk.Label(mainframe, text="Version information:", font=("TkDefaultFont", 11, "bold"), anchor='w' )
 		versionx_label.pack(fill=X)
-		#310
-		
 
-		
 		bootloader_version_label = tk.Label(mainframe, text=btl.bootloader_version, justify="left", wraplength="360", anchor='w')
 		bootloader_version_label.pack(fill=X)
 		
@@ -166,25 +172,14 @@ class Bootloader_Info_Window:
 		separator = ttk.Separator(mainframe, orient='horizontal')
 		separator.pack(fill=X, expand=True, pady=5)
 
-		#kernel_frame = Frame(mainframe)
-		#kernel_frame.pack()
-
-		#exp_label = tk.Label( kernel_frame, text="Experimental", font=("TkDefaultFont", 12, "bold"), fg="#961EB6")
-		#exp_label.grid(row=0, column=0)
-
-		#kernel_button = tk.Button( kernel_frame, text="Switch kernel mode", command=lambda:switch_kernel(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
-		#kernel_button.grid(row=1, column=0)
-
-		#separator = ttk.Separator(mainframe, orient='horizontal')
-		#separator.pack(fill=X, expand=True, pady=5)
 		
-		link = tk.Label( mainframe, text="Official bootloader documentation.", cursor="hand2", fg="#1D81DA")
+		link = tk.Label( mainframe, text="Official bootloader documentation", cursor="hand2", fg="#1D81DA")
 		link.pack(fill=X)
 		mlink = 'https://www.raspberrypi.org/documentation/hardware/raspberrypi/bcm2711_bootloader_config.md'
-		link.bind("<Button-1>", lambda e: rs.cpi_open_url(mlink))
+		link.bind("<Button-1>", lambda e: rs.open_url(mlink))
 		
 
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close.", font=("TkDefaultFont", 11, "bold") )
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
@@ -268,12 +263,6 @@ class Bootloader_Info_Window:
 			th.set_theme(master)
 
 
-			### Insert default bootloader values, TODO in future
-			#BOOT_UART_entry.insert(END, btl.BOOT_UART[-2:-1])
-			#WAKE_ON_GPIO_entry.insert(END, btl.WAKE_ON_GPIO[-2:-1])
-			#POWER_OFF_ON_HALT_entry.insert(END, btl.POWER_OFF_ON_HALT[-2:-1])
-			#DHCP_TIMEOUT_entry.insert(END, btl.DHCP_TIMEOUT[-6:-1])
-
 			def push_config():
 				confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
 				if confirm_msgb == True:
@@ -290,7 +279,7 @@ class Bootloader_Info_Window:
 					btl.set_bootloader_value("NET_BOOT_MAX_RETRIES", NET_BOOT_MAX_RETRIES_entry.get())
 					btl.write_bootloader()
 					on_Window_Close(master)
-					msb.showinfo(title="", message="Now you need to reboot.")
+					msb.showinfo(title="", message="Now you need to reboot")
 					#rs.reboot()
 		def cancel():
 			importlib.reload(rs)
@@ -345,8 +334,130 @@ class Proc_Info_Window:
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
 		master.mainloop()
 	
+
+class Addons_Window:
+
+	def __init__(master):
+
+		master=tk.Tk()
+		master.geometry("350x400")
+		master.title("Commander Pi")
+		th.window_list.append(master)
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)
+
+		titleframe = Frame(mainframe)
+		titleframe.pack(fill=X)
+
+		image = Image.open(home_path+"/CommanderPi/src/icons/Tool.png")
+		photo = ImageTk.PhotoImage(image, master=titleframe) 
+
+		title_label = tk.Label( titleframe, text = "  Additional tools", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		title_label.image = photo
+		title_label.pack(side=LEFT)
+	
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=15)
+
+
+
+		btn_kernel = Button(mainframe, text="Switch kernel 32/64bit", command = lambda:switch_kernel(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		btn_kernel.pack()
+
+		btn_force_turbo = Button(mainframe, text="force_turbo mode", command = lambda:switch_turbo(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		btn_force_turbo.pack()
+
+		def switch_turbo():
+			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are not busy.\n Over voltage will be set to 6. System will restart.\n Are you sure?")
+			if confirm_msgb == True:
+				rs.set_force_turbo()
+				rs.reboot()			
+		def switch_kernel():
+			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\n Are you sure?")
+			if confirm_msgb == True:
+				rs.set_kernel()
+				rs.reboot()
+
+		separator2 = ttk.Separator(mainframe, orient='horizontal')
+		separator2.pack(fill=X, expand=True, pady=15)	
 		
-			
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(side=BOTTOM)
+		th.set_theme(master)
+		master.bind('<Escape>', lambda e:killwindow(e, master))
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
+		master.mainloop()
+
+		master.mainloop()
+
+class GPU_Info_Window:
+
+	def __init__(master):
+	
+		master = tk.Tk()
+		master.geometry("360x400")
+		master.title("Commander Pi")
+		th.window_list.append(master)
+		mainframe = Frame(master)
+		mainframe.pack(padx=10, pady=10)	
+		
+		titleframe = Frame(mainframe)
+		titleframe.pack(fill=X)
+				
+		image = Image.open(home_path+"/CommanderPi/src/icons/Gpu.png")
+		photo = ImageTk.PhotoImage(image, master=titleframe) 
+
+		title_label = tk.Label( titleframe, text = "  GPU Details", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		title_label.image = photo
+		title_label.pack(side=LEFT)
+	
+		separator = ttk.Separator(mainframe, orient='horizontal')
+		separator.pack(fill=X, expand=True, pady=15)
+		
+		### CONTENT
+		quest_icon = Image.open(home_path+"/CommanderPi/src/icons/Quest.png")
+		quest_photo = ImageTk.PhotoImage(quest_icon, master=mainframe)
+
+		gpu_info_label = tk.Label(mainframe, text=rs.get_gpu_info())
+		gpu_info_label.pack()
+
+		gpu_kms_label = tk.Label(mainframe, text=rs.get_kms_mode(), image=quest_photo, compound=RIGHT)
+		gpu_label_popup = rs.CreateToolTip(gpu_kms_label, "Switching between legacy (kms) and non-legacy (fkms) driver which influence on 3D acceleration performance")
+		gpu_kms_label.pack()
+		gpu_button = tk.Button(mainframe, text="SWITCH KMS", command=lambda:switch_kms(), cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		gpu_button.pack()
+
+		gpu_mem = "GPU Memory: "+rs.get_gpu_mem()
+		gpu_mem_label=tk.Label(mainframe, text=gpu_mem, image=quest_photo, compound=RIGHT)
+		gpu_label_popup2 = rs.CreateToolTip(gpu_mem_label, " Very low or very high values should be avoided because it can cause problems like preventing Linux from booting.\n Unlike GPU's found on x86 machines,\n where increasing memory can improve 3D performance,\n the architecture of the VideoCore means there is no performance advantage\n from specifying values larger than is necessary.")
+		gpu_mem_label.pack(pady=5)
+		gpu_mem_slider = tk.Scale(mainframe, label="Default: 76 | Minimum: 16 | Maximum: 512", length=300, from_=16, to=512, orient=tk.HORIZONTAL, showvalue=1)
+		gpu_mem_slider.pack()
+		gpu_mem_button = tk.Button(mainframe, text="Set GPU memory and reboot",cursor="hand2", font=("TkDefaultFont", 10, "bold"), command=lambda:set_gpu_mem())
+		gpu_mem_button.pack()
+
+		separator2 = ttk.Separator(mainframe, orient='horizontal')
+		separator2.pack(fill=X, expand=True, pady=15)	
+
+		def set_gpu_mem():
+			confirm_msgb = msb.askokcancel(title=None, message="Extreme values should be avoided because it can cause boot problems")
+			if confirm_msgb == True:
+				rs.set_gpu_mem(str(gpu_mem_slider.get()))
+
+
+		def switch_kms():
+			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\n Are you sure?")
+			if confirm_msgb == True:
+				rs.set_kms_mode()
+				rs.reboot()
+
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(side=BOTTOM)
+		th.set_theme(master)
+		master.bind('<Escape>', lambda e:killwindow(e, master))
+		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
+		master.mainloop()
+					
 class Overclock_Window:
 
 	def __init__(master):
@@ -366,7 +477,6 @@ class Overclock_Window:
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  Overclocking", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
-		#title_label = tk.Label( master=titleframe, image = photo, compound=TOP)
 		title_label.image = photo
 		title_label.pack(side=LEFT)
 		
@@ -437,10 +547,6 @@ class Overclock_Window:
 		separator3 = ttk.Separator(mainframe, orient='horizontal')
 		separator3.pack(fill=X, expand=True, pady=10)
 		
-		#proposition = tk.Label( master, text="Stable proposed values:\narm_freq=2000\ngpu_freq=600\nover_voltage=6\nMax level:\narm_freq=2147\ngpu_freq=750\nover_voltage=6", fg="red", font=("Courier", 18) )
-		#proposition.pack(fill=X)
-		
-
 		
 		reboot_b = tk.Button (mainframe, text="Apply and Reboot", command = lambda:confirum_push(), font=("TkDefaultFont", 12, "bold"), cursor="hand2")
 		reboot_b.pack(side=BOTTOM, pady=35)
@@ -455,15 +561,15 @@ class Overclock_Window:
 					if (int(entry_instance) >= 0) and (int(entry_instance) <= 16):
 						rs.set_push_state(state)
 						entry_stuff.config(state='disabled')
-						print("It's a number so it works!")
+						print("Its a number so it works!")
 					else:
-						print("Overvoltage can be between 0-16.")
+						print("Overvoltage can be beetwen 0-16")
 				else:
 					rs.set_push_state(state)
 					entry_stuff.config(state='disabled')
-					print("It's a number so it works!")
+					print("Its a number so it works!")
 			else:
-				print("It's not a number!")
+				print("Its not a number!")
 			
 		def confirum_push():
 			print(rs.push_state1)
@@ -472,10 +578,9 @@ class Overclock_Window:
 			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
 			if confirm_msgb == True:
 				if arm_freq_entry.get() != "" and gpu_freq_entry.get() != "" and over_voltage_entry.get() != "" and rs.push_state1 == True and rs.push_state2 == True and rs.push_state3 == True:
-					rs.overclock_arm_freq(arm_freq_entry.get())
-					rs.overclock_gpu_freq(gpu_freq_entry.get())
-					rs.overclock_over_voltage(over_voltage_entry.get())
-					print("It works!")
+					rs.overclock(arm_freq_entry.get(), 2)
+					rs.overclock(gpu_freq_entry.get(), 3)
+					rs.overclock(over_voltage_entry.get(), 1)
 					rs.reboot()
 				else:
 					msb.showinfo(title="Warning", message="You didn't set all values!")
@@ -485,10 +590,9 @@ class Overclock_Window:
 		def set_default():
 			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
 			if confirm_msgb == True:
-				rs.overclock_arm_freq("1500")
-				rs.overclock_gpu_freq("500")
-				rs.overclock_over_voltage("")
-				print("It works!")	
+				rs.overclock("1500", 2)
+				rs.overclock("500", 3)
+				rs.overclock("", 1)
 				rs.reboot()
 			else:
 				importlib.reload(rs)
@@ -496,7 +600,8 @@ class Overclock_Window:
 				
 		th.set_theme(master)	
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
-		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it at your own risk!")	
+		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")	
+		master.lift()
 		master.mainloop()
 
 class About_Window:
@@ -513,7 +618,7 @@ class About_Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack(fill=X)
 				
-		image = Image.open(home_path+"/CommanderPi/src/icons/logo.png")
+		image = Image.open(home_path+"/CommanderPi/src/icons/Logo.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
 		title_label = tk.Label( titleframe, text = "  About Application", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
@@ -526,10 +631,10 @@ class About_Window:
 		content_frame = Frame(mainframe)
 		content_frame.pack()
 		
-		about_label = tk.Label( content_frame, text = "Commander Pi 2020\n", justify=CENTER, font=("TkDefaultFont", 11, "bold"))
+		about_label = tk.Label( content_frame, text = "Commander Pi 2020/2021\n", justify=CENTER, font=("TkDefaultFont", 11, "bold"))
 		about_label.pack()
 		
-		text_label = tk.Label( content_frame, text="By Jack477\nFor Twister OS\n\nGraphic elements by grayduck\nIcon derived from a work by Vectors Market\nApp idea by Salva\n", justify=CENTER)
+		text_label = tk.Label( content_frame, text="By Jack47\n\nGraphic elements by grayduck\nIcon derived from a work by Vectors Market", justify=CENTER)
 		text_label.pack(fill=X)
 		
 		version_label = tk.Label( content_frame, text=rs.get_app_version(), font=("TkDefaultFont", 11, "bold"), justify=CENTER)
@@ -538,7 +643,7 @@ class About_Window:
 		link = tk.Label( content_frame, text="Changelog", cursor="hand2", fg="#1D81DA", pady=5)
 		link.pack(fill=X)
 		mlink = 'https://github.com/Jack477/CommanderPi/blob/master/CHANGELOG.md'
-		link.bind("<Button-1>", lambda e: rs.cpi_open_url(mlink))
+		link.bind("<Button-1>", lambda e: rs.open_url(mlink))
 		
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
 		separator2.pack(fill=X, expand=True, pady=15)
@@ -553,7 +658,7 @@ class About_Window:
 			up.update_cpi()
 
 		
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close.", font=("TkDefaultFont", 11, "bold") )
+		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
 		bind_label.pack(side=BOTTOM)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		th.set_theme(master)
@@ -561,15 +666,15 @@ class About_Window:
 		master.mainloop()
 
 ### Main window		
+hide = False
 class Window:
 	def __init__(master):
 
 		master = tk.Tk()
-		master.geometry("420x580")
+		master.geometry("420x660")
 		master.title("Commander Pi")
 		master.resizable(False, False)
-		#master.iconbitmap("@"+home_path+"/CommanderPi/src/xicon.ico")
-		icon = PhotoImage(file = home_path+"/CommanderPi/src/icon.png")
+		icon = PhotoImage(file = home_path+"/CommanderPi/src/icons/Icon.png")
 		master.iconphoto(True, icon)
 		th.window_list.append(master)
 		mainframe = Frame(master)
@@ -579,15 +684,13 @@ class Window:
 		titleframe = Frame(mainframe)
 		titleframe.pack()
 		
-		loadimg = Image.open(home_path+"/CommanderPi/src/icons/title_logo.png")
+		loadimg = Image.open(home_path+"/CommanderPi/src/icons/Title_logo.png")
 		img = ImageTk.PhotoImage(image=loadimg)
 
 		img_label = tk.Label ( titleframe, image=img)
 		img_label.image = img
 		img_label.grid(row=0, column=0, columnspan=2)
 		
-		#title_label = tk.Label( titleframe, text = "Commander Pi", font=("TkDefaultFont", 22, "bold") )
-		#title_label.grid(row=0, column=1)
 		
 		separator = ttk.Separator(mainframe, orient='horizontal')
 		separator.pack(fill=X, expand=True, pady=10)
@@ -598,13 +701,13 @@ class Window:
 		title2_label = tk.Label( infoframe, text = "Real-time system information:\n", font=("TkDefaultFont", 11, "bold"), anchor='w')
 		title2_label.grid(row=0, column=0, columnspan=2, sticky=W)
 		
-		board_version_label = tk.Label( infoframe, text= rs.board_version, fg="red", anchor='w')
+		board_version_label = tk.Label( infoframe, text= rs.board_version, fg="#D19113", anchor='w')
 		board_version_label.grid(row=1, column=0, columnspan=2, sticky=W)
 		
 		kernel_version_label = tk.Label( infoframe, text = "Kernel version: ", width=30, anchor='w' )
 		kernel_version_label.grid(row=2, column=0, sticky=W)
 		
-		kernel_version_label2 = tk.Label( infoframe, text = rs.kernel_version , width=15, anchor='w')
+		kernel_version_label2 = tk.Label( infoframe, text = rs.get_kernel_version() , width=15, anchor='w')
 		kernel_version_label2.grid(row=2, column=1)
 		
 		kernel_mode_label = tk.Label( infoframe, text = "Operating mode: ", width=30, anchor='w')
@@ -616,7 +719,7 @@ class Window:
 		processor_architecture_label = tk.Label( infoframe, text="Processor architecture: ", width=30, anchor='w' )
 		processor_architecture_label.grid(row=4, column=0, sticky=W)
 		
-		processor_architecture_label2 = tk.Label( infoframe, text=rs.processor_architecture, width=15, anchor='w')
+		processor_architecture_label2 = tk.Label( infoframe, text=rs.get_arch(), width=15, anchor='w')
 		processor_architecture_label2.grid(row=4, column=1)
 
 		force_turbo_label = tk.Label( infoframe, text="Force_turbo: ", width=30, anchor='w' )
@@ -660,76 +763,88 @@ class Window:
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
 		separator2.pack(fill=X, expand=True, pady=10)
 
-				#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
+		#REFRESH CPU USAGE, MEMORY USAGE AND TEMPERATURE
 		def refresh():
-			#for x in th.window_list:
-			#	print(x.__class__)
+
 			ttext = rs.reftemp()
 			ptext = rs.refusage()
 			mtext = rs.refmem()
 			gtext = rs.refgpu()
-			#dtext = str(rs.get_disk_percent())
-			#dtext = "CPU usage " + rs.cpu_usagex +" MHz"
+
 			memory_use_label2.configure(text = mtext + "/100%")
 			actual_cpu_temp_label2.configure(text = ttext)
 			actual_cpu_usage_label2.configure(text = ptext)
 			actual_gpu_usage_label2.configure(text = gtext)
-			#disk_use_label.configure(text = "Disk space usage" +dtext+"/100%")
+
 			master.after(1000, refresh)
 			
 		refresh()
 		
-		
-		advanced_label = tk.Label( mainframe, text = "Advanced tools", font=("TkDefaultFont", 11, "bold"), anchor='w' )	
-		advanced_label.pack(fill=X)
-		
+		up_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Up.png") 
+		down_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Down.png") 
+
+		advanced_label = tk.Label( mainframe, text = "Advanced tools", font=("TkDefaultFont", 11, "bold"), anchor='w', cursor="hand2", image=up_photo, compound=RIGHT)	
+		advanced_label.bind("<Button-1>", lambda e:hide_tools())
+		advanced_label.pack(fill=X, pady=5)
+
+
+
 		btn_frame = Frame(mainframe)
 		btn_frame.pack(fill=X)
 		
-		photo1 = PhotoImage(file = home_path+"/CommanderPi/src/icons/CPUs.png") 
-		#photoimage1 = photo1.subsample(15, 15) 
+		photo_proc_info = PhotoImage(file = home_path+"/CommanderPi/src/icons/CPUs.png") 
 		
-		proc_info_button = Button ( btn_frame, text="CPU details", command = lambda:bopen(Proc_Info_Window), width=60, height=80, cursor="hand2", image = photo1, compound=TOP)
+		proc_info_button = Button ( btn_frame, text="CPU details", command = lambda:bopen(Proc_Info_Window), width=60, height=80, cursor="hand2", image = photo_proc_info, compound=TOP)
 		proc_info_button.grid(row=0, column=0, padx=4)
 		
-		photo2 = PhotoImage(file = home_path+"/CommanderPi/src/icons/Bootloaders.png")  
+		photo_bootloader = PhotoImage(file = home_path+"/CommanderPi/src/icons/Bootloaders.png")  
 		
-		btn4 = Button (btn_frame, text="Bootloader", command = lambda:bopen(Bootloader_Info_Window), width=60, height=80, cursor="hand2", image = photo2, compound=TOP)
-		btn4.grid(row=0, column=1, padx=4)
+		bootloarder_button = Button (btn_frame, text="Bootloader", command = lambda:bopen(Bootloader_Info_Window), width=60, height=80, cursor="hand2", image = photo_bootloader, compound=TOP)
+		bootloarder_button.grid(row=0, column=1, padx=4)
 		
-		photo3 = PhotoImage(file = home_path+"/CommanderPi/src/icons/Networkings.png")  		
+		photo_network = PhotoImage(file = home_path+"/CommanderPi/src/icons/Networkings.png")  		
 		
-		btn5 = Button (btn_frame, text="Network", command = lambda:bopen(Network_Window),  width=60, height=80, cursor="hand2", image = photo3, compound=TOP)
-		btn5.grid(row=0, column=2, padx=4)
+		network_button = Button (btn_frame, text="Network", command = lambda:bopen(Network_Window),  width=60, height=80, cursor="hand2", image = photo_network, compound=TOP)
+		network_button.grid(row=0, column=2, padx=4)
 		
-		photo4 = PhotoImage(file = home_path+"/CommanderPi/src/icons/Overclockings.png") 
+		photo_overclock = PhotoImage(file = home_path+"/CommanderPi/src/icons/Overclockings.png") 
 		
-		btn2 = Button(btn_frame, text="Overclock", command = lambda:bopen(Overclock_Window),  width=60, height=80, cursor="hand2", image = photo4, compound=TOP)
-		btn2.grid(row=0, column=3, padx=4)
+		overclock_button = Button(btn_frame, text="Overclock", command = lambda:bopen(Overclock_Window),  width=60, height=80, cursor="hand2", image = photo_overclock, compound=TOP)
+		overclock_button.grid(row=0, column=3, padx=4)
 		
-		btn_kernel = Button(btn_frame, text="Switch kernel 32/64bit", command = lambda:switch_kernel(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
-		btn_kernel.grid(row=1, column=0, columnspan=2, padx=4, pady=5)
 
-		btn_force_turbo = Button(btn_frame, text="force_turbo mode", command = lambda:switch_turbo(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
-		btn_force_turbo.grid(row=1, column=2, columnspan=2, padx=4, pady=5)
-		
-		btn3 = Button( mainframe, text="About/Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
-		btn3.pack(side=BOTTOM, pady=5)
+		gpu_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Gpu.png")
 
-		def switch_turbo():
-			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are idle.\n Over voltage will be set to 6. System will restart.\n Are you sure?")
-			if confirm_msgb == True:
-				rs.set_force_turbo()
-				rs.reboot()			
-		def switch_kernel():
-			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\n Are you sure?")
-			if confirm_msgb == True:
-				rs.set_kernel()
-				rs.reboot()
+		gpu_info_button = Button(btn_frame, text="GPU tools", command = lambda:bopen(GPU_Info_Window), width=60, height=80, cursor="hand2", image=gpu_photo, compound=TOP)
+		gpu_info_button.grid(row=1, column=1, padx=4, pady=8)
+
+
+		addons_photo = PhotoImage(file = home_path+"/CommanderPi/src/icons/Tool.png")
+
+		addons_button = Button(btn_frame, text="Addons", command=lambda:bopen(Addons_Window), width=60, height=80, cursor="hand2", image=addons_photo, compound=TOP)
+		addons_button.grid(row=1, column=2, padx=4, pady=8)
+
 		
 		
-		#d = Info_Window()
+		btn3 = Button( mainframe, text="About | Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
+		btn3.pack(side=BOTTOM, pady=7)
+
+		def hide_tools():
+			global hide
+			x_pos = master.winfo_x()
+			y_pos = master.winfo_y()
+			if hide==False:
+				advanced_label.configure(image=down_photo)
+				btn_frame.pack_forget()
+				master.geometry("420x420+"+str(x_pos)+"+"+str(y_pos-25))
+				hide= True
+			else:
+				advanced_label.configure(image=up_photo)
+				btn_frame.pack()
+				master.geometry("420x660")
+				hide=False
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
+		hide_tools() # hide tools as default <it looks better?>
 		th.set_theme(master)
 		up.check_update()
 		master.mainloop()

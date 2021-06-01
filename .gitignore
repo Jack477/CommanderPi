@@ -1,7 +1,9 @@
 # Ignore pycache
 __pycache__
-
 # Ignore the program's log files
 log.txt
 cpi.config
 bootconf.txt
+
+#ignore README.md file
+README.md

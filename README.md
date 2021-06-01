@@ -2,7 +2,7 @@
 <img src="https://i.imgur.com/qKibLTt.png"></img></br>
 Easy Raspberry Pi 4 GUI system manager.</br>
 #### Included in TwisterOS!</br>
-### <a href="https://raspbian-x.com/">>PiLAB project<</a>
+### <a href="https://twisteros.com/">>PiLAB project<</a>
 ### Requirements
 git (if you don't have it installed run `sudo apt install git`)
 python (comes installed with most major linux distros!)
@@ -20,6 +20,7 @@ Open a terminal and type:
 cd ~
 git clone https://github.com/Jack477/CommanderPi
 `
+
 ##  Steps to update the software.
 -CommanderPi must be version 0.4.5+ to update. ( If your version of CommanderPi doesn't fulfill those requirements, you should 
 download the newest version and reinstall it.)</br>
