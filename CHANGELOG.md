@@ -58,3 +58,16 @@
 ## v0.7.2
 * Fixed error with older PI versions (still all is designed for PI 4!)
 * Added additional path for Ubuntu config.txt
+## v1.0
+* Tool section in main window is now hidden
+* Added popup tips ToolTip by vegaseat from DaniWeb
+* Added few new icons
+* Added "GPU tools" section
+* New update system which depends on GIT
+* Moved kernel switch button and force_turbo to new section "Addons"
+* Changed few window objects color and new dark color theme
+* Fixed a lof of typos and old issues
+* Changed log file location
+
+
+
