@@ -839,7 +839,6 @@ class Window:
 				advanced_label.configure(image=down_photo)
 				btn_frame.pack_forget()
 				master.geometry("420x420+"+str(x_pos-2)+"+"+str(y_pos-30))
-				#master.geometry("420x420+"+str(x)+"+"+str(y))
 				hide = True
 			else:
 				advanced_label.configure(image=up_photo)
