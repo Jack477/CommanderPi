@@ -15,7 +15,7 @@ Nothing, every Linux distribution has a Python interpreter!
 ## To download the software.
 Open a terminal and type:
 `
-cd ~
+cd ~;
 git clone https://github.com/Jack477/CommanderPi
 `
 ##  Steps to update the software.
