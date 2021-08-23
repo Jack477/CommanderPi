@@ -17,11 +17,20 @@ d_dir = home_path+"/Desktop/commanderpi.desktop"
 x_dir = "/usr/share/applications/commanderpi.desktop"
 
 print("Save desktop shortcut to %s" % d_dir)
-f = open(d_dir, "w+")
-f.write(f_content)
-f.close
+try:
+    f = open(d_dir, "w")
+except FileNotFoundError:
+    print("Couldn't create desktop shortcut!")
+else:
+    with f:
+        f.write(f_content)
+
 
 print("Save menu shortcut to %s" % x_dir)
-f2 = open(x_dir, "w+")
-f2.write(f_content)
-f2.close
+try:
+    f2 = open(x_dir, "w")
+except FileNotFoundError:
+    print("Couldn't create menu shortcut!")
+else:
+    with f2:
+        f2.write(f_content)
