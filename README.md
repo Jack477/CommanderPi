@@ -2,7 +2,7 @@
 <img src="https://i.imgur.com/qKibLTt.png"></img></br>
 Easy Raspberry Pi 4 GUI system manager.</br>
 #### Included in TwisterOS!</br>
-### <a href="https://raspbian-x.com/">>PiLAB project<</a>
+### <a href="https://twisteros.com/">>PiLAB project<</a>
 ### Requirements
 Nothing, every Linux distribution has a Python interpreter!
 ## Features
@@ -15,7 +15,7 @@ Nothing, every Linux distribution has a Python interpreter!
 ## To download the software.
 Open a terminal and type:
 `
-cd ~
+cd ~;
 git clone https://github.com/Jack477/CommanderPi
 `
 ##  Steps to update the software.

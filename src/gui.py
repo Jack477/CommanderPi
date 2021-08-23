@@ -671,7 +671,9 @@ class Window:
 	def __init__(master):
 
 		master = tk.Tk()
-		master.geometry("420x660")
+		x = int(master.winfo_screenwidth()/2)-210
+		y = int(master.winfo_screenheight()/2)-210
+		master.geometry("420x660+"+str(x)+"+"+str(y))
 		master.title("Commander Pi")
 		master.resizable(False, False)
 		icon = PhotoImage(file = home_path+"/CommanderPi/src/icons/Icon.png")
@@ -828,23 +830,25 @@ class Window:
 		
 		btn3 = Button( mainframe, text="About | Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
 		btn3.pack(side=BOTTOM, pady=7)
-
+		
 		def hide_tools():
 			global hide
-			x_pos = master.winfo_x()
-			y_pos = master.winfo_y()
+			x_pos = master.winfo_rootx()
+			y_pos = master.winfo_rooty()
 			if hide==False:
 				advanced_label.configure(image=down_photo)
 				btn_frame.pack_forget()
-				master.geometry("420x420+"+str(x_pos)+"+"+str(y_pos-25))
-				hide= True
+				master.geometry("420x420+"+str(x_pos-2)+"+"+str(y_pos-30))
+				hide = True
 			else:
 				advanced_label.configure(image=up_photo)
 				btn_frame.pack()
 				master.geometry("420x660")
-				hide=False
+				hide = False
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
+		
 		hide_tools() # hide tools as default <it looks better?>
+		master.geometry("420x420+"+str(x)+"+"+str(y))
 		th.set_theme(master)
 		up.check_update()
 		master.mainloop()
