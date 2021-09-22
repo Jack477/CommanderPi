@@ -79,7 +79,7 @@ class Network_Window:
 		ether_title = tk.Label(network_frame, text="Ethernet:", font=("TkDefaultFont", 11, "bold"))
 		ether_title.grid(row=0, column=0)
 		
-		wlan_title = tk.Label(network_frame, text="WiFi:", font=("TkDefaultFont", 11, "bold"))
+		wlan_title = tk.Label(network_frame, text="Wi-Fi:", font=("TkDefaultFont", 11, "bold"))
 		wlan_title.grid(row=0, column=1)
 		
 		ether_label = tk.Label( network_frame, text = rs.eth0_data, borderwidth=2, relief="groove", height=7, width=25, anchor='w', justify=LEFT )
@@ -97,7 +97,7 @@ class Network_Window:
 
 		country_code_label.grid(row=0, column=0, columnspan=2)
 
-		country_code_tip = rs.CreateToolTip(country_code_label, "Country code defines what WiFi frequency should be used in your country.\nFor example US, DE, CA etc")
+		country_code_tip = rs.CreateToolTip(country_code_label, "Country code defines what Wi-Fi frequency should be used in your country.\nFor example: DE, GB, US, etc.")
 
 		country_code_entry = tk.Entry( cc_frame, justify=CENTER, width=5)
 		country_code_entry.grid(row=1, column=0, sticky=E)
@@ -184,14 +184,14 @@ class Bootloader_Info_Window:
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
 		def switch_kernel():
-				confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly\n Are you sure?")
+				confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly\nAre you sure?")
 				if confirm_msgb == True:
 					rs.set_kernel()
 					rs.reboot()
 
 		def config_boot():
 			#boot_frame.grid_forget()
-			msb.showwarning(title="Warning", message="This is only for advanced users!\nDo it on your own risk!")
+			msb.showwarning(title="Warning", message="This is only for advanced users!\nDo it at your own risk!")
 			setup_b.destroy()
 			bootloader_label.destroy()
 			config_stuff = "BOOT_UART:\nWAKE_ON_GPIO:\nPOWER_OFF_ON_HALT:\nDHCP_TIMEOUT:\nDHCP_REQ_TIMEOUT:\nTFTP_FILE_TIMEOUT:\nTFTP_IP:\nTFTP_PREFIX:\nBOOT_ORDER:\nSD_BOOT_MAX_RETRIES:\nNET_BOOT_MAX_RETRIES:\n"
@@ -361,19 +361,19 @@ class Addons_Window:
 
 
 
-		btn_kernel = Button(mainframe, text="Switch kernel 32/64bit", command = lambda:switch_kernel(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		btn_kernel = Button(mainframe, text="Switch kernel 32/64-bit", command = lambda:switch_kernel(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
 		btn_kernel.pack()
 
-		btn_force_turbo = Button(mainframe, text="force_turbo mode", command = lambda:switch_turbo(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		btn_force_turbo = Button(mainframe, text="Force turbo mode", command = lambda:switch_turbo(), width=18, cursor="hand2", font=("TkDefaultFont", 10, "bold"))
 		btn_force_turbo.pack()
 
 		def switch_turbo():
-			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are not busy.\n Over voltage will be set to 6. System will restart.\n Are you sure?")
+			confirm_msgb = msb.askyesno(title=None, message="Forces turbo mode frequencies even when the ARM cores are not busy.\nOver voltage will be set to 6. System will restart.\nAre you sure?")
 			if confirm_msgb == True:
 				rs.set_force_turbo()
 				rs.reboot()			
 		def switch_kernel():
-			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\n Are you sure?")
+			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\nAre you sure?")
 			if confirm_msgb == True:
 				rs.set_kernel()
 				rs.reboot()
@@ -407,7 +407,7 @@ class GPU_Info_Window:
 		image = Image.open(home_path+"/CommanderPi/src/icons/Gpu.png")
 		photo = ImageTk.PhotoImage(image, master=titleframe) 
 
-		title_label = tk.Label( titleframe, text = "  GPU Details", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
+		title_label = tk.Label( titleframe, text = "  GPU details", font=("TkDefaultFont", 18, "bold"), image = photo, compound=LEFT, anchor='w')
 		title_label.image = photo
 		title_label.pack(side=LEFT)
 	
@@ -422,14 +422,14 @@ class GPU_Info_Window:
 		gpu_info_label.pack()
 
 		gpu_kms_label = tk.Label(mainframe, text=rs.get_kms_mode(), image=quest_photo, compound=RIGHT)
-		gpu_label_popup = rs.CreateToolTip(gpu_kms_label, "Switching between legacy (kms) and non-legacy (fkms) driver which influence on 3D acceleration performance")
+		gpu_label_popup = rs.CreateToolTip(gpu_kms_label, "Switching between legacy (KMS) and non-legacy (FKMS) drivers can influence 3D acceleration performance.")
 		gpu_kms_label.pack()
-		gpu_button = tk.Button(mainframe, text="SWITCH KMS", command=lambda:switch_kms(), cursor="hand2", font=("TkDefaultFont", 10, "bold"))
+		gpu_button = tk.Button(mainframe, text="Switch KMS", command=lambda:switch_kms(), cursor="hand2", font=("TkDefaultFont", 10, "bold"))
 		gpu_button.pack()
 
-		gpu_mem = "GPU Memory: "+rs.get_gpu_mem()
+		gpu_mem = "GPU memory: "+rs.get_gpu_mem()
 		gpu_mem_label=tk.Label(mainframe, text=gpu_mem, image=quest_photo, compound=RIGHT)
-		gpu_label_popup2 = rs.CreateToolTip(gpu_mem_label, " Very low or very high values should be avoided because it can cause problems like preventing Linux from booting.\n Unlike GPU's found on x86 machines,\n where increasing memory can improve 3D performance,\n the architecture of the VideoCore means there is no performance advantage\n from specifying values larger than is necessary.")
+		gpu_label_popup2 = rs.CreateToolTip(gpu_mem_label, "Very low or very high values should be avoided because it can cause problems like preventing Linux from booting.\nUnlike GPUs found on x86 machines, where increasing memory can improve 3D performance, the architecture of\nVideoCore is such that there is no performance advantage from specifying values larger than is necessary.")
 		gpu_mem_label.pack(pady=5)
 		gpu_mem_slider = tk.Scale(mainframe, label="Default: 76 | Minimum: 16 | Maximum: 512", length=300, from_=16, to=512, orient=tk.HORIZONTAL, showvalue=1)
 		gpu_mem_slider.pack()
@@ -446,7 +446,7 @@ class GPU_Info_Window:
 
 
 		def switch_kms():
-			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\n Are you sure?")
+			confirm_msgb = msb.askyesno(title=None, message="This feature is still experimental, some applications may not work correctly. System will restart.\nAre you sure?")
 			if confirm_msgb == True:
 				rs.set_kms_mode()
 				rs.reboot()
@@ -548,7 +548,7 @@ class Overclock_Window:
 		separator3.pack(fill=X, expand=True, pady=10)
 		
 		
-		reboot_b = tk.Button (mainframe, text="Apply and Reboot", command = lambda:confirum_push(), font=("TkDefaultFont", 12, "bold"), cursor="hand2")
+		reboot_b = tk.Button (mainframe, text="Apply and reboot", command = lambda:confirum_push(), font=("TkDefaultFont", 12, "bold"), cursor="hand2")
 		reboot_b.pack(side=BOTTOM, pady=35)
 
 		set_default_b = tk.Button( mainframe, text="Set to default and reboot", command = lambda:set_default(),  font=("TkDefaultFont", 12, "bold"), cursor="hand2")
@@ -600,7 +600,7 @@ class Overclock_Window:
 				
 		th.set_theme(master)	
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
-		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it on your own risk!")	
+		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it at your own risk!")
 		master.lift()
 		master.mainloop()
 
@@ -651,8 +651,8 @@ class About_Window:
 		update_button = Button(mainframe, text="Check for updates", command=lambda:update_x(), cursor="hand2", font=("TkDefaultFont", 11, "bold"))
 		update_button.pack()
 
-		color_buton = Button(mainframe, text="Change color theme", command=lambda:change_theme(master), cursor="hand2", font=("TkDefaultFont", 11, "bold"))
-		color_buton.pack()
+		color_button = Button(mainframe, text="Change colour theme", command=lambda:change_theme(master), cursor="hand2", font=("TkDefaultFont", 11, "bold"))
+		color_button.pack()
 
 		def update_x():
 			up.update_cpi()
@@ -724,7 +724,7 @@ class Window:
 		processor_architecture_label2 = tk.Label( infoframe, text=rs.get_arch(), width=15, anchor='w')
 		processor_architecture_label2.grid(row=4, column=1)
 
-		force_turbo_label = tk.Label( infoframe, text="Force_turbo: ", width=30, anchor='w' )
+		force_turbo_label = tk.Label( infoframe, text="Force turbo: ", width=30, anchor='w' )
 		force_turbo_label.grid(row=5, column=0, sticky=W)
 		
 		force_turbo_label2 = tk.Label( infoframe, text=rs.get_force_turbo(), width=15, anchor='w')
@@ -742,13 +742,13 @@ class Window:
 		actual_cpu_temp_label2 = tk.Label( infoframe, text = "", width=15, anchor='w' )
 		actual_cpu_temp_label2.grid(row=7, column=1)
 		
-		actual_cpu_usage_label = tk.Label( infoframe, text = "Processor frequency usage is: ", width=30, anchor='w')
+		actual_cpu_usage_label = tk.Label( infoframe, text = "Processor frequency usage: ", width=30, anchor='w')
 		actual_cpu_usage_label.grid(row=8, column=0, sticky=W)
 		
 		actual_cpu_usage_label2 = tk.Label(infoframe, text = "",  width=15, anchor='w')
 		actual_cpu_usage_label2.grid(row=8, column=1)
 		
-		actual_gpu_usage_label = tk.Label( infoframe, text = "GPU frequency (V3D) usage is: ", width=30, anchor='w')
+		actual_gpu_usage_label = tk.Label( infoframe, text = "GPU frequency (V3D) usage: ", width=30, anchor='w')
 		actual_gpu_usage_label.grid(row=9, column=0, sticky=W)
 		
 		actual_gpu_usage_label2 = tk.Label(infoframe, text = "",  width=15, anchor='w')
@@ -773,7 +773,7 @@ class Window:
 			mtext = rs.refmem()
 			gtext = rs.refgpu()
 
-			memory_use_label2.configure(text = mtext + "/100%")
+			memory_use_label2.configure(text = mtext + " %")
 			actual_cpu_temp_label2.configure(text = ttext)
 			actual_cpu_usage_label2.configure(text = ptext)
 			actual_gpu_usage_label2.configure(text = gtext)
