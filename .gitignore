@@ -2,6 +2,7 @@
 __pycache__
 # Ignore the program's log files
 log.txt
+commanderpi.log
 cpi.config
 bootconf.txt
 

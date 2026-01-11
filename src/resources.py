@@ -8,11 +8,12 @@ import platform
 import webbrowser
 import tkinter as tk
 from os import path
+import socket
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 
-home_path = sys.argv[1]
+home_path = sys.argv[1] if len(sys.argv) > 1 else os.path.expanduser("~")
 
 print("Here is home_path "+str(home_path))
 
@@ -42,32 +43,29 @@ def open_url(url):
 ### network data
 
 network = psutil.net_if_addrs()
-ipv4eth = network['eth0'][0][1]
-ipv6eth = None
-maceth = network['eth0'][0][2]
-try:
-	ipv6eth = network['eth0'][1][1]
-	maceth = network['eth0'][2][1]
-except IndexError:
-	ipv6eth = None
-	ipv4eth = None
-	maceth = network['eth0'][0][1]
 
-broadcasteth = network['eth0'][0][3]
+def _iface_summary(iface_name):
+	addrs = network.get(iface_name, [])
+	ipv4 = None
+	ipv6 = None
+	mac = None
+	broadcast = None
+	for addr in addrs:
+		if addr.family == socket.AF_INET:
+			ipv4 = addr.address
+			broadcast = addr.broadcast
+		elif addr.family == socket.AF_INET6:
+			ipv6 = addr.address
+		elif getattr(psutil, "AF_LINK", None) is not None and addr.family == psutil.AF_LINK:
+			mac = addr.address
+		elif getattr(socket, "AF_PACKET", None) is not None and addr.family == socket.AF_PACKET:
+			mac = addr.address
+	return ipv4, ipv6, mac, broadcast
 
+ipv4eth, ipv6eth, maceth, broadcasteth = _iface_summary("eth0")
 eth0_data = "IPv4 "+str(ipv4eth)+"\nIPv6 "+str(ipv6eth)+"\nMAC "+str(maceth)+"\nBroadcast "+str(broadcasteth)
 
-ipv4wlan0 = network['wlan0'][0][1]
-ipv6wlan0 = None
-try:
-	ipv6wlan0 = network['wlan0'][1][1]
-	macwlan0 = network['wlan0'][2][1]
-except IndexError:
-	ipv6wlan0 = None
-	ipv4wlan0 = None
-	macwlan0 = network['wlan0'][0][1]
-broadcastwlan = network['wlan0'][0][3]
-
+ipv4wlan0, ipv6wlan0, macwlan0, broadcastwlan = _iface_summary("wlan0")
 wlan0_data = "IPv4 "+str(ipv4wlan0)+"\nIPv6 "+str(ipv6wlan0)+"\nMAC "+str(macwlan0)+"\nBroadcast "+str(broadcastwlan)
 
 
@@ -139,12 +137,12 @@ def set_push_state(state):
 ### get cpu informations
 
 def getproc0():
-	cpu = sp.getoutput('lscpu | head -n 14 | cut -d \: -f 1 | sed -e s/$/:/')
+	cpu = sp.getoutput('lscpu | head -n 14 | cut -d \\: -f 1 | sed -e s/$/:/')
 	cpux = str(cpu)
 	return cpux
 	
 def getproc1():
-	cpu = sp.getoutput('lscpu | head -n 14 | cut -d \: -f 2 | sed -e s/^[[:space:]]*//')
+	cpu = sp.getoutput('lscpu | head -n 14 | cut -d \\: -f 2 | sed -e s/^[[:space:]]*//')
 	cpux = str(cpu)
 	return cpux
 
@@ -485,12 +483,14 @@ def overclock(new_value, type_of_value: int):
 
 ### ToolTip by vegaseat from DaniWeb
 class CreateToolTip(object):
-    '''
-    create a tooltip for a given widget
-    '''
-    def __init__(self, widget, text='widget info'):
+    """
+    Create a tooltip for a given widget.
+    """
+
+    def __init__(self, widget, text="widget info"):
         self.widget = widget
         self.text = text
+        self.tw = None
         self.widget.bind("<Enter>", self.enter)
         self.widget.bind("<Leave>", self.close)
 
@@ -499,16 +499,22 @@ class CreateToolTip(object):
         x, y, cx, cy = self.widget.bbox("insert")
         x += self.widget.winfo_rootx() + 25
         y += self.widget.winfo_rooty() + 20
-        # creates a toplevel window
         self.tw = tk.Toplevel(self.widget)
-        # Leaves only the label and removes the app window
         self.tw.wm_overrideredirect(True)
         self.tw.wm_geometry("+%d+%d" % (x, y))
-        label = tk.Label(self.tw, text=self.text, justify='left',
-                       background='white', foreground='black', relief='solid', borderwidth=1,
-                       font=("times", "10", "normal"))
+        label = tk.Label(
+            self.tw,
+            text=self.text,
+            justify="left",
+            background="white",
+            foreground="black",
+            relief="solid",
+            borderwidth=1,
+            font=("times", "10", "normal"),
+        )
         label.pack(ipadx=1)
 
     def close(self, event=None):
         if self.tw:
             self.tw.destroy()
+            self.tw = None

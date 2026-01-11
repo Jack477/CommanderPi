@@ -14,6 +14,15 @@ default_font_color="Black"
 
 ### TODO: move window_list to another location?
 def set_theme(master):
+	def _is_window_alive(window):
+		try:
+			return bool(window.winfo_exists())
+		except Exception:
+			return False
+
+	global window_list
+	window_list = [w for w in window_list if _is_window_alive(w)]
+
 	#defaultbg = tk.cget('bg')
 	#print(defaultbg)
 	#print("fucking color mode is: "+str(color_mode))
@@ -55,12 +64,15 @@ def set_theme(master):
 				elif(isinstance(x, Entry)):
 					x.configure(bg=default_background_color, fg=default_font_color)
 
-	for window in window_list:
+	for window in list(window_list):
 		if int(color_mode)==1:
 			default_background_color="#1b1c1e"
 			default_font_color="White"
-			window.tk_setPalette(background=default_background_color, foreground=default_font_color)
-			window.update()
+			try:
+				window.tk_setPalette(background=default_background_color, foreground=default_font_color)
+				window.update()
+			except Exception:
+				continue
 			wlist = window.winfo_children()
 			for widget in wlist:
 				if(isinstance(widget, Button)):
@@ -85,8 +97,11 @@ def set_theme(master):
 		else:
 			default_background_color="#d9d9d9"
 			default_font_color="Black"
-			window.tk_setPalette(background=default_background_color, foreground=default_font_color)
-			window.update()
+			try:
+				window.tk_setPalette(background=default_background_color, foreground=default_font_color)
+				window.update()
+			except Exception:
+				continue
 			wlist = window.winfo_children()
 			for widget in wlist:
 				if(isinstance(widget, Button)):

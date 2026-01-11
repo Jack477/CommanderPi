@@ -17,7 +17,109 @@ from PIL import Image, ImageTk
 ### split resources.py into smaller files
 
 ### home path as python script terminal argument
-home_path = sys.argv[1]
+home_path = rs.home_path
+
+
+_MAIN_WINDOW = None
+
+
+def _place_window(master, preferred_width, preferred_height, *, margin_x=20, margin_y=80, avoid_cover_main=False):
+	master.update_idletasks()
+	screen_w = master.winfo_screenwidth()
+	screen_h = master.winfo_screenheight()
+	width = min(int(preferred_width), max(240, screen_w - margin_x))
+	height = min(int(preferred_height), max(200, screen_h - margin_y))
+
+	x = max(0, int((screen_w - width) / 2))
+	y = max(0, int((screen_h - height) / 2))
+
+	global _MAIN_WINDOW
+	if avoid_cover_main and _MAIN_WINDOW is not None:
+		try:
+			if _MAIN_WINDOW.winfo_exists():
+				_MAIN_WINDOW.update_idletasks()
+				main_x = int(_MAIN_WINDOW.winfo_x())
+				main_y = int(_MAIN_WINDOW.winfo_y())
+				main_w = int(_MAIN_WINDOW.winfo_width())
+				main_h = int(_MAIN_WINDOW.winfo_height())
+
+				gap = 20
+
+				candidates = [
+					(main_x + main_w + gap, main_y),
+					(main_x - width - gap, main_y),
+					(main_x, main_y + main_h + gap),
+					(main_x, main_y - height - gap),
+					(main_x + gap, main_y + gap),
+				]
+
+				for cand_x, cand_y in candidates:
+					cand_x = max(0, min(int(cand_x), screen_w - width))
+					cand_y = max(0, min(int(cand_y), screen_h - height - margin_y))
+					main_right = main_x + main_w
+					main_bottom = main_y + main_h
+					overlaps = not (
+						cand_x + width <= main_x
+						or cand_x >= main_right
+						or cand_y + height <= main_y
+						or cand_y >= main_bottom
+					)
+					if not overlaps:
+						x, y = cand_x, cand_y
+						break
+		except Exception:
+			pass
+
+	master.geometry(f"{width}x{height}+{x}+{y}")
+
+
+def _make_scrollable(parent):
+	outer = Frame(parent)
+	outer.pack(fill=BOTH, expand=True)
+
+	canvas = tk.Canvas(outer, highlightthickness=0)
+	scrollbar = ttk.Scrollbar(outer, orient="vertical", command=canvas.yview)
+	canvas.configure(yscrollcommand=scrollbar.set)
+
+	scrollbar.pack(side=RIGHT, fill=Y)
+	canvas.pack(side=LEFT, fill=BOTH, expand=True)
+
+	content = Frame(canvas)
+	window_id = canvas.create_window((0, 0), window=content, anchor="nw")
+
+	def _on_content_configure(event=None):
+		canvas.configure(scrollregion=canvas.bbox("all"))
+
+	def _on_canvas_configure(event):
+		canvas.itemconfigure(window_id, width=event.width)
+
+	content.bind("<Configure>", _on_content_configure)
+	canvas.bind("<Configure>", _on_canvas_configure)
+
+	def _on_mousewheel(event):
+		if getattr(event, "delta", 0):
+			canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
+	for target in (canvas, content):
+		target.bind("<MouseWheel>", _on_mousewheel)
+		target.bind("<Button-4>", lambda e: canvas.yview_scroll(-1, "units"))
+		target.bind("<Button-5>", lambda e: canvas.yview_scroll(1, "units"))
+
+	return content
+
+
+def _window_scaffold(master, *, scrollable):
+	content_area = Frame(master)
+	content_area.pack(fill=BOTH, expand=True)
+	bottom_bar = Frame(master)
+	bottom_bar.pack(fill=X, side=BOTTOM)
+
+	if scrollable:
+		content_root = _make_scrollable(content_area)
+	else:
+		content_root = content_area
+
+	return content_root, bottom_bar
 
 ### change color theme, edit config file
 def change_theme(master):
@@ -37,7 +139,10 @@ def on_Window_Close(master):
 	if isinstance(master, tk.Tk):
 		window_name = master.__class__
 		print(window_name)
-		th.window_list.pop()
+		try:
+			th.window_list.remove(master)
+		except ValueError:
+			pass
 	master.destroy()
 
 ### Using to keybind window kill
@@ -55,12 +160,13 @@ def bopen(window):
 class Network_Window:
 	def __init__(master):
 		master = tk.Tk()
-		master.geometry("480x280")
 		master.title("Commander Pi")
+		master.resizable(True, True)
+		_place_window(master, 480, 280, avoid_cover_main=True)
 		th.window_list.append(master)
 
-
-		mainframe = Frame(master)
+		content_root, bottom_bar = _window_scaffold(master, scrollable=False)
+		mainframe = Frame(content_root)
 		mainframe.pack(padx=10, pady=10)	
 		
 		titleframe = Frame(mainframe)
@@ -105,8 +211,8 @@ class Network_Window:
 		country_code_button = tk.Button( cc_frame, text="Apply", command=lambda:push_cc(), font=("TkDefaultFont", 10, "bold"), cursor="hand2")
 		country_code_button.grid(row=1, column=1)
 
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
-		bind_label.pack(side=BOTTOM)
+		bind_label = tk.Label( bottom_bar, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(pady=5)
 
 		def push_cc():
 			code = country_code_entry.get()
@@ -128,12 +234,13 @@ class Bootloader_Info_Window:
 	
 
 		master = tk.Tk()
-		master.geometry("430x550")
 		master.title("Commander Pi")
+		master.resizable(True, True)
+		_place_window(master, 430, 550, avoid_cover_main=True)
 		th.window_list.append(master)
 
-
-		mainframe = Frame(master)
+		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
+		mainframe = Frame(content_root)
 		mainframe.pack(padx=10, pady=10)	
 		
 		titleframe = Frame(mainframe)
@@ -179,8 +286,8 @@ class Bootloader_Info_Window:
 		link.bind("<Button-1>", lambda e: rs.open_url(mlink))
 		
 
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
-		bind_label.pack(side=BOTTOM)
+		bind_label = tk.Label( bottom_bar, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(pady=5)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		
 		def switch_kernel():
@@ -296,11 +403,13 @@ class Proc_Info_Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("350x400")
 		master.title("Commander Pi")
+		master.resizable(True, True)
+		_place_window(master, 350, 400, avoid_cover_main=True)
 		th.window_list.append(master)
-		th.set_theme(master)
-		mainframe = Frame(master)
+
+		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
+		mainframe = Frame(content_root)
 		mainframe.pack(padx=10, pady=10)	
 		
 		titleframe = Frame(mainframe)
@@ -328,8 +437,9 @@ class Proc_Info_Window:
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
 		separator2.pack(fill=X, expand=True, pady=15)	
 		
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
-		bind_label.pack(side=BOTTOM)
+		bind_label = tk.Label( bottom_bar, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(pady=5)
+		th.set_theme(master)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
 		master.mainloop()
@@ -340,10 +450,13 @@ class Addons_Window:
 	def __init__(master):
 
 		master=tk.Tk()
-		master.geometry("350x400")
 		master.title("Commander Pi")
+		master.resizable(True, True)
+		_place_window(master, 350, 400, avoid_cover_main=True)
 		th.window_list.append(master)
-		mainframe = Frame(master)
+
+		content_root, bottom_bar = _window_scaffold(master, scrollable=False)
+		mainframe = Frame(content_root)
 		mainframe.pack(padx=10, pady=10)
 
 		titleframe = Frame(mainframe)
@@ -381,13 +494,11 @@ class Addons_Window:
 		separator2 = ttk.Separator(mainframe, orient='horizontal')
 		separator2.pack(fill=X, expand=True, pady=15)	
 		
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
-		bind_label.pack(side=BOTTOM)
+		bind_label = tk.Label( bottom_bar, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(pady=5)
 		th.set_theme(master)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
-		master.mainloop()
-
 		master.mainloop()
 
 class GPU_Info_Window:
@@ -395,10 +506,13 @@ class GPU_Info_Window:
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("360x400")
 		master.title("Commander Pi")
+		master.resizable(True, True)
+		_place_window(master, 360, 400, avoid_cover_main=True)
 		th.window_list.append(master)
-		mainframe = Frame(master)
+
+		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
+		mainframe = Frame(content_root)
 		mainframe.pack(padx=10, pady=10)	
 		
 		titleframe = Frame(mainframe)
@@ -451,8 +565,8 @@ class GPU_Info_Window:
 				rs.set_kms_mode()
 				rs.reboot()
 
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
-		bind_label.pack(side=BOTTOM)
+		bind_label = tk.Label( bottom_bar, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(pady=5)
 		th.set_theme(master)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
@@ -462,11 +576,13 @@ class Overclock_Window:
 
 	def __init__(master):
 		master = tk.Tk()
-		master.geometry("440x465")
 		master.title("Commander Pi")
+		master.resizable(True, True)
+		_place_window(master, 440, 465, avoid_cover_main=True)
 		th.window_list.append(master)
 
-		mainframe = Frame(master)
+		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
+		mainframe = Frame(content_root)
 		mainframe.pack(padx=10, pady=10)
 		
 		titleframe = Frame(mainframe)
@@ -571,48 +687,54 @@ class Overclock_Window:
 			else:
 				print("Its not a number!")
 			
-		def confirum_push():
-			print(rs.push_state1)
-			print(rs.push_state2)
-			print(rs.push_state3)
-			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
-			if confirm_msgb == True:
-				if arm_freq_entry.get() != "" and gpu_freq_entry.get() != "" and over_voltage_entry.get() != "" and rs.push_state1 == True and rs.push_state2 == True and rs.push_state3 == True:
-					rs.overclock(arm_freq_entry.get(), 2)
-					rs.overclock(gpu_freq_entry.get(), 3)
-					rs.overclock(over_voltage_entry.get(), 1)
+			def confirum_push():
+				print(rs.push_state1)
+				print(rs.push_state2)
+				print(rs.push_state3)
+				confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
+				if confirm_msgb == True:
+					if arm_freq_entry.get() != "" and gpu_freq_entry.get() != "" and over_voltage_entry.get() != "" and rs.push_state1 == True and rs.push_state2 == True and rs.push_state3 == True:
+						rs.overclock(arm_freq_entry.get(), 2)
+						rs.overclock(gpu_freq_entry.get(), 3)
+						rs.overclock(over_voltage_entry.get(), 1)
+						rs.reboot()
+					else:
+						msb.showinfo(title="Warning", message="You didn't set all values!")
+				else:
+					importlib.reload(rs)
+					on_Window_Close(master)
+			def set_default():
+				confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
+				if confirm_msgb == True:
+					rs.overclock("1500", 2)
+					rs.overclock("500", 3)
+					rs.overclock("", 1)
 					rs.reboot()
 				else:
-					msb.showinfo(title="Warning", message="You didn't set all values!")
-			else:
-				importlib.reload(rs)
-				on_Window_Close(master)
-		def set_default():
-			confirm_msgb = msb.askyesno(title=None, message="Are you sure?")
-			if confirm_msgb == True:
-				rs.overclock("1500", 2)
-				rs.overclock("500", 3)
-				rs.overclock("", 1)
-				rs.reboot()
-			else:
-				importlib.reload(rs)
-				on_Window_Close(master)			
-				
-		th.set_theme(master)	
-		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
-		msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it at your own risk!")
-		master.lift()
-		master.mainloop()
+					importlib.reload(rs)
+					on_Window_Close(master)			
+					
+			bind_label = tk.Label( bottom_bar, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+			bind_label.pack(pady=5)
+			master.bind('<Escape>', lambda e:killwindow(e, master))
+			th.set_theme(master)	
+			master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))	
+			msb.showwarning(title="Warning", message="Overclocking is only for advanced users!\nDo it at your own risk!")
+			master.lift()
+			master.mainloop()
 
 class About_Window:
 
 	def __init__(master):
 	
 		master = tk.Tk()
-		master.geometry("400x450")
 		master.title("Commander Pi")
+		master.resizable(True, True)
+		_place_window(master, 400, 450, avoid_cover_main=True)
 		th.window_list.append(master)
-		mainframe = Frame(master)
+
+		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
+		mainframe = Frame(content_root)
 		mainframe.pack(padx=10, pady=10)	
 		
 		titleframe = Frame(mainframe)
@@ -658,8 +780,8 @@ class About_Window:
 			up.update_cpi()
 
 		
-		bind_label = tk.Label( mainframe, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
-		bind_label.pack(side=BOTTOM)
+		bind_label = tk.Label( bottom_bar, text="Press [Esc] to close", font=("TkDefaultFont", 11, "bold") )
+		bind_label.pack(pady=5)
 		master.bind('<Escape>', lambda e:killwindow(e, master))
 		th.set_theme(master)
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))		
@@ -671,6 +793,8 @@ class Window:
 	def __init__(master):
 
 		master = tk.Tk()
+		global _MAIN_WINDOW
+		_MAIN_WINDOW = master
 		x = int(master.winfo_screenwidth()/2)-210
 		y = int(master.winfo_screenheight()/2)-210
 		master.geometry("420x660+"+str(x)+"+"+str(y))
@@ -826,29 +950,48 @@ class Window:
 		addons_button = Button(btn_frame, text="Addons", command=lambda:bopen(Addons_Window), width=60, height=80, cursor="hand2", image=addons_photo, compound=TOP)
 		addons_button.grid(row=1, column=2, padx=4, pady=8)
 
+		spacer = Frame(mainframe)
+		spacer.pack(fill=BOTH, expand=True)
+		
 		
 		
 		btn3 = Button( mainframe, text="About | Update", command = lambda:bopen(About_Window), font=("TkDefaultFont", 11, "bold"), cursor="hand2")
 		btn3.pack(side=BOTTOM, pady=7)
+
+		def set_window_size(width, height, x_pos, y_pos):
+			master.update_idletasks()
+			screen_w = master.winfo_screenwidth()
+			screen_h = master.winfo_screenheight()
+			margin = 60
+			width = min(int(width), max(200, screen_w - 20))
+			height = min(int(height), max(200, screen_h - margin))
+			x_pos = max(0, min(int(x_pos), screen_w - width))
+			y_pos = max(0, min(int(y_pos), screen_h - height - margin))
+			master.geometry(f"{width}x{height}+{x_pos}+{y_pos}")
+
+		def set_window_size_to_content(width, x_pos, y_pos, min_height=200):
+			master.update_idletasks()
+			target_height = mainframe.winfo_reqheight() + 20
+			set_window_size(width, max(min_height, target_height), x_pos, y_pos)
 		
 		def hide_tools():
 			global hide
-			x_pos = master.winfo_rootx()
-			y_pos = master.winfo_rooty()
+			x_pos = master.winfo_x()
+			y_pos = master.winfo_y()
 			if hide==False:
 				advanced_label.configure(image=down_photo)
 				btn_frame.pack_forget()
-				master.geometry("420x420+"+str(x_pos-2)+"+"+str(y_pos-30))
+				set_window_size_to_content(420, x_pos, y_pos, min_height=200)
 				hide = True
 			else:
 				advanced_label.configure(image=up_photo)
 				btn_frame.pack()
-				master.geometry("420x660")
+				set_window_size_to_content(420, x_pos, y_pos, min_height=200)
 				hide = False
 		master.protocol("WM_DELETE_WINDOW", lambda:on_Window_Close(master))
 		
-		hide_tools() # hide tools as default <it looks better?>
-		master.geometry("420x420+"+str(x)+"+"+str(y))
+		set_window_size_to_content(420, x, y, min_height=200)
+		hide_tools()
 		th.set_theme(master)
 		up.check_update()
 		master.mainloop()
