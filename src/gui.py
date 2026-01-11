@@ -22,6 +22,14 @@ home_path = rs.home_path
 
 _MAIN_WINDOW = None
 
+WINDOW_SIZE_NETWORK = (480, 280)
+WINDOW_SIZE_BOOTLOADER = (430, 550)
+WINDOW_SIZE_PROC_INFO = (350, 400)
+WINDOW_SIZE_ADDONS = (350, 400)
+WINDOW_SIZE_GPU_INFO = (360, 400)
+WINDOW_SIZE_OVERCLOCK = (440, 465)
+WINDOW_SIZE_ABOUT = (400, 450)
+
 
 def _place_window(master, preferred_width, preferred_height, *, margin_x=20, margin_y=80, avoid_cover_main=False):
 	master.update_idletasks()
@@ -162,7 +170,7 @@ class Network_Window:
 		master = tk.Tk()
 		master.title("Commander Pi")
 		master.resizable(True, True)
-		_place_window(master, 480, 280, avoid_cover_main=True)
+		_place_window(master, *WINDOW_SIZE_NETWORK, avoid_cover_main=True)
 		th.window_list.append(master)
 
 		content_root, bottom_bar = _window_scaffold(master, scrollable=False)
@@ -236,7 +244,7 @@ class Bootloader_Info_Window:
 		master = tk.Tk()
 		master.title("Commander Pi")
 		master.resizable(True, True)
-		_place_window(master, 430, 550, avoid_cover_main=True)
+		_place_window(master, *WINDOW_SIZE_BOOTLOADER, avoid_cover_main=True)
 		th.window_list.append(master)
 
 		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
@@ -405,7 +413,7 @@ class Proc_Info_Window:
 		master = tk.Tk()
 		master.title("Commander Pi")
 		master.resizable(True, True)
-		_place_window(master, 350, 400, avoid_cover_main=True)
+		_place_window(master, *WINDOW_SIZE_PROC_INFO, avoid_cover_main=True)
 		th.window_list.append(master)
 
 		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
@@ -452,7 +460,7 @@ class Addons_Window:
 		master=tk.Tk()
 		master.title("Commander Pi")
 		master.resizable(True, True)
-		_place_window(master, 350, 400, avoid_cover_main=True)
+		_place_window(master, *WINDOW_SIZE_ADDONS, avoid_cover_main=True)
 		th.window_list.append(master)
 
 		content_root, bottom_bar = _window_scaffold(master, scrollable=False)
@@ -508,7 +516,7 @@ class GPU_Info_Window:
 		master = tk.Tk()
 		master.title("Commander Pi")
 		master.resizable(True, True)
-		_place_window(master, 360, 400, avoid_cover_main=True)
+		_place_window(master, *WINDOW_SIZE_GPU_INFO, avoid_cover_main=True)
 		th.window_list.append(master)
 
 		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
@@ -578,7 +586,7 @@ class Overclock_Window:
 		master = tk.Tk()
 		master.title("Commander Pi")
 		master.resizable(True, True)
-		_place_window(master, 440, 465, avoid_cover_main=True)
+		_place_window(master, *WINDOW_SIZE_OVERCLOCK, avoid_cover_main=True)
 		th.window_list.append(master)
 
 		content_root, bottom_bar = _window_scaffold(master, scrollable=True)
@@ -730,7 +738,7 @@ class About_Window:
 		master = tk.Tk()
 		master.title("Commander Pi")
 		master.resizable(True, True)
-		_place_window(master, 400, 450, avoid_cover_main=True)
+		_place_window(master, *WINDOW_SIZE_ABOUT, avoid_cover_main=True)
 		th.window_list.append(master)
 
 		content_root, bottom_bar = _window_scaffold(master, scrollable=True)

@@ -14,14 +14,15 @@ default_font_color="Black"
 
 ### TODO: move window_list to another location?
 def set_theme(master):
-	def _is_window_alive(window):
-		try:
-			return bool(window.winfo_exists())
-		except Exception:
-			return False
-
 	global window_list
-	window_list = [w for w in window_list if _is_window_alive(w)]
+	alive_windows = []
+	for window in window_list:
+		try:
+			if window.winfo_exists():
+				alive_windows.append(window)
+		except Exception:
+			continue
+	window_list = alive_windows
 
 	#defaultbg = tk.cget('bg')
 	#print(defaultbg)
