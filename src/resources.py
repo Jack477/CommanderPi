@@ -184,7 +184,7 @@ def refmem():
 def reftemp():
 	temp = psutil.sensors_temperatures()
 	temp = round(temp['cpu_thermal'][0][1])
-	return str(temp)+"'C"
+	return str(temp)+" °C"
 	
 
 	
@@ -318,7 +318,7 @@ def get_kms_mode():
 	elif "fkms" in kms_mode:
 		return "KMS mode: FKMS"
 	else:
-		return "KMS MODE: "+kms_mode
+		return "KMS mode: "+kms_mode
 
 def set_kms_mode():
 	print(kms_mode)
@@ -345,16 +345,16 @@ def set_kms_mode():
 ### return kernel mode
 def get_kernel_mode():
 	if "arm_64bit=1" in arm_64bit:
-		return "64bit"
+		return "64-bit"
 	else:
-		return "32bit"
+		return "32-bit"
 
 ### return force_turbo status (on/off)
 def get_force_turbo():
 	if "force_turbo=1" in force_turbo:
-		return "ON"
+		return "On"
 	else:
-		return "OFF"
+		return "Off"
 
 
 ### setting up force_turbo and overvoltage in config.txt
